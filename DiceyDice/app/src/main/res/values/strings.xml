@@ -1,3 +1,10 @@
 <resources>
     <string name="app_name">Dicey Dice</string>
+
+    <!-- MainActivity -->
+    <string name="command_input_hint">Input a command.</string>
+    <string name="roll_button">Roll</string>
+    <string name="info_button">Info</string>
+    <string name="favorites_title">Favorites</string>
+    <string name="favorites_button">All Favorites</string>
 </resources>
