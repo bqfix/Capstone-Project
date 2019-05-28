@@ -44,6 +44,7 @@ public class DiceRoll {
         StringBuilder compiledRolls = new StringBuilder("");
         int total = 0;
         ArrayList<String[]> splitFormulaByD =  new ArrayList<>();
+        ArrayList<String> plussesAndMinuses = extractPlussesAndMinuses();
 
         String[] splitFormulaByPlusMinus = mFormula.trim().split("[+-]"); //Split formula based on + and -
         for (String section : splitFormulaByPlusMinus) {
@@ -51,21 +52,51 @@ public class DiceRoll {
             splitFormulaByD.add(trimmedSection.split("[dD]")); //Add each trimmed section to the ArrayList, splitting it by d or D if applicable
         }
 
-        for (String[] splitRoll : splitFormulaByD) {
+        for (int index = 0; index < splitFormulaByD.size(); index++) {
+            String[] splitRoll = splitFormulaByD.get(index);
+            boolean positive = plussesAndMinuses.get(index).equals("+"); //Cross reference with plussesAndMinuses to determine if positive or negative
+
             if (splitRoll.length == 3) { //If the size is 3, it was delineated by d or D, and thus we know that the first value is the numberOfDice, and the third value is the dieSize
                 int numberOfDice = Integer.parseInt(splitRoll[0]);
                 int dieSize = Integer.parseInt(splitRoll[2]);
                 Pair<String, Integer> rolledValues = Utils.calculateDice(numberOfDice, dieSize); //Use the utils method to calculate a Pair with the individual values, and the total, and append/total these
-                compiledRolls.append(rolledValues.first).append(" ");
-                total += rolledValues.second;
+
+                if (positive) { //Add or subtract accordingly
+                    compiledRolls.append(rolledValues.first).append(" +");
+                    total += rolledValues.second;
+                } else { //Negative
+                    compiledRolls.append(rolledValues.first).append(" -");
+                    total -= rolledValues.second;
+                }
             }
 
-            if (splitRoll.length == 1){ //If the length is one, simply append the number
+            if (splitRoll.length == 1){ //If the length is one, simply append the number and add or subtract accordingly
                 String number = splitRoll[0];
-                compiledRolls.append("(").append(number).append(")");
-                total += Integer.parseInt(number);
+                if (positive) {
+                    compiledRolls.append("+(").append(number).append(")");
+                    total += Integer.parseInt(number);
+                } else { //Negative
+                    compiledRolls.append("-(").append(number).append(")");
+                    total -= Integer.parseInt(number);
+                }
             }
         }
         return new Pair<>(compiledRolls.toString(), total);
+    }
+
+    /** A helper method to create an ArrayList containing all the plusses and minuses in the formula, for later cross-referencing
+     *
+     * @return an ArrayList of all the plusses and minuses in the formula
+     */
+    private ArrayList<String> extractPlussesAndMinuses(){
+        ArrayList<String> extractedPlussesAndMinuses = new ArrayList<>();
+        extractedPlussesAndMinuses.add("+"); //First value in formula must always be positive
+        for (int index = 0; index < mFormula.length(); index++) {
+            String currentCharacter = String.valueOf(mFormula.charAt(index));
+            if (currentCharacter.equals("+") || currentCharacter.equals("-")) { //If a character in the formula is + or -, append it to the list
+                extractedPlussesAndMinuses.add(currentCharacter);
+            }
+        }
+        return extractedPlussesAndMinuses;
     }
 }
