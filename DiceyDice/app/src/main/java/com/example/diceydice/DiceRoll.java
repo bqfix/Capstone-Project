@@ -39,7 +39,7 @@ public class DiceRoll {
      *
      * @return A pair, with the first value being a string containing each individual roll, and the second being the total.
      */
-    public Pair<String, Integer> roll(){
+    public Pair<String, Integer> roll(){ //TODO Move this to an AsyncTask to avoid large rolls locking the UI thread
         StringBuilder compiledRolls = new StringBuilder("");
         int total = 0;
         ArrayList<String[]> splitFormulaByD =  new ArrayList<>();
@@ -56,8 +56,8 @@ public class DiceRoll {
             boolean positive = plussesAndMinuses.get(index).equals("+"); //Cross reference with plussesAndMinuses to determine if positive or negative
 
             if (splitRoll.length == 2) { //If the size is 2, it was delineated by d or D, and thus we know that the first value is the numberOfDice, and the second value is the dieSize
-                int numberOfDice = Integer.parseInt(splitRoll[0]);
-                int dieSize = Integer.parseInt(splitRoll[1]);
+                int numberOfDice = Integer.parseInt(splitRoll[0].trim());
+                int dieSize = Integer.parseInt(splitRoll[1].trim());
                 Pair<String, Integer> rolledValues = Utils.calculateDice(numberOfDice, dieSize); //Use the utils method to calculate a Pair with the individual values, and the total, and append/total these
 
                 if (positive) { //Add or subtract accordingly
@@ -70,7 +70,7 @@ public class DiceRoll {
             }
 
             if (splitRoll.length == 1){ //If the length is one, simply append the number and add or subtract accordingly
-                String number = splitRoll[0];
+                String number = splitRoll[0].trim();
                 if (positive) {
                     compiledRolls.append("+(").append(number).append(")");
                     total += Integer.parseInt(number);

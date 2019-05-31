@@ -40,13 +40,14 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 String formula = mCommandInputEditText.getText().toString();
-                if (Utils.isValidDiceRoll(formula)){ //If formula is okay, make a new nameless DiceRoll for display in the results text
+                Pair<Boolean, String> validAndErrorPair = Utils.isValidDiceRoll(MainActivity.this, formula); //Get a boolean of whether the
+                if (validAndErrorPair.first){ //If formula is okay, make a new nameless DiceRoll for display in the results text
                     DiceRoll diceRoll = new DiceRoll(formula);
                     setDataToResultsViews(diceRoll);
                     hideKeyboard(v);
                 }
                 else {
-                    Toast.makeText(MainActivity.this, R.string.command_not_valid_error_toast, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(MainActivity.this, validAndErrorPair.second, Toast.LENGTH_SHORT).show();
                 }
             }
         });

@@ -11,6 +11,11 @@
     <string name="roll_button">Roll</string>
     <string name="favorites_title">Favorites</string>
     <string name="favorites_button">All Favorites</string>
-    <string name="command_not_valid_error_toast">Invalid command.  Please check your input.</string>
+
+    <!-- Formula Errors -->
+    <string name="invalid_characters">Error: Input contains invalid characters.</string>
+    <string name="incorrectly_formatted_section">Error: A section is incorrectly formatted. </string>
+    <string name="too_many_dice">Error: Each dice roll must have less than 1000 dice.</string>
+    <string name="no_error">No errors.</string>
 
 </resources>
