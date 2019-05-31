@@ -55,16 +55,16 @@ public class DiceRoll {
             String[] splitRoll = splitFormulaByD.get(index);
             boolean positive = plussesAndMinuses.get(index).equals("+"); //Cross reference with plussesAndMinuses to determine if positive or negative
 
-            if (splitRoll.length == 3) { //If the size is 3, it was delineated by d or D, and thus we know that the first value is the numberOfDice, and the third value is the dieSize
+            if (splitRoll.length == 2) { //If the size is 2, it was delineated by d or D, and thus we know that the first value is the numberOfDice, and the second value is the dieSize
                 int numberOfDice = Integer.parseInt(splitRoll[0]);
-                int dieSize = Integer.parseInt(splitRoll[2]);
+                int dieSize = Integer.parseInt(splitRoll[1]);
                 Pair<String, Integer> rolledValues = Utils.calculateDice(numberOfDice, dieSize); //Use the utils method to calculate a Pair with the individual values, and the total, and append/total these
 
                 if (positive) { //Add or subtract accordingly
-                    compiledRolls.append(rolledValues.first).append(" +");
+                    compiledRolls.append(" +").append(rolledValues.first);
                     total += rolledValues.second;
                 } else { //Negative
-                    compiledRolls.append(rolledValues.first).append(" -");
+                    compiledRolls.append(" -").append(rolledValues.first);
                     total -= rolledValues.second;
                 }
             }
