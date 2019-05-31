@@ -36,4 +36,9 @@ public final class Utils {
         compiledRolls.append(")"); //Append closing bracket to compiledRolls and return
         return new Pair<>(compiledRolls.toString(), total);
     }
+
+    public static boolean isValidDiceRoll(String formula){
+        //TODO Add check to see if a given formula is valid or not
+        return true;
+    }
 }

@@ -11,5 +11,6 @@
     <string name="roll_button">Roll</string>
     <string name="favorites_title">Favorites</string>
     <string name="favorites_button">All Favorites</string>
+    <string name="command_not_valid_error_toast">Invalid command.  Please check your input.</string>
 
 </resources>
