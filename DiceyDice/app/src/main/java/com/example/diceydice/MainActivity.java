@@ -1,9 +1,11 @@
 package com.example.diceydice;
 
+import android.content.Context;
 import android.support.v4.util.Pair;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -25,6 +27,15 @@ public class MainActivity extends AppCompatActivity {
 
         assignViews();
 
+        mCommandInputEditText.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (!hasFocus){
+                    hideKeyboard(v);
+                }
+            }
+        });
+
         mRollButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -32,6 +43,7 @@ public class MainActivity extends AppCompatActivity {
                 if (Utils.isValidDiceRoll(formula)){ //If formula is okay, make a new nameless DiceRoll for display in the results text
                     DiceRoll diceRoll = new DiceRoll(formula);
                     setDataToResultsViews(diceRoll);
+                    hideKeyboard(v);
                 }
                 else {
                     Toast.makeText(MainActivity.this, R.string.command_not_valid_error_toast, Toast.LENGTH_SHORT).show();
@@ -62,5 +74,14 @@ public class MainActivity extends AppCompatActivity {
         mResultsNameTextView.setText(diceRoll.getName());
         mResultsTotalTextView.setText(randomRoll.second.toString());
         mResultsDescripTextView.setText(descrip);
+    }
+
+    /** A helper method to hide the soft keyboard
+     *
+     * @param view used to get the window token (passed in from listener)
+     */
+    private void hideKeyboard(View view) {
+        InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
     }
 }

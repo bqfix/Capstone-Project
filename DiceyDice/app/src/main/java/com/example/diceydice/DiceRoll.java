@@ -40,7 +40,6 @@ public class DiceRoll {
      * @return A pair, with the first value being a string containing each individual roll, and the second being the total.
      */
     public Pair<String, Integer> roll(){
-        //TODO Adjust to handle negative values correctly
         StringBuilder compiledRolls = new StringBuilder("");
         int total = 0;
         ArrayList<String[]> splitFormulaByD =  new ArrayList<>();
