@@ -13,9 +13,13 @@
         <item name="android:background">@drawable/info_circle_background</item>
     </style>
 
-    <style name="header_style">
+    <style name="basic_text_style">
         <item name="android:textColor">@android:color/black</item>
         <item name="android:textSize">20sp</item>
+    </style>
+
+    <style name="header_style" parent="basic_text_style">
+        <item name="android:textStyle">bold</item>
     </style>
 
     <style name="more_button_style">

@@ -41,8 +41,7 @@
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginRight="8dp"
-        android:textColor="@android:color/black"
-        android:textSize="20sp"
+        style="@style/basic_text_style"
         app:layout_constraintEnd_toStartOf="@+id/results_more_button"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/results_header"
@@ -57,14 +56,13 @@
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginRight="8dp"
-        android:textColor="@android:color/black"
         android:textSize="40sp"
-        android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/results_name_tv"
-        tools:text="6" />
+        tools:text="6"
+        style="@style/header_style"/>
 
     <ScrollView
         android:id="@+id/descrip_scrollview"
@@ -87,8 +85,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingBottom="16dp"
-            android:textColor="@android:color/black"
-            android:textSize="20sp"
+            style="@style/basic_text_style"
             tools:text="1 + 1 + 1 + 2 + 1" />
     </ScrollView>
 </android.support.constraint.ConstraintLayout>
