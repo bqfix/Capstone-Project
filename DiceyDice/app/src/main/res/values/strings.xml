@@ -10,7 +10,7 @@
     <!-- MainActivity -->
     <string name="roll_button">Roll</string>
     <string name="favorites_title">Favorites</string>
-    <string name="favorites_button">All Favorites</string>
+    <string name="all_favorites_button">All</string>
 
     <!-- Formula Errors -->
     <string name="invalid_characters">Error: Input contains invalid characters.</string>

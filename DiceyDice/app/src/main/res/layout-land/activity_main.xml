@@ -27,6 +27,15 @@
         android:orientation="vertical"
         app:layout_constraintGuide_percent=".66" />
 
+    <View
+        android:id="@+id/divider_66"
+        style="@style/vertical_divider"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.66"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <FrameLayout
         android:id="@+id/result_container"
         android:layout_width="0dp"
@@ -44,6 +53,16 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         app:layout_constraintGuide_percent=".9" />
+
+    <View
+        android:id="@+id/divider_90"
+        style="@style/horizontal_divider"
+        android:layout_width="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/guideline"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.9" />
 
     <FrameLayout
         android:id="@+id/main_ad_container"

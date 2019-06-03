@@ -53,17 +53,10 @@
 
     <View
         android:id="@+id/edit_favorite_divider"
-        android:layout_width="wrap_content"
-        android:layout_height="1dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginRight="8dp"
+        style="@style/horizontal_divider"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/roll_button"
-        android:background="@android:color/darker_gray"/>
+        app:layout_constraintTop_toBottomOf="@+id/roll_button" />
 
     <TextView
         android:id="@+id/favorites_title"
@@ -90,22 +83,24 @@
         android:layout_marginEnd="8dp"
         android:layout_marginRight="8dp"
         android:layout_marginBottom="8dp"
-        app:layout_constraintBottom_toTopOf="@+id/favorites_button"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/favorites_title" />
+        app:layout_constraintTop_toBottomOf="@+id/favorites_title"
+         />
 
     <Button
         android:id="@+id/favorites_button"
         android:layout_width="wrap_content"
-        android:layout_height="0dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
         android:layout_marginStart="8dp"
         android:layout_marginLeft="8dp"
+        android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginRight="8dp"
-        android:layout_marginBottom="8dp"
-        android:text="@string/favorites_button"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:text="@string/all_favorites_button"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toEndOf="@+id/favorites_title"
+        app:layout_constraintTop_toBottomOf="@+id/roll_button" />
 </android.support.constraint.ConstraintLayout>
