@@ -3,9 +3,12 @@ package com.example.diceydice;
 import android.content.Context;
 import android.support.v4.util.Pair;
 
+import java.util.ArrayList;
 import java.util.Random;
 
 public final class Utils {
+
+    private final static int MAX_DICE_PER_ROLL = 1000;
 
     private Utils() {
     } //Private Constructor to prevent instantiation
@@ -76,9 +79,21 @@ public final class Utils {
                 default : return new Pair<>(false, context.getString(R.string.incorrectly_formatted_section));
             }
         }
-        if (totalDice >= 1000) { //This is to prevent exceptionally large rolls that may lock down the app
+        if (totalDice >= MAX_DICE_PER_ROLL) { //This is to prevent exceptionally large rolls that may lock down the app
             return new Pair<>(false, context.getString(R.string.too_many_dice));
         }
         return new Pair<>(true, context.getString(R.string.no_error));
+    }
+
+    /** Temporary helper method to provide a list of fake data to test RecyclerViews, etc.
+     *
+     * @return a List of DiceRolls
+     */
+    public static ArrayList<DiceRoll> getFakeData(){
+        ArrayList<DiceRoll> diceRolls = new ArrayList<>();
+        for (int i = 0; i < 50; i++){
+            diceRolls.add(new DiceRoll("Standard Die Plus One", "1d6 + 1"));
+        }
+        return diceRolls;
     }
 }

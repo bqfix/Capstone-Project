@@ -4,6 +4,9 @@ import android.content.Context;
 import android.support.v4.util.Pair;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.DividerItemDecoration;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
@@ -11,13 +14,15 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements FavoriteDiceRollAdapter.FavoriteDiceRollClickHandler {
 
     private EditText mCommandInputEditText;
     private Button mRollButton;
     private TextView mResultsNameTextView;
     private TextView mResultsTotalTextView;
     private TextView mResultsDescripTextView;
+    private RecyclerView mFavoriteRecyclerView;
+    private FavoriteDiceRollAdapter mFavoriteDiceRollAdapter;
 
 
     @Override
@@ -26,6 +31,9 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         assignViews();
+
+        setupFavoriteRecyclerView();
+
 
         mCommandInputEditText.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
@@ -62,6 +70,7 @@ public class MainActivity extends AppCompatActivity {
         mResultsNameTextView = findViewById(R.id.results_name_tv);
         mResultsTotalTextView = findViewById(R.id.results_total_tv);
         mResultsDescripTextView = findViewById(R.id.results_descrip_tv);
+        mFavoriteRecyclerView = findViewById(R.id.main_favorite_rv);
     }
 
     /** A helper method to populate the results views with data
@@ -70,7 +79,7 @@ public class MainActivity extends AppCompatActivity {
      */
     private void setDataToResultsViews(DiceRoll diceRoll) {
         Pair<String, Integer> randomRoll = diceRoll.roll(); // Roll the diceRoll once and save results
-        String descrip = diceRoll.getFormula() + " =\n\n" + randomRoll.first;
+        String descrip = diceRoll.getFormula() + " =\n\n" + randomRoll.first; //Create a description that shows the formula and the results of each roll
 
         mResultsNameTextView.setText(diceRoll.getName());
         mResultsTotalTextView.setText(randomRoll.second.toString());
@@ -84,5 +93,27 @@ public class MainActivity extends AppCompatActivity {
     private void hideKeyboard(View view) {
         InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
         imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+    }
+
+    /** Override of FavoriteDiceRoll click method
+     *
+     * @param favoriteDiceRoll the clicked DiceRoll to be used
+     */
+    @Override
+    public void onItemClick(DiceRoll favoriteDiceRoll) {
+        setDataToResultsViews(favoriteDiceRoll);
+    }
+
+    /** Helper method to setup FavoriteRecyclerView, should only be called once in onCreate */
+    private void setupFavoriteRecyclerView(){
+        LinearLayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
+        mFavoriteRecyclerView.setLayoutManager(layoutManager);
+
+        mFavoriteDiceRollAdapter = new FavoriteDiceRollAdapter(this);
+        mFavoriteRecyclerView.setAdapter(mFavoriteDiceRollAdapter);
+
+        mFavoriteRecyclerView.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
+
+        mFavoriteDiceRollAdapter.setFavoriteDiceRolls(Utils.getFakeData()); //TODO This is to be replaced by real data accessed from Firebase
     }
 }

@@ -81,6 +81,7 @@
         app:layout_constraintTop_toBottomOf="@+id/edit_favorite_divider" />
 
     <android.support.v7.widget.RecyclerView
+        android:id="@+id/main_favorite_rv"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginStart="8dp"
