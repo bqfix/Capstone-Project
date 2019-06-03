@@ -1,11 +1,14 @@
 package com.example.diceydice;
 
+import android.content.Intent;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.util.Pair;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.View;
 import android.widget.TextView;
 
 public class FavoriteActivity extends AppCompatActivity implements FavoriteDiceRollAdapter.FavoriteDiceRollClickHandler {
@@ -15,15 +18,25 @@ public class FavoriteActivity extends AppCompatActivity implements FavoriteDiceR
     private TextView mResultsDescripTextView;
     private RecyclerView mRecyclerView;
     private FavoriteDiceRollAdapter mFavoriteDiceRollAdapter;
+    private FloatingActionButton mAddFavoriteFAB;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_favorite);
+        setTitle(R.string.favorites_title);
 
         assignViews();
 
         setupRecyclerView();
+
+        mAddFavoriteFAB.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(FavoriteActivity.this, AddFavoriteActivity.class);
+                startActivity(intent);
+            }
+        });
 
     }
 
@@ -33,6 +46,7 @@ public class FavoriteActivity extends AppCompatActivity implements FavoriteDiceR
         mResultsTotalTextView = findViewById(R.id.results_total_tv);
         mResultsDescripTextView = findViewById(R.id.results_descrip_tv);
         mRecyclerView = findViewById(R.id.favorite_rv);
+        mAddFavoriteFAB = findViewById(R.id.add_favorite_fab);
     }
 
     /** Override of FavoriteDiceRoll click method

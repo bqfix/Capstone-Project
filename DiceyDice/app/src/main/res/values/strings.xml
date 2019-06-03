@@ -12,6 +12,19 @@
     <string name="favorites_title">Favorites</string>
     <string name="all_favorites_button">All</string>
 
+    <!-- FavoriteActivity -->
+    <string name="favorite_activity_title">Favorites</string>
+
+    <!-- AddFavoriteActivity -->
+    <string name="add_favorite_activity_title">Add Favorite</string>
+    <string name="edit_favorite_activity_title">Editing Favorite</string>
+
+    <!-- DetailActivity -->
+    <string name="detail_activity_title">Probabilities</string>
+
+    <!-- HistoryActivity -->
+    <string name="history_activity_title">Roll History</string>
+
     <!-- Formula Errors -->
     <string name="invalid_characters">Error: Input contains invalid characters.</string>
     <string name="incorrectly_formatted_section">Error: A section is incorrectly formatted. </string>
