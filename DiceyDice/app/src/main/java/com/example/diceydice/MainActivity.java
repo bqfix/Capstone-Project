@@ -1,6 +1,7 @@
 package com.example.diceydice;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v4.util.Pair;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -23,6 +24,7 @@ public class MainActivity extends AppCompatActivity implements FavoriteDiceRollA
     private TextView mResultsDescripTextView;
     private RecyclerView mFavoriteRecyclerView;
     private FavoriteDiceRollAdapter mFavoriteDiceRollAdapter;
+    private Button mAllFavoritesButton;
 
 
     @Override
@@ -32,34 +34,9 @@ public class MainActivity extends AppCompatActivity implements FavoriteDiceRollA
 
         assignViews();
 
+        setListeners();
+
         setupFavoriteRecyclerView();
-
-
-        mCommandInputEditText.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-                if (!hasFocus){
-                    hideKeyboard(v);
-                }
-            }
-        });
-
-        mRollButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String formula = mCommandInputEditText.getText().toString();
-                Pair<Boolean, String> validAndErrorPair = Utils.isValidDiceRoll(MainActivity.this, formula); //Get a boolean of whether the
-                if (validAndErrorPair.first){ //If formula is okay, make a new nameless DiceRoll for display in the results text
-                    DiceRoll diceRoll = new DiceRoll(formula);
-                    setDataToResultsViews(diceRoll);
-                    hideKeyboard(v);
-                }
-                else {
-                    Toast.makeText(MainActivity.this, validAndErrorPair.second, Toast.LENGTH_SHORT).show();
-                }
-            }
-        });
-
 
     }
 
@@ -71,6 +48,7 @@ public class MainActivity extends AppCompatActivity implements FavoriteDiceRollA
         mResultsTotalTextView = findViewById(R.id.results_total_tv);
         mResultsDescripTextView = findViewById(R.id.results_descrip_tv);
         mFavoriteRecyclerView = findViewById(R.id.main_favorite_rv);
+        mAllFavoritesButton = findViewById(R.id.favorites_button);
     }
 
     /** A helper method to populate the results views with data
@@ -115,5 +93,41 @@ public class MainActivity extends AppCompatActivity implements FavoriteDiceRollA
         mFavoriteRecyclerView.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
 
         mFavoriteDiceRollAdapter.setFavoriteDiceRolls(Utils.getFakeData()); //TODO This is to be replaced by real data accessed from Firebase
+    }
+
+    /** Helper method to set listeners to various views, should only be called once in onCreate */
+    private void setListeners(){
+        mAllFavoritesButton.setOnClickListener(new View.OnClickListener() { //Click listener to launch FavoritesActivity
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, FavoriteActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        mCommandInputEditText.setOnFocusChangeListener(new View.OnFocusChangeListener() { //FocusChange listener to minimize keyboard when clicking outside of EditText
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (!hasFocus){
+                    hideKeyboard(v);
+                }
+            }
+        });
+
+        mRollButton.setOnClickListener(new View.OnClickListener() { //Click listener to check the validity of a roll, and execute it if it is acceptable
+            @Override
+            public void onClick(View v) {
+                String formula = mCommandInputEditText.getText().toString();
+                Pair<Boolean, String> validAndErrorPair = Utils.isValidDiceRoll(MainActivity.this, formula); //Get a boolean of whether the
+                if (validAndErrorPair.first){ //If formula is okay, make a new nameless DiceRoll for display in the results text
+                    DiceRoll diceRoll = new DiceRoll(formula);
+                    setDataToResultsViews(diceRoll);
+                    hideKeyboard(v);
+                }
+                else {
+                    Toast.makeText(MainActivity.this, validAndErrorPair.second, Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
     }
 }
