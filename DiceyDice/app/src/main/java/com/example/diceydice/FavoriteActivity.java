@@ -48,17 +48,24 @@ public class FavoriteActivity extends AppCompatActivity implements FavoriteDiceR
         mAddFavoriteFAB = findViewById(R.id.add_favorite_fab);
     }
 
+    /** A helper method to populate the results views with data
+     *
+     * @param diceResults to populate the views from
+     */
+    private void setDataToResultsViews(DiceResults diceResults) {
+        mResultsNameTextView.setText(diceResults.getName());
+        mResultsTotalTextView.setText(String.valueOf(diceResults.getTotal()));
+        mResultsDescripTextView.setText(diceResults.getDescrip());
+    }
+
     /** Override of FavoriteDiceRoll click method
      *
      * @param favoriteDiceRoll the clicked DiceRoll to be used
      */
     @Override
     public void onItemClick(DiceRoll favoriteDiceRoll) {
-        DiceResults diceResults = favoriteDiceRoll.roll(); // Roll the diceRoll once and save results //TODO this must be added to History
-
-        mResultsNameTextView.setText(favoriteDiceRoll.getName());
-        mResultsTotalTextView.setText(String.valueOf(diceResults.getTotal()));
-        mResultsDescripTextView.setText(diceResults.getDescrip());
+        DiceResults diceResults = favoriteDiceRoll.roll(); // Roll the diceRoll once and save results
+        setDataToResultsViews(diceResults);
     }
 
     /** Helper method to setup RecyclerView, should only be called once in onCreate */

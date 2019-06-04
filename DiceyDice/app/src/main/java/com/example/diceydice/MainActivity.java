@@ -53,12 +53,10 @@ public class MainActivity extends AppCompatActivity implements FavoriteDiceRollA
 
     /** A helper method to populate the results views with data
      *
-     * @param diceRoll to populate the views from
+     * @param diceResults to populate the views from
      */
-    private void setDataToResultsViews(DiceRoll diceRoll) {
-        DiceResults diceResults = diceRoll.roll(); // Roll the diceRoll once and save results //TODO this must be added to History
-
-        mResultsNameTextView.setText(diceRoll.getName());
+    private void setDataToResultsViews(DiceResults diceResults) {
+        mResultsNameTextView.setText(diceResults.getName());
         mResultsTotalTextView.setText(String.valueOf(diceResults.getTotal()));
         mResultsDescripTextView.setText(diceResults.getDescrip());
     }
@@ -78,7 +76,8 @@ public class MainActivity extends AppCompatActivity implements FavoriteDiceRollA
      */
     @Override
     public void onItemClick(DiceRoll favoriteDiceRoll) {
-        setDataToResultsViews(favoriteDiceRoll);
+        DiceResults diceResults = favoriteDiceRoll.roll();
+        setDataToResultsViews(diceResults);
     }
 
     /** Helper method to setup FavoriteRecyclerView, should only be called once in onCreate */
@@ -120,7 +119,8 @@ public class MainActivity extends AppCompatActivity implements FavoriteDiceRollA
                 Pair<Boolean, String> validAndErrorPair = Utils.isValidDiceRoll(MainActivity.this, formula); //Get a boolean of whether the
                 if (validAndErrorPair.first){ //If formula is okay, make a new nameless DiceRoll for display in the results text
                     DiceRoll diceRoll = new DiceRoll(formula);
-                    setDataToResultsViews(diceRoll);
+                    DiceResults diceResults = diceRoll.roll();
+                    setDataToResultsViews(diceResults);
                     hideKeyboard(v);
                 }
                 else {
