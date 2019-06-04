@@ -2,7 +2,6 @@ package com.example.diceydice;
 
 import android.content.Intent;
 import android.support.design.widget.FloatingActionButton;
-import android.support.v4.util.Pair;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.DividerItemDecoration;
@@ -55,12 +54,11 @@ public class FavoriteActivity extends AppCompatActivity implements FavoriteDiceR
      */
     @Override
     public void onItemClick(DiceRoll favoriteDiceRoll) {
-        Pair<String, Integer> randomRoll = favoriteDiceRoll.roll(); // Roll the diceRoll once and save results
-        String descrip = favoriteDiceRoll.getFormula() + " =\n\n" + randomRoll.first; //Create a description that shows the formula and the results of each roll
+        DiceResults diceResults = favoriteDiceRoll.roll(); // Roll the diceRoll once and save results //TODO this must be added to History
 
         mResultsNameTextView.setText(favoriteDiceRoll.getName());
-        mResultsTotalTextView.setText(randomRoll.second.toString());
-        mResultsDescripTextView.setText(descrip);
+        mResultsTotalTextView.setText(String.valueOf(diceResults.getTotal()));
+        mResultsDescripTextView.setText(diceResults.getDescrip());
     }
 
     /** Helper method to setup RecyclerView, should only be called once in onCreate */

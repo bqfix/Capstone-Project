@@ -23,23 +23,23 @@ public class DiceRoll {
         return mName;
     }
 
-    public void setName(String mName) {
-        this.mName = mName;
+    public void setName(String name) {
+        mName = name;
     }
 
     public String getFormula() {
         return mFormula;
     }
 
-    public void setFormula(String mFormula) {
-        this.mFormula = mFormula;
+    public void setFormula(String formula) {
+        mFormula = formula;
     }
 
     /** A method that randomizes numbers based off of the DiceRoll's formula
      *
      * @return A pair, with the first value being a string containing each individual roll, and the second being the total.
      */
-    public Pair<String, Integer> roll(){ //TODO Move this to an AsyncTask to avoid large rolls locking the UI thread
+    public DiceResults roll(){ //TODO Move this to an AsyncTask to avoid large rolls locking the UI thread
         StringBuilder compiledRolls = new StringBuilder("");
         int total = 0;
         ArrayList<String[]> splitFormulaByD =  new ArrayList<>();
@@ -80,7 +80,10 @@ public class DiceRoll {
                 }
             }
         }
-        return new Pair<>(compiledRolls.toString(), total);
+        //Create a description of the formula, along with the compiled rolls
+        String descrip = mFormula + "=\n\n" + compiledRolls.toString();
+
+        return new DiceResults(mName, descrip, total);
     }
 
     /** A helper method to create an ArrayList containing all the plusses and minuses in the formula, for later cross-referencing

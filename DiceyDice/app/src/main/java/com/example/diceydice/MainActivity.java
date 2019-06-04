@@ -56,12 +56,11 @@ public class MainActivity extends AppCompatActivity implements FavoriteDiceRollA
      * @param diceRoll to populate the views from
      */
     private void setDataToResultsViews(DiceRoll diceRoll) {
-        Pair<String, Integer> randomRoll = diceRoll.roll(); // Roll the diceRoll once and save results
-        String descrip = diceRoll.getFormula() + " =\n\n" + randomRoll.first; //Create a description that shows the formula and the results of each roll
+        DiceResults diceResults = diceRoll.roll(); // Roll the diceRoll once and save results //TODO this must be added to History
 
         mResultsNameTextView.setText(diceRoll.getName());
-        mResultsTotalTextView.setText(randomRoll.second.toString());
-        mResultsDescripTextView.setText(descrip);
+        mResultsTotalTextView.setText(String.valueOf(diceResults.getTotal()));
+        mResultsDescripTextView.setText(diceResults.getDescrip());
     }
 
     /** A helper method to hide the soft keyboard
