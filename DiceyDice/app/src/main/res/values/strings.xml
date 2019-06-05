@@ -24,6 +24,9 @@
     <!-- AddFavoriteActivity -->
     <string name="add_favorite_activity_title">Add Favorite</string>
     <string name="edit_favorite_activity_title">Editing Favorite</string>
+    <string name="formula_header">Formula</string>
+    <string name="input_name_hint">Input Name.</string>
+    <string name="name_header">Name</string>
 
     <!-- DetailActivity -->
     <string name="detail_activity_title">Probabilities</string>
