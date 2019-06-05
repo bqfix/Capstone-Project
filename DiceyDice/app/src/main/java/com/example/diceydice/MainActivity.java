@@ -40,6 +40,12 @@ public class MainActivity extends AppCompatActivity implements FavoriteDiceRollA
 
     }
 
+    @Override
+    protected void onStart() {
+        super.onStart();
+        loadMostRecentDiceResults();
+    }
+
     /** A helper method that assigns all of the views to their initial values in onCreate */
     private void assignViews(){
         mCommandInputEditText = findViewById(R.id.command_input_et);
@@ -128,5 +134,14 @@ public class MainActivity extends AppCompatActivity implements FavoriteDiceRollA
                 }
             }
         });
+    }
+
+    /** A helper method to load the most recent dice results into the results views.
+     * Called in onStart, as it is cheaper than using a listener, since any new rolls occuring while this is the foreground activity will be updated directly.
+     */
+    private void loadMostRecentDiceResults(){
+        DiceResults diceResults = Utils.retrieveLatestDiceResults(this);
+
+        setDataToResultsViews(diceResults);
     }
 }
