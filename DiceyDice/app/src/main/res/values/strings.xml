@@ -6,6 +6,12 @@
     <string name="more_button">More</string>
     <string name="results_header">Most Recent Roll</string>
     <string name="command_input_hint">Input a command.</string>
+    <!-- SharedPref Keys -->
+    <string name="shared_preferences_key">shared_preferences</string>
+    <string name="dice_results_name_key">dice_results_name</string>
+    <string name="dice_results_descrip_key">dice_results_descrip</string>
+    <string name="dice_results_total_key">dice_results_total</string>
+    <string name="dice_results_date_key">dice_results_date</string>
 
     <!-- MainActivity -->
     <string name="roll_button">Roll</string>

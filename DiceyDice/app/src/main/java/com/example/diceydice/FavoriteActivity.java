@@ -64,7 +64,7 @@ public class FavoriteActivity extends AppCompatActivity implements FavoriteDiceR
      */
     @Override
     public void onItemClick(DiceRoll favoriteDiceRoll) {
-        DiceResults diceResults = favoriteDiceRoll.roll(); // Roll the diceRoll once and save results
+        DiceResults diceResults = favoriteDiceRoll.roll(this); // Roll the diceRoll once and save results
         setDataToResultsViews(diceResults);
     }
 

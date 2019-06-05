@@ -76,7 +76,7 @@ public class MainActivity extends AppCompatActivity implements FavoriteDiceRollA
      */
     @Override
     public void onItemClick(DiceRoll favoriteDiceRoll) {
-        DiceResults diceResults = favoriteDiceRoll.roll();
+        DiceResults diceResults = favoriteDiceRoll.roll(this);
         setDataToResultsViews(diceResults);
     }
 
@@ -119,7 +119,7 @@ public class MainActivity extends AppCompatActivity implements FavoriteDiceRollA
                 Pair<Boolean, String> validAndErrorPair = Utils.isValidDiceRoll(MainActivity.this, formula); //Get a boolean of whether the
                 if (validAndErrorPair.first){ //If formula is okay, make a new nameless DiceRoll for display in the results text
                     DiceRoll diceRoll = new DiceRoll(formula);
-                    DiceResults diceResults = diceRoll.roll();
+                    DiceResults diceResults = diceRoll.roll(MainActivity.this);
                     setDataToResultsViews(diceResults);
                     hideKeyboard(v);
                 }

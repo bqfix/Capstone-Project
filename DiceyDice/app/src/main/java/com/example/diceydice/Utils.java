@@ -1,6 +1,7 @@
 package com.example.diceydice;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.support.v4.util.Pair;
 
 import java.util.ArrayList;
@@ -95,5 +96,21 @@ public final class Utils {
             diceRolls.add(new DiceRoll("Standard Die Plus One", "1d6 + 1"));
         }
         return diceRolls;
+    }
+
+    /** A helper method to read SharedPrefs and return the latest DiceResults from it
+     *
+     * @param context used to access SharedPrefs
+     * @return the most recent DiceResults
+     */
+    public static DiceResults retrieveLatestDiceResults(Context context){
+        SharedPreferences sharedPreferences = context.getSharedPreferences(context.getString(R.string.shared_preferences_key), Context.MODE_PRIVATE);
+
+        String name = sharedPreferences.getString(context.getString(R.string.dice_results_name_key), "");
+        String descrip = sharedPreferences.getString(context.getString(R.string.dice_results_descrip_key), "");
+        int total = sharedPreferences.getInt(context.getString(R.string.dice_results_total_key), 0);
+        long date = sharedPreferences.getLong(context.getString(R.string.dice_results_date_key), 0);
+
+        return new DiceResults(name, descrip, total, date);
     }
 }

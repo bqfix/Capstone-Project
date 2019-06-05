@@ -1,5 +1,6 @@
 package com.example.diceydice;
 
+import android.content.Context;
 import android.support.v4.util.Pair;
 
 import java.util.ArrayList;
@@ -35,11 +36,12 @@ public class DiceRoll {
         mFormula = formula;
     }
 
-    /** A method that randomizes numbers based off of the DiceRoll's formula
+    /** A method that randomizes numbers based off of the DiceRoll's formula.
      *
+     * @param context used for saving the results
      * @return A pair, with the first value being a string containing each individual roll, and the second being the total.
      */
-    public DiceResults roll(){ //TODO Move this to an AsyncTask to avoid large rolls locking the UI thread
+    public DiceResults roll(Context context){ //TODO Move this to an AsyncTask to avoid large rolls locking the UI thread
         StringBuilder compiledRolls = new StringBuilder("");
         int total = 0;
         ArrayList<String[]> splitFormulaByD =  new ArrayList<>();
@@ -80,10 +82,16 @@ public class DiceRoll {
                 }
             }
         }
+
         //Create a description of the formula, along with the compiled rolls
         String descrip = mFormula + "=\n\n" + compiledRolls.toString();
 
-        return new DiceResults(mName, descrip, total);
+        //Create a new DiceResults object and save it
+        DiceResults diceResults = new DiceResults(mName, descrip, total);
+
+        diceResults.save(context);
+
+        return diceResults;
     }
 
     /** A helper method to create an ArrayList containing all the plusses and minuses in the formula, for later cross-referencing
