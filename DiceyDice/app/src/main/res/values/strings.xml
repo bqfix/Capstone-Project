@@ -27,6 +27,7 @@
     <string name="formula_header">Formula</string>
     <string name="input_name_hint">Input Name.</string>
     <string name="name_header">Name</string>
+    <string name="finish_action">Done</string>
 
     <!-- DetailActivity -->
     <string name="detail_activity_title">Probabilities</string>
