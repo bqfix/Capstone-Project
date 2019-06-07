@@ -90,12 +90,24 @@ public final class Utils {
      *
      * @return a List of DiceRolls
      */
-    public static ArrayList<DiceRoll> getFakeData(){
+    public static ArrayList<DiceRoll> getDiceRollFakeData(){
         ArrayList<DiceRoll> diceRolls = new ArrayList<>();
         for (int i = 0; i < 50; i++){
             diceRolls.add(new DiceRoll("Standard Die Plus One", "1d6 + 1"));
         }
         return diceRolls;
+    }
+
+    /** Temporary helper method to provide a list of fake DiceResults data to test RecyclerViews, etc.
+     *
+     * @return a List of DiceResults
+     */
+    public static ArrayList<DiceResults> getDiceResultsFakeData(){
+        ArrayList<DiceResults> diceResults = new ArrayList<>();
+        for (int i = 0; i < 50; i++){
+            diceResults.add(new DiceResults("Standard Roll","1d6 + 1 = +(6) + (1)", 7));
+        }
+        return diceResults;
     }
 
     /** A helper method to read SharedPrefs and return the latest DiceResults from it

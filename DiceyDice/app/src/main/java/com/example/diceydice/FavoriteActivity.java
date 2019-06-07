@@ -84,7 +84,7 @@ public class FavoriteActivity extends AppCompatActivity implements FavoriteDiceR
 
         mRecyclerView.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
 
-        mFavoriteDiceRollAdapter.setFavoriteDiceRolls(Utils.getFakeData()); //TODO This is to be replaced by real data accessed from Firebase
+        mFavoriteDiceRollAdapter.setFavoriteDiceRolls(Utils.getDiceRollFakeData()); //TODO This is to be replaced by real data accessed from Firebase
     }
 
     /** A helper method to load the most recent dice results into the results views.

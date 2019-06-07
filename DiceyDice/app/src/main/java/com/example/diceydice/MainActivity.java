@@ -96,7 +96,7 @@ public class MainActivity extends AppCompatActivity implements FavoriteDiceRollA
 
         mFavoriteRecyclerView.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
 
-        mFavoriteDiceRollAdapter.setFavoriteDiceRolls(Utils.getFakeData()); //TODO This is to be replaced by real data accessed from Firebase
+        mFavoriteDiceRollAdapter.setFavoriteDiceRolls(Utils.getDiceRollFakeData()); //TODO This is to be replaced by real data accessed from Firebase
     }
 
     /** Helper method to set listeners to various views, should only be called once in onCreate */
