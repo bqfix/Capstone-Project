@@ -53,6 +53,10 @@ public class DiceResults {
         return mDateCreated;
     }
 
+    public Date getFormattedDateCreated(){
+        return new Date(mDateCreated * 1000);
+    }
+
     /** A helper method used to save the Results to both SharedPreferences (as the latest roll) and History
      *
      * @param context used to save the results
