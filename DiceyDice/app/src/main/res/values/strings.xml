@@ -4,8 +4,9 @@
     <!-- Shared -->
     <string name="info_button">Info</string>
     <string name="more_button">More</string>
-    <string name="results_header">Most Recent Roll</string>
+    <string name="results_header">Results</string>
     <string name="command_input_hint">Input a command.</string>
+    <string name="history_menu_action">History</string>
     <!-- SharedPref Keys -->
     <string name="shared_preferences_key">shared_preferences</string>
     <string name="dice_results_name_key">dice_results_name</string>

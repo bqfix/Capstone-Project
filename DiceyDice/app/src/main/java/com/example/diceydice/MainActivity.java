@@ -8,6 +8,9 @@ import android.os.Bundle;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
@@ -46,8 +49,10 @@ public class MainActivity extends AppCompatActivity implements FavoriteDiceRollA
         loadMostRecentDiceResults();
     }
 
-    /** A helper method that assigns all of the views to their initial values in onCreate */
-    private void assignViews(){
+    /**
+     * A helper method that assigns all of the views to their initial values in onCreate
+     */
+    private void assignViews() {
         mCommandInputEditText = findViewById(R.id.command_input_et);
         mRollButton = findViewById(R.id.roll_button);
         mResultsNameTextView = findViewById(R.id.results_name_tv);
@@ -57,7 +62,8 @@ public class MainActivity extends AppCompatActivity implements FavoriteDiceRollA
         mAllFavoritesButton = findViewById(R.id.favorites_button);
     }
 
-    /** A helper method to populate the results views with data
+    /**
+     * A helper method to populate the results views with data
      *
      * @param diceResults to populate the views from
      */
@@ -67,7 +73,8 @@ public class MainActivity extends AppCompatActivity implements FavoriteDiceRollA
         mResultsDescripTextView.setText(diceResults.getDescrip());
     }
 
-    /** A helper method to hide the soft keyboard
+    /**
+     * A helper method to hide the soft keyboard
      *
      * @param view used to get the window token (passed in from listener)
      */
@@ -76,7 +83,8 @@ public class MainActivity extends AppCompatActivity implements FavoriteDiceRollA
         imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
     }
 
-    /** Override of FavoriteDiceRoll click method
+    /**
+     * Override of FavoriteDiceRoll click method
      *
      * @param favoriteDiceRoll the clicked DiceRoll to be used
      */
@@ -86,8 +94,10 @@ public class MainActivity extends AppCompatActivity implements FavoriteDiceRollA
         setDataToResultsViews(diceResults);
     }
 
-    /** Helper method to setup FavoriteRecyclerView, should only be called once in onCreate */
-    private void setupFavoriteRecyclerView(){
+    /**
+     * Helper method to setup FavoriteRecyclerView, should only be called once in onCreate
+     */
+    private void setupFavoriteRecyclerView() {
         LinearLayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
         mFavoriteRecyclerView.setLayoutManager(layoutManager);
 
@@ -99,8 +109,10 @@ public class MainActivity extends AppCompatActivity implements FavoriteDiceRollA
         mFavoriteDiceRollAdapter.setFavoriteDiceRolls(Utils.getDiceRollFakeData()); //TODO This is to be replaced by real data accessed from Firebase
     }
 
-    /** Helper method to set listeners to various views, should only be called once in onCreate */
-    private void setListeners(){
+    /**
+     * Helper method to set listeners to various views, should only be called once in onCreate
+     */
+    private void setListeners() {
         mAllFavoritesButton.setOnClickListener(new View.OnClickListener() { //Click listener to launch FavoritesActivity
             @Override
             public void onClick(View v) {
@@ -112,7 +124,7 @@ public class MainActivity extends AppCompatActivity implements FavoriteDiceRollA
         mCommandInputEditText.setOnFocusChangeListener(new View.OnFocusChangeListener() { //FocusChange listener to minimize keyboard when clicking outside of EditText
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
-                if (!hasFocus){
+                if (!hasFocus) {
                     hideKeyboard(v);
                 }
             }
@@ -123,25 +135,44 @@ public class MainActivity extends AppCompatActivity implements FavoriteDiceRollA
             public void onClick(View v) {
                 String formula = mCommandInputEditText.getText().toString();
                 Pair<Boolean, String> validAndErrorPair = Utils.isValidDiceRoll(MainActivity.this, formula); //Get a boolean of whether the
-                if (validAndErrorPair.first){ //If formula is okay, make a new nameless DiceRoll for display in the results text
+                if (validAndErrorPair.first) { //If formula is okay, make a new nameless DiceRoll for display in the results text
                     DiceRoll diceRoll = new DiceRoll(formula);
                     DiceResults diceResults = diceRoll.roll(MainActivity.this);
                     setDataToResultsViews(diceResults);
                     hideKeyboard(v);
-                }
-                else {
+                } else {
                     Toast.makeText(MainActivity.this, validAndErrorPair.second, Toast.LENGTH_SHORT).show();
                 }
             }
         });
     }
 
-    /** A helper method to load the most recent dice results into the results views.
+    /**
+     * A helper method to load the most recent dice results into the results views.
      * Called in onStart, as it is cheaper than using a listener, since any new rolls occuring while this is the foreground activity will be updated directly.
      */
-    private void loadMostRecentDiceResults(){
+    private void loadMostRecentDiceResults() {
         DiceResults diceResults = Utils.retrieveLatestDiceResults(this);
 
         setDataToResultsViews(diceResults);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = this.getMenuInflater();
+        inflater.inflate(R.menu.main_activity_menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case (R.id.action_history):
+                Intent intent = new Intent(MainActivity.this, HistoryActivity.class);
+                startActivity(intent);
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 }

@@ -1,10 +1,14 @@
 package com.example.diceydice;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.widget.TextView;
 
 public class HistoryActivity extends AppCompatActivity implements HistoryResultsAdapter.HistoryResultsClickHandler {
@@ -38,6 +42,7 @@ public class HistoryActivity extends AppCompatActivity implements HistoryResults
         mResultsNameTextView = findViewById(R.id.results_name_tv);
         mResultsTotalTextView = findViewById(R.id.results_total_tv);
         mResultsDescripTextView = findViewById(R.id.results_descrip_tv);
+        mHistoryRecyclerView = findViewById(R.id.history_rv);
     }
 
     /** A helper method to populate the results views with data
