@@ -7,6 +7,7 @@
     <string name="results_header">Results</string>
     <string name="command_input_hint">Input a command.</string>
     <string name="history_menu_action">History</string>
+    <string name="formula_edittext_allowed_digits">0123456789 +-</string>
     <!-- SharedPref Keys -->
     <string name="shared_preferences_key">shared_preferences</string>
     <string name="dice_results_name_key">dice_results_name</string>
@@ -26,7 +27,7 @@
     <string name="add_favorite_activity_title">Add Favorite</string>
     <string name="edit_favorite_activity_title">Editing Favorite</string>
     <string name="formula_header">Formula</string>
-    <string name="input_name_hint">Input Name.</string>
+    <string name="input_name_hint">Input name of new Favorite.</string>
     <string name="name_header">Name</string>
     <string name="finish_action">Done</string>
 

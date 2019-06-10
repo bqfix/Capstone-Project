@@ -19,6 +19,7 @@
         android:ems="10"
         android:inputType="textPersonName"
         android:hint="@string/command_input_hint"
+        android:digits="@string/formula_edittext_allowed_digits"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
