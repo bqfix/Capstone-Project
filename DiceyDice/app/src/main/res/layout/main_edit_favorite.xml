@@ -41,7 +41,7 @@
         />
 
     <ImageButton
-        android:id="@+id/main_info_button"
+        android:id="@+id/main_help_button"
         style="@style/info_button_style"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

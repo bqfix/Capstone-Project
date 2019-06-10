@@ -1,10 +1,12 @@
 package com.example.diceydice;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
-import android.support.v4.util.Pair;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v4.util.Pair;
+import android.support.v7.app.AlertDialog;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -15,6 +17,7 @@ import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -28,6 +31,7 @@ public class MainActivity extends AppCompatActivity implements FavoriteDiceRollA
     private RecyclerView mFavoriteRecyclerView;
     private FavoriteDiceRollAdapter mFavoriteDiceRollAdapter;
     private Button mAllFavoritesButton;
+    private ImageButton mHelpButton;
 
 
     @Override
@@ -60,6 +64,7 @@ public class MainActivity extends AppCompatActivity implements FavoriteDiceRollA
         mResultsDescripTextView = findViewById(R.id.results_descrip_tv);
         mFavoriteRecyclerView = findViewById(R.id.main_favorite_rv);
         mAllFavoritesButton = findViewById(R.id.favorites_button);
+        mHelpButton = findViewById(R.id.main_help_button);
     }
 
     /**
@@ -143,6 +148,22 @@ public class MainActivity extends AppCompatActivity implements FavoriteDiceRollA
                 } else {
                     Toast.makeText(MainActivity.this, validAndErrorPair.second, Toast.LENGTH_SHORT).show();
                 }
+            }
+        });
+
+        mHelpButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+                builder.setPositiveButton(R.string.dialog_positive_button, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        //No special action needed, simply dismisses the dialog.
+                    }
+                })
+                        .setMessage(R.string.help_formula_advice)
+                        .setTitle(R.string.help_header);
+                builder.show();
             }
         });
     }

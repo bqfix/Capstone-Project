@@ -21,6 +21,7 @@
     <string name="roll_button">Roll</string>
     <string name="favorites_title">Favorites</string>
     <string name="all_favorites_button">All</string>
+    <string name="dialog_positive_button">Got it!</string>
 
     <!-- FavoriteActivity -->
     <string name="favorite_activity_title">Favorites</string>
