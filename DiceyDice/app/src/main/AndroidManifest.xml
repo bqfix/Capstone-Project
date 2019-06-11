@@ -17,7 +17,7 @@
             android:parentActivityName=".MainActivity"/>
         <activity android:name=".DetailActivity" />
         <activity android:name=".MainActivity"
-            android:windowSoftInputMode="adjustNothing">
+            android:windowSoftInputMode="stateAlwaysHidden|adjustNothing">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
