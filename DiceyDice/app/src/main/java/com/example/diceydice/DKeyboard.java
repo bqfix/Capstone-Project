@@ -36,7 +36,7 @@ public class DKeyboard extends ConstraintLayout implements View.OnClickListener 
         init(context);
     }
 
-    private void init(Context context){
+    private void init(Context context) {
         LayoutInflater.from(context).inflate(R.layout.d_keyboard, this, true);
 
         //Assign view
@@ -50,11 +50,11 @@ public class DKeyboard extends ConstraintLayout implements View.OnClickListener 
         mEightButton = (Button) findViewById(R.id.eight_button);
         mNineButton = (Button) findViewById(R.id.nine_button);
         mZeroButton = (Button) findViewById(R.id.zero_button);
-        mPlusButton  = (Button) findViewById(R.id.plus_button);
-        mMinusButton  = (Button) findViewById(R.id.minus_button);
+        mPlusButton = (Button) findViewById(R.id.plus_button);
+        mMinusButton = (Button) findViewById(R.id.minus_button);
         mDButton = (Button) findViewById(R.id.d_button);
-        mDeleteButton  = (Button) findViewById(R.id.delete_button);
-        mEnterButton  = (Button) findViewById(R.id.enter_button);
+        mDeleteButton = (Button) findViewById(R.id.delete_button);
+        mEnterButton = (Button) findViewById(R.id.enter_button);
 
         //Assign clicklisteners
         mOneButton.setOnClickListener(this);
@@ -87,7 +87,6 @@ public class DKeyboard extends ConstraintLayout implements View.OnClickListener 
         keyValues.put(R.id.plus_button, "+");
         keyValues.put(R.id.minus_button, "-");
         keyValues.put(R.id.d_button, "d");
-        keyValues.put(R.id.enter_button, "\n");
     }
 
     @Override
@@ -95,21 +94,29 @@ public class DKeyboard extends ConstraintLayout implements View.OnClickListener 
         if (mInputConnection == null) return;
 
         int viewId = v.getId();
-        if(viewId == R.id.delete_button) { //Special delete logic
-            CharSequence selectedText = mInputConnection.getSelectedText(0);
+        switch (viewId) {
+            case (R.id.delete_button): { //Special delete logic
+                CharSequence selectedText = mInputConnection.getSelectedText(0);
 
-            if (TextUtils.isEmpty(selectedText)){ //If not highlighted, delete 1 before, 0 after
-                mInputConnection.deleteSurroundingText(1,0);
-            } else { //Simply replace highlighted text with empty string
-                mInputConnection.commitText("", 1);
+                if (TextUtils.isEmpty(selectedText)) { //If not highlighted, delete 1 before, 0 after
+                    mInputConnection.deleteSurroundingText(1, 0);
+                } else { //Simply replace highlighted text with empty string
+                    mInputConnection.commitText("", 1);
+                }
+                break;
             }
-        } else { //Other buttons simply append the value of the button, accessed from keyValues
-            String value = keyValues.get(viewId);
-            mInputConnection.commitText(value, 1);
+            case(R.id.enter_button) : { //Special enter logic
+                DKeyboard.this.setVisibility(View.GONE);
+                break;
+            }
+            default : { //Other buttons simply append the value of the button, accessed from keyValues
+                String value = keyValues.get(viewId);
+                mInputConnection.commitText(value, 1);
+            }
         }
     }
 
-    public void setInputConnection(InputConnection inputConnection){
+    public void setInputConnection(InputConnection inputConnection) {
         mInputConnection = inputConnection;
     }
 }
