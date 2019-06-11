@@ -10,10 +10,10 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity android:name=".AddFavoriteActivity"
-            android:parentActivityName=".FavoriteActivity"/>
+            android:parentActivityName=".FavoriteActivity"
+            android:windowSoftInputMode="stateAlwaysHidden|adjustNothing" />
         <activity android:name=".FavoriteActivity"
-            android:parentActivityName=".MainActivity"
-            android:windowSoftInputMode="stateAlwaysHidden|adjustNothing"/>
+            android:parentActivityName=".MainActivity" />
         <activity android:name=".HistoryActivity"
             android:parentActivityName=".MainActivity"/>
         <activity android:name=".DetailActivity" />

@@ -108,7 +108,7 @@ public class AddFavoriteActivity extends AppCompatActivity {
      * Helper method to set listeners to various views, should only be called once in onCreate
      */
     private void setListeners() {
-        mNameEditText.setOnFocusChangeListener(new View.OnFocusChangeListener() { //FocusChange listener to minimize keyboard when clicking outside of EditText
+        mNameEditText.setOnFocusChangeListener(new View.OnFocusChangeListener() { //FocusChange listener to minimize keyboard when clicking outside of NameEditText
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
                 hideSystemKeyboard(v);
