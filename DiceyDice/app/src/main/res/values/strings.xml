@@ -46,4 +46,21 @@
     <string name="too_many_dice">Error: Each dice roll must have less than 1000 dice.</string>
     <string name="no_error">No errors.</string>
 
+    <!-- Custom Keyboard -->
+    <string name="one_button">1</string>
+    <string name="two_button">2</string>
+    <string name="three_button">3</string>
+    <string name="four_button">4</string>
+    <string name="five_button">5</string>
+    <string name="six_button">6</string>
+    <string name="seven_button">7</string>
+    <string name="eight_button">8</string>
+    <string name="nine_button">9</string>
+    <string name="zero_button">0</string>
+    <string name="delete_button">Delete</string>
+    <string name="enter_button">Enter</string>
+    <string name="d_button">d</string>
+    <string name="plus_button">+</string>
+    <string name="minus_button">-</string>
+
 </resources>
