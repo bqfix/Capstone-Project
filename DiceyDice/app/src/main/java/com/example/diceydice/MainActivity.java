@@ -11,7 +11,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.text.InputType;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -97,12 +96,16 @@ public class MainActivity extends AppCompatActivity implements FavoriteDiceRollA
         imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
     }
 
-    /** A helper method to show the custom keyboard */
+    /**
+     * A helper method to show the custom keyboard
+     */
     private void showCustomKeyboard() { //TODO Add animation to make appear/disappear less jarring
         mDKeyboard.setVisibility(View.VISIBLE);
     }
 
-    /** A helper method to hide the custom keyboard */
+    /**
+     * A helper method to hide the custom keyboard
+     */
     private void hideCustomKeyboard() {
         mDKeyboard.setVisibility(View.GONE);
     }
@@ -208,7 +211,10 @@ public class MainActivity extends AppCompatActivity implements FavoriteDiceRollA
         }
     }
 
-    private void setupEditTextAndKeyboard(){
+    /**
+     * A helper method to setup the EditText and Keyboard, to be called once in onCreate
+     */
+    private void setupEditTextAndKeyboard() {
         if (Build.VERSION.SDK_INT > Build.VERSION_CODES.LOLLIPOP) { //Use custom keyboard if the Android version is over 21 (this is when showSoftInputOnFocus was implemented)
             mCommandInputEditText.setShowSoftInputOnFocus(false);
 
@@ -225,6 +231,15 @@ public class MainActivity extends AppCompatActivity implements FavoriteDiceRollA
                     }
                 }
             });
+
+            mCommandInputEditText.setOnClickListener(new View.OnClickListener() { //Necessary to make the custom keyboard visible if focus has not been lost, but the keyboard is minimized
+                @Override
+                public void onClick(View v) {
+                    if (mDKeyboard.getVisibility() != View.VISIBLE) {
+                        showCustomKeyboard();
+                    }
+                }
+            });
         } else { //Use basic system keyboard
             mCommandInputEditText.setOnFocusChangeListener(new View.OnFocusChangeListener() { //FocusChange listener to minimize keyboard when clicking outside of EditText
                 @Override
@@ -235,5 +250,14 @@ public class MainActivity extends AppCompatActivity implements FavoriteDiceRollA
                 }
             });
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (mDKeyboard.getVisibility() == View.VISIBLE) { //Override to hide custom keyboard if visible when back pressed
+            hideCustomKeyboard();
+            return;
+        }
+        super.onBackPressed();
     }
 }
