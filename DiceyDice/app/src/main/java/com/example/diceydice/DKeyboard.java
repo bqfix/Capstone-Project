@@ -10,13 +10,15 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.inputmethod.InputConnection;
 import android.widget.Button;
+import android.widget.ImageButton;
 
 public class DKeyboard extends ConstraintLayout implements View.OnClickListener {
 
     private Button mOneButton, mTwoButton, mThreeButton, mFourButton,
             mFiveButton, mSixButton, mSevenButton, mEightButton,
             mNineButton, mZeroButton, mDButton, mPlusButton,
-            mMinusButton, mDeleteButton, mEnterButton;
+            mMinusButton, mEnterButton;
+    private ImageButton mDeleteButton;
 
     private SparseArray<String> keyValues = new SparseArray<>();
     private InputConnection mInputConnection;
@@ -53,7 +55,7 @@ public class DKeyboard extends ConstraintLayout implements View.OnClickListener 
         mPlusButton = (Button) findViewById(R.id.plus_button);
         mMinusButton = (Button) findViewById(R.id.minus_button);
         mDButton = (Button) findViewById(R.id.d_button);
-        mDeleteButton = (Button) findViewById(R.id.delete_button);
+        mDeleteButton = (ImageButton) findViewById(R.id.delete_button);
         mEnterButton = (Button) findViewById(R.id.enter_button);
 
         //Assign clicklisteners

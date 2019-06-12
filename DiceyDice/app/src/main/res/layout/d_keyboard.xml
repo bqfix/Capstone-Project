@@ -9,7 +9,7 @@
     <Button
         android:id="@+id/one_button"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        style="@style/d_keyboard_button"
         android:layout_marginStart="8dp"
         android:layout_marginLeft="8dp"
         android:layout_marginTop="8dp"
@@ -21,7 +21,7 @@
     <Button
         android:id="@+id/two_button"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        style="@style/d_keyboard_button"
         android:layout_marginTop="8dp"
         android:text="@string/two_button"
         app:layout_constraintEnd_toStartOf="@+id/three_button"
@@ -31,7 +31,7 @@
     <Button
         android:id="@+id/three_button"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        style="@style/d_keyboard_button"
         android:layout_marginTop="8dp"
         android:text="@string/three_button"
         app:layout_constraintEnd_toStartOf="@+id/plus_button"
@@ -41,7 +41,7 @@
     <Button
         android:id="@+id/four_button"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        style="@style/d_keyboard_button"
         android:layout_marginStart="8dp"
         android:layout_marginLeft="8dp"
         android:text="@string/four_button"
@@ -52,7 +52,7 @@
     <Button
         android:id="@+id/five_button"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        style="@style/d_keyboard_button"
         android:text="@string/five_button"
         app:layout_constraintEnd_toStartOf="@+id/six_button"
         app:layout_constraintStart_toEndOf="@+id/four_button"
@@ -61,7 +61,7 @@
     <Button
         android:id="@+id/six_button"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        style="@style/d_keyboard_button"
         android:text="@string/six_button"
         app:layout_constraintEnd_toStartOf="@+id/minus_button"
         app:layout_constraintStart_toEndOf="@+id/five_button"
@@ -70,7 +70,7 @@
     <Button
         android:id="@+id/seven_button"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        style="@style/d_keyboard_button"
         android:layout_marginStart="8dp"
         android:layout_marginLeft="8dp"
         android:text="@string/seven_button"
@@ -81,7 +81,7 @@
     <Button
         android:id="@+id/eight_button"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        style="@style/d_keyboard_button"
         android:text="@string/eight_button"
         app:layout_constraintEnd_toStartOf="@+id/nine_button"
         app:layout_constraintStart_toEndOf="@+id/seven_button"
@@ -90,73 +90,76 @@
     <Button
         android:id="@+id/nine_button"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        style="@style/d_keyboard_button"
         android:text="@string/nine_button"
-        app:layout_constraintEnd_toStartOf="@+id/zero_button"
+        app:layout_constraintEnd_toStartOf="@+id/delete_button"
         app:layout_constraintStart_toEndOf="@+id/eight_button"
         app:layout_constraintTop_toBottomOf="@+id/six_button" />
 
     <Button
         android:id="@+id/zero_button"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        style="@style/d_keyboard_button"
         android:text="@string/zero_button"
-        app:layout_constraintEnd_toStartOf="@+id/d_button"
-        app:layout_constraintStart_toEndOf="@+id/nine_button"
-        app:layout_constraintTop_toBottomOf="@+id/minus_button" />
+        app:layout_constraintEnd_toStartOf="@+id/nine_button"
+        app:layout_constraintStart_toStartOf="@+id/eight_button"
+        app:layout_constraintTop_toBottomOf="@+id/eight_button" />
 
     <Button
         android:id="@+id/d_button"
         android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginRight="8dp"
+        style="@style/d_keyboard_button"
         android:text="@string/d_button"
-        app:layout_constraintBottom_toBottomOf="@+id/zero_button"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/plus_button"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintEnd_toStartOf="@+id/eight_button"
+        app:layout_constraintStart_toStartOf="@+id/seven_button"
+        app:layout_constraintTop_toBottomOf="@+id/seven_button" />
 
-    <Button
+    <ImageButton
         android:id="@+id/delete_button"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginLeft="8dp"
+        style="@style/d_keyboard_button"
+        android:layout_marginEnd="8dp"
+        android:layout_marginRight="8dp"
+        android:contentDescription="@string/delete_button"
         android:text="@string/delete_button"
-        app:layout_constraintEnd_toStartOf="@+id/enter_button"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/seven_button" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/nine_button"
+        app:layout_constraintTop_toBottomOf="@+id/minus_button"
+        app:srcCompat="@drawable/ic_baseline_backspace_24px"
+        android:elevation="2dp"
+        android:stateListAnimator="@animator/d_keyboard_backspace_animator"/>
 
     <Button
         android:id="@+id/enter_button"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        style="@style/d_keyboard_button"
         android:layout_marginEnd="8dp"
         android:layout_marginRight="8dp"
         android:text="@string/enter_button"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/delete_button"
-        app:layout_constraintTop_toBottomOf="@+id/d_button" />
+        app:layout_constraintStart_toEndOf="@+id/zero_button"
+        app:layout_constraintTop_toBottomOf="@+id/nine_button" />
 
     <Button
         android:id="@+id/plus_button"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        style="@style/d_keyboard_button"
         android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginRight="8dp"
         android:text="@string/plus_button"
-        app:layout_constraintEnd_toStartOf="@+id/d_button"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/three_button"
         app:layout_constraintTop_toTopOf="parent" />
 
     <Button
         android:id="@+id/minus_button"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        style="@style/d_keyboard_button"
+        android:layout_marginEnd="8dp"
+        android:layout_marginRight="8dp"
         android:text="@string/minus_button"
-        app:layout_constraintEnd_toStartOf="@+id/d_button"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/six_button"
         app:layout_constraintTop_toBottomOf="@+id/plus_button" />
 
