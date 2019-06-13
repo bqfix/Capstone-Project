@@ -1,6 +1,7 @@
 package com.example.diceydice;
 
 import android.content.Context;
+import android.content.res.Configuration;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.util.Pair;
@@ -13,10 +14,12 @@ import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputConnection;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 public class AddFavoriteActivity extends AppCompatActivity {
 
+    private TextView mNameHeaderTextView;
     private EditText mNameEditText;
     private EditText mFormulaEditText;
     private InputConnection mInputConnection;
@@ -75,6 +78,7 @@ public class AddFavoriteActivity extends AppCompatActivity {
      * A helper method that assigns all of the views to their initial values in onCreate
      */
     private void assignViews() {
+        mNameHeaderTextView = findViewById(R.id.name_header_tv);
         mNameEditText = findViewById(R.id.name_input_et);
         mFormulaEditText = findViewById(R.id.formula_input_et);
         mDKeyboard = (DKeyboard) findViewById(R.id.d_keyboard);
@@ -95,6 +99,10 @@ public class AddFavoriteActivity extends AppCompatActivity {
      */
     private void showCustomKeyboard() { //TODO Add animation to make appear/disappear less jarring
         mDKeyboard.setVisibility(View.VISIBLE);
+        if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
+            mNameHeaderTextView.setVisibility(View.GONE);
+            mNameEditText.setVisibility(View.GONE);
+        }
     }
 
     /**
@@ -102,6 +110,8 @@ public class AddFavoriteActivity extends AppCompatActivity {
      */
     private void hideCustomKeyboard() {
         mDKeyboard.setVisibility(View.GONE);
+        mNameHeaderTextView.setVisibility(View.VISIBLE);
+        mNameEditText.setVisibility(View.VISIBLE);
     }
 
     /**
