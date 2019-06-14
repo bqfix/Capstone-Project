@@ -15,6 +15,8 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputConnection;
 import android.view.inputmethod.InputMethodManager;
@@ -99,15 +101,15 @@ public class MainActivity extends AppCompatActivity implements FavoriteDiceRollA
     /**
      * A helper method to show the custom keyboard
      */
-    private void showCustomKeyboard() { //TODO Add animation to make appear/disappear less jarring
-        mDKeyboard.setVisibility(View.VISIBLE);
+    private void showCustomKeyboard() {
+        mDKeyboard.executeEnterAnimation();
     }
 
     /**
      * A helper method to hide the custom keyboard
      */
     private void hideCustomKeyboard() {
-        mDKeyboard.setVisibility(View.GONE);
+        mDKeyboard.executeExitAnimation();
     }
 
     /**

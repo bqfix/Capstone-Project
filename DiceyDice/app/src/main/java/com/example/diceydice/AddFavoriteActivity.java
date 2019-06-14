@@ -97,8 +97,8 @@ public class AddFavoriteActivity extends AppCompatActivity {
     /**
      * A helper method to show the custom keyboard
      */
-    private void showCustomKeyboard() { //TODO Add animation to make appear/disappear less jarring
-        mDKeyboard.setVisibility(View.VISIBLE);
+    private void showCustomKeyboard() {
+        mDKeyboard.executeEnterAnimation();
         if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
             mNameHeaderTextView.setVisibility(View.GONE);
             mNameEditText.setVisibility(View.GONE);
@@ -109,7 +109,7 @@ public class AddFavoriteActivity extends AppCompatActivity {
      * A helper method to hide the custom keyboard
      */
     private void hideCustomKeyboard() {
-        mDKeyboard.setVisibility(View.GONE);
+        mDKeyboard.executeExitAnimation();
         mNameHeaderTextView.setVisibility(View.VISIBLE);
         mNameEditText.setVisibility(View.VISIBLE);
     }

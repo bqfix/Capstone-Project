@@ -2,12 +2,13 @@ package com.example.diceydice;
 
 import android.content.Context;
 import android.support.constraint.ConstraintLayout;
-import android.text.Layout;
 import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.util.SparseArray;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.view.inputmethod.InputConnection;
 import android.widget.Button;
 import android.widget.ImageButton;
@@ -22,6 +23,8 @@ public class DKeyboard extends ConstraintLayout implements View.OnClickListener 
 
     private SparseArray<String> keyValues = new SparseArray<>();
     private InputConnection mInputConnection;
+    private Animation.AnimationListener mExitAnimationListener;
+    private Animation.AnimationListener mEnterAnimationListener;
 
     public DKeyboard(Context context) {
         super(context);
@@ -89,6 +92,42 @@ public class DKeyboard extends ConstraintLayout implements View.OnClickListener 
         keyValues.put(R.id.plus_button, "+");
         keyValues.put(R.id.minus_button, "-");
         keyValues.put(R.id.d_button, "d");
+
+        //Assign the animation listeners
+        mExitAnimationListener = new Animation.AnimationListener() {
+            @Override
+            public void onAnimationStart(Animation animation) {
+                //Do nothing
+            }
+
+            @Override
+            public void onAnimationEnd(Animation animation) {
+                DKeyboard.this.clearAnimation(); //Clear the animation to allow for subsequent adjusting of view's visibility
+                DKeyboard.this.setVisibility(View.GONE); //Necessary, lest the view be clickable
+            }
+
+            @Override
+            public void onAnimationRepeat(Animation animation) {
+                //Do nothing
+            }
+        };
+
+        mEnterAnimationListener = new Animation.AnimationListener() {
+            @Override
+            public void onAnimationStart(Animation animation) {
+                //Do nothing
+            }
+
+            @Override
+            public void onAnimationEnd(Animation animation) {
+                DKeyboard.this.clearAnimation(); //Clear the animation to allow for subsequent adjusting of the view's visibility
+            }
+
+            @Override
+            public void onAnimationRepeat(Animation animation) {
+                //Do nothing
+            }
+        };
     }
 
     @Override
@@ -108,7 +147,7 @@ public class DKeyboard extends ConstraintLayout implements View.OnClickListener 
                 break;
             }
             case(R.id.enter_button) : { //Special enter logic
-                DKeyboard.this.setVisibility(View.GONE);
+                DKeyboard.this.executeExitAnimation();
                 break;
             }
             default : { //Other buttons simply append the value of the button, accessed from keyValues
@@ -120,5 +159,18 @@ public class DKeyboard extends ConstraintLayout implements View.OnClickListener 
 
     public void setInputConnection(InputConnection inputConnection) {
         mInputConnection = inputConnection;
+    }
+
+    public void executeExitAnimation(){
+        Animation exitAnimation = AnimationUtils.loadAnimation(getContext(), R.anim.bottom_exit);
+        exitAnimation.setAnimationListener(mExitAnimationListener);
+        DKeyboard.this.startAnimation(exitAnimation);
+    }
+
+    public void executeEnterAnimation(){
+        DKeyboard.this.setVisibility(View.VISIBLE);
+        Animation enterAnimation = AnimationUtils.loadAnimation(getContext(), R.anim.bottom_enter);
+        enterAnimation.setAnimationListener(mEnterAnimationListener);
+        DKeyboard.this.startAnimation(enterAnimation);
     }
 }
