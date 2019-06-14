@@ -98,7 +98,9 @@ public class AddFavoriteActivity extends AppCompatActivity {
      * A helper method to show the custom keyboard
      */
     private void showCustomKeyboard() {
-        mDKeyboard.executeEnterAnimation();
+        if (mDKeyboard.getVisibility() == View.GONE) {
+            mDKeyboard.executeEnterAnimation();
+        }
         if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
             mNameHeaderTextView.setVisibility(View.GONE);
             mNameEditText.setVisibility(View.GONE);
@@ -109,7 +111,9 @@ public class AddFavoriteActivity extends AppCompatActivity {
      * A helper method to hide the custom keyboard
      */
     private void hideCustomKeyboard() {
-        mDKeyboard.executeExitAnimation();
+        if (mDKeyboard.getVisibility() == View.VISIBLE) {
+            mDKeyboard.executeExitAnimation();
+        }
         mNameHeaderTextView.setVisibility(View.VISIBLE);
         mNameEditText.setVisibility(View.VISIBLE);
     }
@@ -130,6 +134,7 @@ public class AddFavoriteActivity extends AppCompatActivity {
     public void onBackPressed() {
         if (mDKeyboard.getVisibility() == View.VISIBLE) { //Override to hide custom keyboard if visible when back pressed
             hideCustomKeyboard();
+            mFormulaEditText.clearFocus();
             return;
         }
         super.onBackPressed();

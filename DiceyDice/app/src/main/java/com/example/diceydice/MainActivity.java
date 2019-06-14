@@ -102,14 +102,18 @@ public class MainActivity extends AppCompatActivity implements FavoriteDiceRollA
      * A helper method to show the custom keyboard
      */
     private void showCustomKeyboard() {
-        mDKeyboard.executeEnterAnimation();
+        if (mDKeyboard.getVisibility() == View.GONE) {
+            mDKeyboard.executeEnterAnimation();
+        }
     }
 
     /**
      * A helper method to hide the custom keyboard
      */
     private void hideCustomKeyboard() {
-        mDKeyboard.executeExitAnimation();
+        if (mDKeyboard.getVisibility() == View.VISIBLE) {
+            mDKeyboard.executeExitAnimation();
+        }
     }
 
     /**
@@ -159,8 +163,8 @@ public class MainActivity extends AppCompatActivity implements FavoriteDiceRollA
                     DiceRoll diceRoll = new DiceRoll(formula);
                     DiceResults diceResults = diceRoll.roll(MainActivity.this);
                     setDataToResultsViews(diceResults);
-                    hideCustomKeyboard();
                     hideSystemKeyboard(v);
+                    hideCustomKeyboard();
                 } else {
                     Toast.makeText(MainActivity.this, validAndErrorPair.second, Toast.LENGTH_SHORT).show();
                 }
@@ -258,6 +262,7 @@ public class MainActivity extends AppCompatActivity implements FavoriteDiceRollA
     public void onBackPressed() {
         if (mDKeyboard.getVisibility() == View.VISIBLE) { //Override to hide custom keyboard if visible when back pressed
             hideCustomKeyboard();
+            mCommandInputEditText.clearFocus();
             return;
         }
         super.onBackPressed();
