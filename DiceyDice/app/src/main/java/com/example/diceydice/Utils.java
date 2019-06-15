@@ -10,6 +10,7 @@ import java.util.Random;
 public final class Utils {
 
     private final static int MAX_DICE_PER_ROLL = 1000;
+    private final static int MAX_DIE_SIZE = 10000;
 
     private Utils() {
     } //Private Constructor to prevent instantiation
@@ -54,14 +55,17 @@ public final class Utils {
         }
 
         int totalDice = 0;
-        String[] splitFormulaByPlusMinus = formula.trim().split("[+-]"); //Split the formula by + and -
+        String[] splitFormulaByPlusMinus = formula.trim().split("[+-]", -1); //Split the formula by + and -, -1 limit forces inclusion of empty sections from excessive + or -
         for (String splitSection : splitFormulaByPlusMinus) {
             String[] splitFormulaByD = splitSection.trim().split("[dD]", -1); //Further split each section by whether there is a d or D, -1 limit provided to force inclusion of empty strings for subsequent length parsing (in the event of multiple ds)
             switch (splitFormulaByD.length) { //Each section should only be 2 numbers long (meaning the numbers can be multiplied) or 1 number long
                 case 2 : {
                     for (String potentialNumber : splitFormulaByD) { //Confirm that each number is valid
                         try {
-                            Integer.parseInt(potentialNumber.trim());
+                            int number = Integer.parseInt(potentialNumber.trim());
+                            if (number > MAX_DIE_SIZE) {
+                                return new Pair<>(false, context.getString(R.string.incorrectly_formatted_section));
+                            }
                         } catch (NumberFormatException e) {
                             return new Pair<>(false, context.getString(R.string.incorrectly_formatted_section));
                         }
@@ -71,7 +75,10 @@ public final class Utils {
                 }
                 case 1 : {
                     try { //Confirm that the number is valid
-                        Integer.parseInt(splitFormulaByD[0].trim());
+                        int number = Integer.parseInt(splitFormulaByD[0].trim());
+                        if (number > MAX_DIE_SIZE) {
+                            return new Pair<>(false, context.getString(R.string.incorrectly_formatted_section));
+                        }
                     } catch (NumberFormatException e) {
                         return new Pair<>(false, context.getString(R.string.incorrectly_formatted_section));
                     }
