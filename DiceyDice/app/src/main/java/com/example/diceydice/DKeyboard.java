@@ -1,6 +1,7 @@
 package com.example.diceydice;
 
 import android.content.Context;
+import android.os.Handler;
 import android.support.constraint.ConstraintLayout;
 import android.text.TextUtils;
 import android.util.AttributeSet;
@@ -13,13 +14,14 @@ import android.view.inputmethod.InputConnection;
 import android.widget.Button;
 import android.widget.ImageButton;
 
-public class DKeyboard extends ConstraintLayout implements View.OnClickListener {
+public class DKeyboard extends ConstraintLayout implements View.OnClickListener, View.OnLongClickListener{
 
     private Button mOneButton, mTwoButton, mThreeButton, mFourButton,
             mFiveButton, mSixButton, mSevenButton, mEightButton,
             mNineButton, mZeroButton, mDButton, mPlusButton,
             mMinusButton, mEnterButton;
     private ImageButton mDeleteButton;
+    private final int MILLIS_BETWEEN_CHARACTER_CHANGE = 50;
 
     private SparseArray<String> keyValues = new SparseArray<>();
     private InputConnection mInputConnection;
@@ -61,7 +63,7 @@ public class DKeyboard extends ConstraintLayout implements View.OnClickListener 
         mDeleteButton = (ImageButton) findViewById(R.id.delete_button);
         mEnterButton = (Button) findViewById(R.id.enter_button);
 
-        //Assign clicklisteners
+        //Assign clickListeners
         mOneButton.setOnClickListener(this);
         mTwoButton.setOnClickListener(this);
         mThreeButton.setOnClickListener(this);
@@ -77,6 +79,22 @@ public class DKeyboard extends ConstraintLayout implements View.OnClickListener 
         mDButton.setOnClickListener(this);
         mDeleteButton.setOnClickListener(this);
         mEnterButton.setOnClickListener(this);
+
+        //Assign longClickListeners to everything but Enter
+        mOneButton.setOnLongClickListener(this);
+        mTwoButton.setOnLongClickListener(this);
+        mThreeButton.setOnLongClickListener(this);
+        mFourButton.setOnLongClickListener(this);
+        mFiveButton.setOnLongClickListener(this);
+        mSixButton.setOnLongClickListener(this);
+        mSevenButton.setOnLongClickListener(this);
+        mEightButton.setOnLongClickListener(this);
+        mNineButton.setOnLongClickListener(this);
+        mZeroButton.setOnLongClickListener(this);
+        mPlusButton.setOnLongClickListener(this);
+        mMinusButton.setOnLongClickListener(this);
+        mDButton.setOnLongClickListener(this);
+        mDeleteButton.setOnLongClickListener(this);
 
         //Populate SparseArray with key value pairs
         keyValues.put(R.id.one_button, "1");
@@ -137,13 +155,9 @@ public class DKeyboard extends ConstraintLayout implements View.OnClickListener 
         int viewId = v.getId();
         switch (viewId) {
             case (R.id.delete_button): { //Special delete logic
-                CharSequence selectedText = mInputConnection.getSelectedText(0);
 
-                if (TextUtils.isEmpty(selectedText)) { //If not highlighted, delete 1 before, 0 after
-                    mInputConnection.deleteSurroundingText(1, 0);
-                } else { //Simply replace highlighted text with empty string
-                    mInputConnection.commitText("", 1);
-                }
+                deleteText();
+
                 break;
             }
             case(R.id.enter_button) : { //Special enter logic
@@ -155,6 +169,54 @@ public class DKeyboard extends ConstraintLayout implements View.OnClickListener 
                 mInputConnection.commitText(value, 1);
             }
         }
+    }
+
+    @Override
+    public boolean onLongClick(final View v) {
+        if (mInputConnection == null) return true;
+        final int viewId = v.getId();
+        switch(viewId) {
+            case(R.id.delete_button) : { //Special delete logic, continuous delete
+                final Handler handler = new Handler();
+                final Runnable runnable = new Runnable() {
+                    @Override
+                    public void run() {
+                        if (v.isPressed()){
+                            deleteText();
+                            handler.postDelayed(this, MILLIS_BETWEEN_CHARACTER_CHANGE);
+                        }
+                    }
+                };
+                handler.postDelayed(runnable, MILLIS_BETWEEN_CHARACTER_CHANGE);
+                return true;
+            }
+            default: { //Otherwise, continuous insertion of character
+                final Handler handler = new Handler();
+                final Runnable runnable = new Runnable() {
+                    @Override
+                    public void run() {
+                        if (v.isPressed()){
+                            String value = keyValues.get(viewId);
+                            mInputConnection.commitText(value, 1);
+                            handler.postDelayed(this, MILLIS_BETWEEN_CHARACTER_CHANGE);
+                        }
+                    }
+                };
+                handler.postDelayed(runnable, MILLIS_BETWEEN_CHARACTER_CHANGE);
+                return true;
+            }
+        }
+    }
+
+    private void deleteText(){
+        CharSequence selectedText = mInputConnection.getSelectedText(0);
+
+        if (TextUtils.isEmpty(selectedText)) { //If not highlighted, delete 1 before, 0 after
+            mInputConnection.deleteSurroundingText(1, 0);
+        } else { //Simply replace highlighted text with empty string
+            mInputConnection.commitText("", 1);
+        }
+
     }
 
     public void setInputConnection(InputConnection inputConnection) {
