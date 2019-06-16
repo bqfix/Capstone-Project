@@ -34,9 +34,6 @@
     <string name="name_header">Name</string>
     <string name="finish_action">Done</string>
 
-    <!-- DetailActivity -->
-    <string name="detail_activity_title">Probabilities</string>
-
     <!-- HistoryActivity -->
     <string name="history_activity_title">Roll History</string>
 

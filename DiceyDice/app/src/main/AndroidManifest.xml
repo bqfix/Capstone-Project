@@ -16,7 +16,6 @@
             android:parentActivityName=".MainActivity" />
         <activity android:name=".HistoryActivity"
             android:parentActivityName=".MainActivity"/>
-        <activity android:name=".DetailActivity" />
         <activity android:name=".MainActivity"
             android:windowSoftInputMode="stateAlwaysHidden|adjustNothing">
             <intent-filter>
