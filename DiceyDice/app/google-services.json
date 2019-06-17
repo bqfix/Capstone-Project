@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "299920722027",
+    "firebase_url": "https://diceydice.firebaseio.com",
+    "project_id": "diceydice",
+    "storage_bucket": "diceydice.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:299920722027:android:60b5b300caa1f923",
+        "android_client_info": {
+          "package_name": "com.example.diceydice"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "299920722027-8095m143e5blee30s5o3l56t89psk15e.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDTviCoHZn-fc0kbjt7oRsfSxSq6T3Ht9o"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "299920722027-8095m143e5blee30s5o3l56t89psk15e.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
