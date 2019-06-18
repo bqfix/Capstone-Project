@@ -22,7 +22,7 @@
     <string name="favorites_title">Favorites</string>
     <string name="all_favorites_button">All</string>
     <string name="dialog_positive_button">Got it!</string>
-    <string name="sign_in_success">Successfully signed in.</string>
+    <string name="sign_in_success">Signed in successfully.</string>
 
     <!-- FavoriteActivity -->
     <string name="favorite_activity_title">Favorites</string>

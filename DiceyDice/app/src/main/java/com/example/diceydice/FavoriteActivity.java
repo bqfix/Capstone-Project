@@ -1,6 +1,7 @@
 package com.example.diceydice;
 
 import android.content.Intent;
+import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -13,6 +14,9 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+
 public class FavoriteActivity extends AppCompatActivity implements FavoriteDiceRollAdapter.FavoriteDiceRollClickHandler {
 
     private TextView mResultsNameTextView;
@@ -22,6 +26,11 @@ public class FavoriteActivity extends AppCompatActivity implements FavoriteDiceR
     private FavoriteDiceRollAdapter mFavoriteDiceRollAdapter;
     private FloatingActionButton mAddFavoriteFAB;
 
+    //Firebase
+    private String mUserName;
+    private FirebaseAuth mFirebaseAuth;
+    private FirebaseAuth.AuthStateListener mAuthStateListener;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -29,6 +38,8 @@ public class FavoriteActivity extends AppCompatActivity implements FavoriteDiceR
         setTitle(R.string.favorites_title);
 
         assignViews();
+
+        initializeFirebase();
 
         setupRecyclerView();
 
@@ -46,6 +57,20 @@ public class FavoriteActivity extends AppCompatActivity implements FavoriteDiceR
     protected void onStart() {
         super.onStart();
         loadMostRecentDiceResults();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        mFirebaseAuth.addAuthStateListener(mAuthStateListener);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        if (mAuthStateListener != null){
+            mFirebaseAuth.removeAuthStateListener(mAuthStateListener);
+        }
     }
 
     /** A helper method that assigns all of the views to their initial values in onCreate */
@@ -116,5 +141,26 @@ public class FavoriteActivity extends AppCompatActivity implements FavoriteDiceR
             default:
                 return super.onOptionsItemSelected(item);
         }
+    }
+
+    /**
+     * A helper method to handle all of the initial setup for Firebase, to be called in onCreate
+     */
+    private void initializeFirebase(){
+        //Auth setup
+        mFirebaseAuth = FirebaseAuth.getInstance();
+
+        mAuthStateListener = new FirebaseAuth.AuthStateListener() {
+            @Override
+            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
+                FirebaseUser user = firebaseAuth.getCurrentUser();
+                if (user != null) { //Signed in
+                    mUserName = user.getUid();
+                } else { //Signed out, finish activity
+                    mUserName = null;
+                    finish();
+                }
+            }
+        };
     }
 }

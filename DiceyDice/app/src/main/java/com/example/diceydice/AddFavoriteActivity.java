@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.res.Configuration;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.util.Pair;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
@@ -17,6 +18,9 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+
 public class AddFavoriteActivity extends AppCompatActivity {
 
     private TextView mNameHeaderTextView;
@@ -24,6 +28,11 @@ public class AddFavoriteActivity extends AppCompatActivity {
     private EditText mFormulaEditText;
     private InputConnection mInputConnection;
     private DKeyboard mDKeyboard;
+
+    //Firebase
+    private String mUserName;
+    private FirebaseAuth mFirebaseAuth;
+    private FirebaseAuth.AuthStateListener mAuthStateListener;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,8 +43,24 @@ public class AddFavoriteActivity extends AppCompatActivity {
 
         assignViews();
 
+        initializeFirebase();
+
         setListeners();
         setupFormulaEditTextAndKeyboard();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        mFirebaseAuth.addAuthStateListener(mAuthStateListener);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        if (mAuthStateListener != null){
+            mFirebaseAuth.removeAuthStateListener(mAuthStateListener);
+        }
     }
 
     @Override
@@ -179,5 +204,26 @@ public class AddFavoriteActivity extends AppCompatActivity {
                 }
             });
         }
+    }
+
+    /**
+     * A helper method to handle all of the initial setup for Firebase, to be called in onCreate
+     */
+    private void initializeFirebase(){
+        //Auth setup
+        mFirebaseAuth = FirebaseAuth.getInstance();
+
+        mAuthStateListener = new FirebaseAuth.AuthStateListener() {
+            @Override
+            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
+                FirebaseUser user = firebaseAuth.getCurrentUser();
+                if (user != null) { //Signed in
+                    mUserName = user.getUid();
+                } else { //Signed out, finish activity
+                    mUserName = null;
+                    finish();
+                }
+            }
+        };
     }
 }
