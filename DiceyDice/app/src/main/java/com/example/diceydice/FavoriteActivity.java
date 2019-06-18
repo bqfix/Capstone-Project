@@ -14,6 +14,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
+import com.firebase.ui.auth.AuthUI;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
@@ -137,6 +138,9 @@ public class FavoriteActivity extends AppCompatActivity implements FavoriteDiceR
             case (R.id.action_history):
                 Intent intent = new Intent(FavoriteActivity.this, HistoryActivity.class);
                 startActivity(intent);
+                return true;
+            case (R.id.action_sign_out):
+                AuthUI.getInstance().signOut(this);
                 return true;
             default:
                 return super.onOptionsItemSelected(item);

@@ -18,6 +18,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.firebase.ui.auth.AuthUI;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
@@ -75,6 +76,9 @@ public class AddFavoriteActivity extends AppCompatActivity {
         switch (item.getItemId()) {
             case (R.id.action_done):
                 saveNewFavorite();
+                return true;
+            case (R.id.action_sign_out):
+                AuthUI.getInstance().signOut(this);
                 return true;
             default:
                 return super.onOptionsItemSelected(item);

@@ -255,6 +255,9 @@ public class MainActivity extends AppCompatActivity implements FavoriteDiceRollA
                 Intent intent = new Intent(MainActivity.this, HistoryActivity.class);
                 startActivity(intent);
                 return true;
+            case (R.id.action_sign_out):
+                AuthUI.getInstance().signOut(this);
+                return true;
             default:
                 return super.onOptionsItemSelected(item);
         }

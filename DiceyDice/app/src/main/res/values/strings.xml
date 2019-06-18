@@ -7,15 +7,16 @@
     <string name="results_header">Results</string>
     <string name="command_input_hint">Input a command.</string>
     <string name="history_menu_action">History</string>
-    <string name="formula_edittext_allowed_digits">0123456789 +-dD</string>
+    <string name="formula_edittext_allowed_digits" translatable="false">0123456789 +-dD</string>
     <string name="help_formula_advice">Formula must include only numbers, spaces, + and &#8211; symbols, and the letter \'d\'.  First section must NOT be negative.  Numbers over 10000 cannot be rolled.  Examples include:\n\n6\n1d6\n2d8 &#8211; 1\n1d4&#8211;1d4+1d4&#8211;1d4</string> <!-- &#8211; is for en dash -->
     <string name="help_header">Advice</string>
+    <string name="sign_out_menu">Sign out</string>
     <!-- SharedPref Keys -->
-    <string name="shared_preferences_key">shared_preferences</string>
-    <string name="dice_results_name_key">dice_results_name</string>
-    <string name="dice_results_descrip_key">dice_results_descrip</string>
-    <string name="dice_results_total_key">dice_results_total</string>
-    <string name="dice_results_date_key">dice_results_date</string>
+    <string name="shared_preferences_key" translatable="false">shared_preferences</string>
+    <string name="dice_results_name_key" translatable="false">dice_results_name</string>
+    <string name="dice_results_descrip_key" translatable="false">dice_results_descrip</string>
+    <string name="dice_results_total_key" translatable="false">dice_results_total</string>
+    <string name="dice_results_date_key" translatable="false">dice_results_date</string>
 
     <!-- MainActivity -->
     <string name="roll_button">Roll</string>
@@ -45,20 +46,20 @@
     <string name="no_error">No errors.</string>
 
     <!-- Custom Keyboard -->
-    <string name="one_button">1</string>
-    <string name="two_button">2</string>
-    <string name="three_button">3</string>
-    <string name="four_button">4</string>
-    <string name="five_button">5</string>
-    <string name="six_button">6</string>
-    <string name="seven_button">7</string>
-    <string name="eight_button">8</string>
-    <string name="nine_button">9</string>
-    <string name="zero_button">0</string>
+    <string name="one_button" translatable="false">1</string>
+    <string name="two_button" translatable="false">2</string>
+    <string name="three_button" translatable="false">3</string>
+    <string name="four_button" translatable="false">4</string>
+    <string name="five_button" translatable="false">5</string>
+    <string name="six_button" translatable="false">6</string>
+    <string name="seven_button" translatable="false">7</string>
+    <string name="eight_button" translatable="false">8</string>
+    <string name="nine_button" translatable="false">9</string>
+    <string name="zero_button" translatable="false">0</string>
     <string name="delete_button">Delete</string>
     <string name="enter_button">Enter</string>
-    <string name="d_button">d</string>
-    <string name="plus_button">+</string>
-    <string name="minus_button">-</string>
+    <string name="d_button" translatable="false">d</string>
+    <string name="plus_button" translatable="false">+</string>
+    <string name="minus_button" translatable="false">-</string>
 
 </resources>
