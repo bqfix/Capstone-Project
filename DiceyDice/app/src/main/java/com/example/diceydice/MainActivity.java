@@ -5,6 +5,8 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.util.Pair;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -15,8 +17,6 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputConnection;
 import android.view.inputmethod.InputMethodManager;
@@ -26,8 +26,17 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.firebase.ui.auth.AuthUI;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
+import java.util.Arrays;
+
 public class MainActivity extends AppCompatActivity implements FavoriteDiceRollAdapter.FavoriteDiceRollClickHandler {
 
+    //View variables
     private EditText mCommandInputEditText;
     private Button mRollButton;
     private TextView mResultsNameTextView;
@@ -38,13 +47,32 @@ public class MainActivity extends AppCompatActivity implements FavoriteDiceRollA
     private Button mAllFavoritesButton;
     private ImageButton mHelpButton;
     private DKeyboard mDKeyboard;
+
+    //InputConnection for custom keyboard
     private InputConnection mCommandInputConnection;
+
+    //Firebase variables
+    private String mUserID;
+    //Realtime Database
+    private FirebaseDatabase mFirebaseDatabase;
+    private DatabaseReference mUserMetaDatabaseReference;
+    private DatabaseReference mUserFavoriteDatabaseReference;
+    private DatabaseReference mUserHistoryDatabaseReference;
+    private DatabaseReference mFavoriteDatabaseReference;
+    private DatabaseReference mHistoryDatabaseReference;
+    //Auth
+    private static final int REQUEST_CODE_SIGN_IN = 1;
+    private FirebaseAuth mFirebaseAuth;
+    private FirebaseAuth.AuthStateListener mAuthStateListener;
+
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        initializeFirebase();
 
         assignViews();
 
@@ -60,6 +88,21 @@ public class MainActivity extends AppCompatActivity implements FavoriteDiceRollA
     protected void onStart() {
         super.onStart();
         loadMostRecentDiceResults();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        mFirebaseAuth.addAuthStateListener(mAuthStateListener);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        if (mAuthStateListener != null){
+            mFirebaseAuth.removeAuthStateListener(mAuthStateListener);
+        }
+        //TODO other cleanup of favorites list, detach database listener
     }
 
     /**
@@ -266,5 +309,55 @@ public class MainActivity extends AppCompatActivity implements FavoriteDiceRollA
             return;
         }
         super.onBackPressed();
+    }
+
+    /**
+     * A helper method to handle all of the initial setup for Firebase, to be called in onCreate
+     */
+    private void initializeFirebase(){
+        //Auth setup
+        mFirebaseAuth = FirebaseAuth.getInstance();
+
+        mAuthStateListener = new FirebaseAuth.AuthStateListener() {
+            @Override
+            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
+                FirebaseUser user = firebaseAuth.getCurrentUser();
+                if (user != null) { //Signed in
+                    onSignedInInitialize(user.getUid());
+                } else { //Signed out, so launch sign in activity
+                    onSignedOutCleanup();
+                    startActivityForResult(AuthUI.getInstance()
+                    .createSignInIntentBuilder()
+                    .setIsSmartLockEnabled(false)
+                    .setAvailableProviders(Arrays.asList(
+                            new AuthUI.IdpConfig.GoogleBuilder().build(),
+                            new AuthUI.IdpConfig.EmailBuilder().build()))
+                    .build(),
+                            REQUEST_CODE_SIGN_IN);
+                }
+            }
+        };
+    }
+
+    private void onSignedInInitialize(String userID) {
+        mUserID = userID;
+//        attachDatabaseReadListener();
+    }
+
+    private void onSignedOutCleanup() {
+        mUserID = null;
+//        detachDatabaseReadListener();
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == REQUEST_CODE_SIGN_IN){ //Special logic for results coming from FirebaseUI sign-in
+            if (resultCode == RESULT_OK) {
+                Toast.makeText(this, R.string.sign_in_success, Toast.LENGTH_SHORT).show();
+            } else if (resultCode == RESULT_CANCELED) { //User canceled, finish(); to close app
+                finish();
+            }
+        }
     }
 }
