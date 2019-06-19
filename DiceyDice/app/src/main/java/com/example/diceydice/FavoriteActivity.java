@@ -17,6 +17,8 @@ import android.widget.TextView;
 import com.firebase.ui.auth.AuthUI;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 public class FavoriteActivity extends AppCompatActivity implements FavoriteDiceRollAdapter.FavoriteDiceRollClickHandler {
 
@@ -28,9 +30,13 @@ public class FavoriteActivity extends AppCompatActivity implements FavoriteDiceR
     private FloatingActionButton mAddFavoriteFAB;
 
     //Firebase
-    private String mUserName;
+    private String mUserID;
+    //Auth
     private FirebaseAuth mFirebaseAuth;
     private FirebaseAuth.AuthStateListener mAuthStateListener;
+    //Database
+    private FirebaseDatabase mFirebaseDatabase;
+    private DatabaseReference mBaseDatabaseReference;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -101,6 +107,7 @@ public class FavoriteActivity extends AppCompatActivity implements FavoriteDiceR
     public void onItemClick(DiceRoll favoriteDiceRoll) {
         DiceResults diceResults = favoriteDiceRoll.roll(this); // Roll the diceRoll once and save results
         setDataToResultsViews(diceResults);
+        Utils.saveToFirebaseHistory(mBaseDatabaseReference, mUserID, diceResults);
     }
 
     /** Helper method to setup RecyclerView, should only be called once in onCreate */
@@ -159,12 +166,33 @@ public class FavoriteActivity extends AppCompatActivity implements FavoriteDiceR
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
                 FirebaseUser user = firebaseAuth.getCurrentUser();
                 if (user != null) { //Signed in
-                    mUserName = user.getUid();
+                    onSignedInInitialize(user.getUid());
                 } else { //Signed out, finish activity
-                    mUserName = null;
+                    onSignedOutCleanup();
                     finish();
                 }
             }
         };
+
+        //Database Setup
+        mFirebaseDatabase = FirebaseDatabase.getInstance();
+        mBaseDatabaseReference = mFirebaseDatabase.getReference();
+    }
+
+    /**
+     * A helper method for when signed into FirebaseAuth
+     * @param userID to set the Activity's member variable
+     */
+    private void onSignedInInitialize(String userID) {
+        mUserID = userID;
+//TODO        attachDatabaseReadListener();
+    }
+
+    /**
+     * A helper method for when signed out of FirebaseAuth
+     */
+    private void onSignedOutCleanup() {
+        mUserID = null;
+//TODO        detachDatabaseReadListener();
     }
 }

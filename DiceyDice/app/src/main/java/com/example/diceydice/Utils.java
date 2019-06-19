@@ -4,13 +4,12 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.support.v4.util.Pair;
 
+import com.google.firebase.database.DatabaseReference;
+
 import java.util.ArrayList;
 import java.util.Random;
 
 public final class Utils {
-
-    private final static int MAX_DICE_PER_ROLL = 1000;
-    private final static int MAX_DIE_SIZE = 10000;
 
     private Utils() {
     } //Private Constructor to prevent instantiation
@@ -63,7 +62,7 @@ public final class Utils {
                     for (String potentialNumber : splitFormulaByD) { //Confirm that each number is valid
                         try {
                             int number = Integer.parseInt(potentialNumber.trim());
-                            if (number > MAX_DIE_SIZE) {
+                            if (number > Constants.MAX_DIE_SIZE) {
                                 return new Pair<>(false, context.getString(R.string.incorrectly_formatted_section));
                             }
                         } catch (NumberFormatException e) {
@@ -76,7 +75,7 @@ public final class Utils {
                 case 1 : {
                     try { //Confirm that the number is valid
                         int number = Integer.parseInt(splitFormulaByD[0].trim());
-                        if (number > MAX_DIE_SIZE) {
+                        if (number > Constants.MAX_DIE_SIZE) {
                             return new Pair<>(false, context.getString(R.string.incorrectly_formatted_section));
                         }
                     } catch (NumberFormatException e) {
@@ -87,7 +86,7 @@ public final class Utils {
                 default : return new Pair<>(false, context.getString(R.string.incorrectly_formatted_section));
             }
         }
-        if (totalDice >= MAX_DICE_PER_ROLL) { //This is to prevent exceptionally large rolls that may lock down the app
+        if (totalDice >= Constants.MAX_DICE_PER_ROLL) { //This is to prevent exceptionally large rolls that may lock down the app
             return new Pair<>(false, context.getString(R.string.too_many_dice));
         }
         return new Pair<>(true, context.getString(R.string.no_error));
@@ -131,5 +130,15 @@ public final class Utils {
         long date = sharedPreferences.getLong(context.getString(R.string.dice_results_date_key), 0);
 
         return new DiceResults(name, descrip, total, date);
+    }
+
+    /**
+     * A helper method for saving to the Firebase Realtime Database's history section
+     * @param databaseReference to be saved to
+     * @param userId to save under
+     * @param diceResults to be saved
+     */
+    public static void saveToFirebaseHistory(DatabaseReference databaseReference, String userId, DiceResults diceResults){
+        databaseReference.child(Constants.FIREBASE_DATABASE_HISTORY_PATH).child(userId).push().setValue(diceResults);
     }
 }

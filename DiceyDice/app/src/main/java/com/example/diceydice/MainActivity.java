@@ -29,6 +29,7 @@ import android.widget.Toast;
 import com.firebase.ui.auth.AuthUI;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
@@ -55,13 +56,9 @@ public class MainActivity extends AppCompatActivity implements FavoriteDiceRollA
     private String mUserID;
     //Realtime Database
     private FirebaseDatabase mFirebaseDatabase;
-    private DatabaseReference mUserMetaDatabaseReference;
-    private DatabaseReference mUserFavoriteDatabaseReference;
-    private DatabaseReference mUserHistoryDatabaseReference;
-    private DatabaseReference mFavoriteDatabaseReference;
-    private DatabaseReference mHistoryDatabaseReference;
+    private DatabaseReference mBaseDatabaseReference;
+    private ChildEventListener mFavoriteChildEventListener;
     //Auth
-    private static final int REQUEST_CODE_SIGN_IN = 1;
     private FirebaseAuth mFirebaseAuth;
     private FirebaseAuth.AuthStateListener mAuthStateListener;
 
@@ -160,7 +157,7 @@ public class MainActivity extends AppCompatActivity implements FavoriteDiceRollA
     }
 
     /**
-     * Override of FavoriteDiceRoll click method
+     * Override of FavoriteDiceRoll click method for RecyclerView
      *
      * @param favoriteDiceRoll the clicked DiceRoll to be used
      */
@@ -168,6 +165,7 @@ public class MainActivity extends AppCompatActivity implements FavoriteDiceRollA
     public void onItemClick(DiceRoll favoriteDiceRoll) {
         DiceResults diceResults = favoriteDiceRoll.roll(this);
         setDataToResultsViews(diceResults);
+        Utils.saveToFirebaseHistory(mBaseDatabaseReference, mUserID, diceResults);
     }
 
     /**
@@ -202,10 +200,16 @@ public class MainActivity extends AppCompatActivity implements FavoriteDiceRollA
             public void onClick(View v) {
                 String formula = mCommandInputEditText.getText().toString();
                 Pair<Boolean, String> validAndErrorPair = Utils.isValidDiceRoll(MainActivity.this, formula); //Get a boolean of whether the
-                if (validAndErrorPair.first) { //If formula is okay, make a new nameless DiceRoll for display in the results text
+                if (validAndErrorPair.first) {
+                    //If formula is okay, make a new nameless DiceRoll for display in the results text
                     DiceRoll diceRoll = new DiceRoll(formula);
                     DiceResults diceResults = diceRoll.roll(MainActivity.this);
                     setDataToResultsViews(diceResults);
+
+                    //Firebase
+                    Utils.saveToFirebaseHistory(mBaseDatabaseReference, mUserID, diceResults);
+
+                    //Hide keyboards
                     hideSystemKeyboard(v);
                     hideCustomKeyboard();
                 } else {
@@ -320,7 +324,6 @@ public class MainActivity extends AppCompatActivity implements FavoriteDiceRollA
     private void initializeFirebase(){
         //Auth setup
         mFirebaseAuth = FirebaseAuth.getInstance();
-
         mAuthStateListener = new FirebaseAuth.AuthStateListener() {
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
@@ -336,26 +339,37 @@ public class MainActivity extends AppCompatActivity implements FavoriteDiceRollA
                             new AuthUI.IdpConfig.GoogleBuilder().build(),
                             new AuthUI.IdpConfig.EmailBuilder().build()))
                     .build(),
-                            REQUEST_CODE_SIGN_IN);
+                            Constants.REQUEST_CODE_SIGN_IN);
                 }
             }
         };
+
+        //Database setup
+        mFirebaseDatabase = FirebaseDatabase.getInstance();
+        mBaseDatabaseReference = mFirebaseDatabase.getReference();
     }
 
+    /**
+     * A helper method for when signed into FirebaseAuth
+     * @param userID to set the Activity's member variable
+     */
     private void onSignedInInitialize(String userID) {
         mUserID = userID;
-//        attachDatabaseReadListener();
+//TODO        attachDatabaseReadListener();
     }
 
+    /**
+     * A helper method for when signed out of FirebaseAuth
+     */
     private void onSignedOutCleanup() {
         mUserID = null;
-//        detachDatabaseReadListener();
+//TODO        detachDatabaseReadListener();
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == REQUEST_CODE_SIGN_IN){ //Special logic for results coming from FirebaseUI sign-in
+        if (requestCode == Constants.REQUEST_CODE_SIGN_IN){ //Special logic for results coming from FirebaseUI sign-in
             if (resultCode == RESULT_OK) {
                 Toast.makeText(this, R.string.sign_in_success, Toast.LENGTH_SHORT).show();
             } else if (resultCode == RESULT_CANCELED) { //User canceled, finish(); to close app
@@ -363,4 +377,6 @@ public class MainActivity extends AppCompatActivity implements FavoriteDiceRollA
             }
         }
     }
+
+
 }
