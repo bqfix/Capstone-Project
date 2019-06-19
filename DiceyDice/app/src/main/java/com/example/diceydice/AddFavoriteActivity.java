@@ -21,6 +21,8 @@ import android.widget.Toast;
 import com.firebase.ui.auth.AuthUI;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 public class AddFavoriteActivity extends AppCompatActivity {
 
@@ -31,9 +33,12 @@ public class AddFavoriteActivity extends AppCompatActivity {
     private DKeyboard mDKeyboard;
 
     //Firebase
-    private String mUserName;
+    private String mUserId;
     private FirebaseAuth mFirebaseAuth;
     private FirebaseAuth.AuthStateListener mAuthStateListener;
+    //Database
+    private FirebaseDatabase mFirebaseDatabase;
+    private DatabaseReference mBaseDatabaseReference;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -92,10 +97,11 @@ public class AddFavoriteActivity extends AppCompatActivity {
         //Check that formula is valid
         String formula = mFormulaEditText.getText().toString();
         Pair<Boolean, String> validAndErrorPair = Utils.isValidDiceRoll(this, formula);
-        if (validAndErrorPair.first) { //If formula is okay, make a new nameless DiceRoll for display in the results text
+        if (validAndErrorPair.first) {
             String name = mNameEditText.getText().toString(); //Additionally get name
             DiceRoll diceRoll = new DiceRoll(name, formula);
-            //TODO Actually save this to Firebase
+            saveToFirebaseFavorites(diceRoll);
+            Toast.makeText(this, R.string.saved_to_firebase, Toast.LENGTH_SHORT).show();
             finish();
         } else {
             Toast.makeText(this, validAndErrorPair.second, Toast.LENGTH_SHORT).show();
@@ -222,12 +228,24 @@ public class AddFavoriteActivity extends AppCompatActivity {
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
                 FirebaseUser user = firebaseAuth.getCurrentUser();
                 if (user != null) { //Signed in
-                    mUserName = user.getUid();
+                    mUserId = user.getUid();
                 } else { //Signed out, finish activity
-                    mUserName = null;
+                    mUserId = null;
                     finish();
                 }
             }
         };
+
+        //Database
+        mFirebaseDatabase = FirebaseDatabase.getInstance();
+        mBaseDatabaseReference = mFirebaseDatabase.getReference();
+    }
+
+    /**
+     * A helper method to save a DiceRoll to Firebase Realtime Database's Favorites section
+     * @param diceRoll to be saved
+     */
+    private void saveToFirebaseFavorites(DiceRoll diceRoll){
+        mBaseDatabaseReference.child(Constants.FIREBASE_DATABASE_FAVORITES_PATH).child(mUserId).push().setValue(diceRoll);
     }
 }

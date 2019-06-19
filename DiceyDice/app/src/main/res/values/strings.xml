@@ -35,6 +35,7 @@
     <string name="input_name_hint">Input name of new Favorite.</string>
     <string name="name_header">Name</string>
     <string name="finish_action">Done</string>
+    <string name="saved_to_firebase">Saved.</string>
 
     <!-- HistoryActivity -->
     <string name="history_activity_title">Roll History</string>
