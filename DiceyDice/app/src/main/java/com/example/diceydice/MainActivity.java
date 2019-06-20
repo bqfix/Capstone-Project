@@ -231,7 +231,7 @@ public class MainActivity extends AppCompatActivity implements FavoriteDiceRollA
             @Override
             public void onClick(View v) {
                 AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
-                builder.setPositiveButton(R.string.dialog_positive_button, new DialogInterface.OnClickListener() {
+                builder.setPositiveButton(R.string.help_dialog_positive_button, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         //No special action needed, simply dismisses the dialog.

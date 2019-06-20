@@ -1,8 +1,10 @@
 package com.example.diceydice;
 
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
@@ -84,6 +86,24 @@ public class HistoryActivity extends AppCompatActivity implements HistoryResults
         switch (item.getItemId()) {
             case (R.id.action_sign_out):
                 AuthUI.getInstance().signOut(this);
+                return true;
+            case (R.id.action_delete_all_history):
+                AlertDialog.Builder builder = new AlertDialog.Builder(HistoryActivity.this);
+                builder.setTitle(R.string.delete_all_dialog_title)
+                        .setMessage(R.string.delete_all_dialog_message)
+                        .setPositiveButton(R.string.delete_all_dialog_positive, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                clearAllHistory();
+                            }
+                        })
+                        .setNegativeButton(R.string.delete_all_dialog_negative, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.cancel();
+                            }
+                        });
+                builder.show();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
@@ -220,5 +240,18 @@ public class HistoryActivity extends AppCompatActivity implements HistoryResults
     private void detachDatabaseHistoryReadListener() {
         mBaseDatabaseReference.child(Constants.FIREBASE_DATABASE_HISTORY_PATH).child(mUserID).removeEventListener(mHistoryChildEventListener);
         mHistoryChildEventListener = null;
+    }
+
+    private void clearAllHistory(){
+        mBaseDatabaseReference.child(Constants.FIREBASE_DATABASE_HISTORY_PATH).child(mUserID).setValue(null); //Delete from database
+
+        //Reset stored values and update RecyclerView to empty
+        mDiceResults = new ArrayList<>();
+        mHistoryAdapter.setHistoryResults(mDiceResults);
+
+        //Empty TextViews
+        mResultsNameTextView.setText("");
+        mResultsDescripTextView.setText("");
+        mResultsTotalTextView.setText("");
     }
 }

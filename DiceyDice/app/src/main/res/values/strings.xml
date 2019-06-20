@@ -22,7 +22,7 @@
     <string name="roll_button">Roll</string>
     <string name="favorites_title">Favorites</string>
     <string name="all_favorites_button">All</string>
-    <string name="dialog_positive_button">Got it!</string>
+    <string name="help_dialog_positive_button">Got it!</string>
     <string name="sign_in_success">Signed in successfully.</string>
 
     <!-- FavoriteActivity -->
@@ -39,6 +39,11 @@
 
     <!-- HistoryActivity -->
     <string name="history_activity_title">Roll History</string>
+    <string name="delete_all_history_action">Delete All History</string>
+    <string name="delete_all_dialog_title">Confirm Deletion</string>
+    <string name="delete_all_dialog_message">Delete all history?\n\nThis action cannot be undone.</string>
+    <string name="delete_all_dialog_positive">Delete</string>
+    <string name="delete_all_dialog_negative">Cancel</string>
 
     <!-- Formula Errors -->
     <string name="invalid_characters">Error: Input contains invalid characters.</string>

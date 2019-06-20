@@ -7,4 +7,10 @@
         android:title="@string/sign_out_menu"
         app:showAsAction="never"/>
 
+    <item
+        android:id="@+id/action_delete_all_history"
+        android:title="@string/delete_all_history_action"
+        app:showAsAction="ifRoom"
+        android:icon="@drawable/ic_baseline_delete_forever"/>
+
 </menu>
