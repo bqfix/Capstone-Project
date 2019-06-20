@@ -30,10 +30,14 @@ import com.firebase.ui.auth.AuthUI;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements FavoriteDiceRollAdapter.FavoriteDiceRollClickHandler {
 
@@ -48,6 +52,8 @@ public class MainActivity extends AppCompatActivity implements FavoriteDiceRollA
     private Button mAllFavoritesButton;
     private ImageButton mHelpButton;
     private DKeyboard mDKeyboard;
+
+    private List<DiceRoll> mDiceRolls;
 
     //InputConnection for custom keyboard
     private InputConnection mCommandInputConnection;
@@ -99,7 +105,7 @@ public class MainActivity extends AppCompatActivity implements FavoriteDiceRollA
         if (mAuthStateListener != null){
             mFirebaseAuth.removeAuthStateListener(mAuthStateListener);
         }
-        //TODO other cleanup of favorites list, detach database listener
+        detachDatabaseFavoritesReadListener();
     }
 
     /**
@@ -180,7 +186,10 @@ public class MainActivity extends AppCompatActivity implements FavoriteDiceRollA
 
         mFavoriteRecyclerView.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
 
-        mFavoriteDiceRollAdapter.setFavoriteDiceRolls(Utils.getDiceRollFakeData()); //TODO This is to be replaced by real data accessed from Firebase
+        if (mDiceRolls == null){
+            mDiceRolls = new ArrayList<>();
+        }
+        mFavoriteDiceRollAdapter.setFavoriteDiceRolls(mDiceRolls);
     }
 
     /**
@@ -355,16 +364,14 @@ public class MainActivity extends AppCompatActivity implements FavoriteDiceRollA
      */
     private void onSignedInInitialize(String userID) {
         mUserID = userID;
-//TODO        attachDatabaseReadListener();
-    }
+attachDatabaseFavoritesReadListener();    }
 
     /**
      * A helper method for when signed out of FirebaseAuth
      */
     private void onSignedOutCleanup() {
         mUserID = null;
-//TODO        detachDatabaseReadListener();
-    }
+detachDatabaseFavoritesReadListener();    }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
@@ -378,5 +385,49 @@ public class MainActivity extends AppCompatActivity implements FavoriteDiceRollA
         }
     }
 
+    /**
+     * A helper method for creating the database listener that checks Firebase for DiceRoll objects
+     */
+    private void attachDatabaseFavoritesReadListener() {
+        if (mFavoriteChildEventListener == null) { //TODO Edit for removed, changed?
+            mFavoriteChildEventListener = new ChildEventListener() {
+                @Override
+                public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+                    DiceRoll diceRoll = dataSnapshot.getValue(DiceRoll.class);
+                    mDiceRolls.add(diceRoll);
+                    mFavoriteDiceRollAdapter.setFavoriteDiceRolls(mDiceRolls);
+                }
+
+                @Override
+                public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+                }
+
+                @Override
+                public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
+
+                }
+
+                @Override
+                public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                }
+            };
+            mBaseDatabaseReference.child(Constants.FIREBASE_DATABASE_FAVORITES_PATH).child(mUserID).addChildEventListener(mFavoriteChildEventListener);
+        }
+    }
+
+    /**
+     * A helper method to clear the database listener
+     */
+    private void detachDatabaseFavoritesReadListener() {
+        mBaseDatabaseReference.child(Constants.FIREBASE_DATABASE_FAVORITES_PATH).child(mUserID).removeEventListener(mFavoriteChildEventListener);
+        mFavoriteChildEventListener = null;
+    }
 
 }

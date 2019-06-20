@@ -70,6 +70,7 @@ public class HistoryActivity extends AppCompatActivity implements HistoryResults
         if (mAuthStateListener != null) {
             mFirebaseAuth.removeAuthStateListener(mAuthStateListener);
         }
+        detachDatabaseHistoryReadListener();
     }
 
     @Override
@@ -178,10 +179,10 @@ public class HistoryActivity extends AppCompatActivity implements HistoryResults
     }
 
     /**
-     * A helper method for creating the database listener that checks Firebase for new/removed History objects
+     * A helper method for creating the database listener that checks Firebase for DiceResults objects
      */
     private void attachDatabaseHistoryReadListener() {
-        if (mHistoryChildEventListener == null) { //TODO Edit for removed
+        if (mHistoryChildEventListener == null) {
             mHistoryChildEventListener = new ChildEventListener() {
                 @Override
                 public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
