@@ -100,7 +100,7 @@ public class AddFavoriteActivity extends AppCompatActivity {
         if (validAndErrorPair.first) {
             String name = mNameEditText.getText().toString(); //Additionally get name
             DiceRoll diceRoll = new DiceRoll(name, formula);
-            saveToFirebaseFavorites(diceRoll);
+            diceRoll.saveToFirebaseFavorites(mBaseDatabaseReference, mUserId);
             Toast.makeText(this, R.string.saved_to_firebase, Toast.LENGTH_SHORT).show();
             finish();
         } else {
@@ -239,13 +239,5 @@ public class AddFavoriteActivity extends AppCompatActivity {
         //Database
         mFirebaseDatabase = FirebaseDatabase.getInstance();
         mBaseDatabaseReference = mFirebaseDatabase.getReference();
-    }
-
-    /**
-     * A helper method to save a DiceRoll to Firebase Realtime Database's Favorites section
-     * @param diceRoll to be saved
-     */
-    private void saveToFirebaseFavorites(DiceRoll diceRoll){
-        mBaseDatabaseReference.child(Constants.FIREBASE_DATABASE_FAVORITES_PATH).child(mUserId).push().setValue(diceRoll);
     }
 }

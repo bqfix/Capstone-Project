@@ -3,6 +3,8 @@ package com.example.diceydice;
 import android.content.Context;
 import android.support.v4.util.Pair;
 
+import com.google.firebase.database.DatabaseReference;
+
 import java.util.ArrayList;
 
 public class DiceRoll {
@@ -108,5 +110,14 @@ public class DiceRoll {
             }
         }
         return extractedPlussesAndMinuses;
+    }
+
+    /**
+     * A helper method to save a DiceRoll to Firebase Realtime Database's Favorites section
+     * @param databaseReference to save to
+     * @param userID to save under
+     */
+    public void saveToFirebaseFavorites(DatabaseReference databaseReference, String userID){
+        databaseReference.child(Constants.FIREBASE_DATABASE_FAVORITES_PATH).child(userID).push().setValue(DiceRoll.this);
     }
 }
