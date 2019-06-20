@@ -242,6 +242,9 @@ public class HistoryActivity extends AppCompatActivity implements HistoryResults
         mHistoryChildEventListener = null;
     }
 
+    /**
+     * A helper method that deletes all the user's history from Firebase, and empties all views on HistoryActivity
+     */
     private void clearAllHistory(){
         mBaseDatabaseReference.child(Constants.FIREBASE_DATABASE_HISTORY_PATH).child(mUserID).setValue(null); //Delete from database
 
