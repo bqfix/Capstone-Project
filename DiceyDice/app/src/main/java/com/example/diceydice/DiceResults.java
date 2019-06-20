@@ -3,6 +3,8 @@ package com.example.diceydice;
 import android.content.Context;
 import android.content.SharedPreferences;
 
+import com.google.firebase.database.DatabaseReference;
+
 import java.util.Date;
 
 public class DiceResults {
@@ -61,7 +63,7 @@ public class DiceResults {
      *
      * @param context used to save the results
      */
-    public void save(Context context){ //TODO Additionally add to history
+    public void saveToSharedPreferences(Context context){ //TODO Additionally add to history
         //Logic to add to SharedPrefs
         SharedPreferences sharedPreferences = context.getSharedPreferences(context.getString(R.string.shared_preferences_key), Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
@@ -71,5 +73,14 @@ public class DiceResults {
         editor.putInt(context.getString(R.string.dice_results_total_key), mTotal);
         editor.putLong(context.getString(R.string.dice_results_date_key), mDateCreated);
         editor.apply();
+    }
+
+    /**
+     * A helper method for saving to the Firebase Realtime Database's history section
+     * @param databaseReference to be saved to
+     * @param userId to save under
+     */
+    public void saveToFirebaseHistory(DatabaseReference databaseReference, String userId){
+        databaseReference.child(Constants.FIREBASE_DATABASE_HISTORY_PATH).child(userId).push().setValue(DiceResults.this);
     }
 }

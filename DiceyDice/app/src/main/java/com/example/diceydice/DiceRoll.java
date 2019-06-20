@@ -89,7 +89,7 @@ public class DiceRoll {
         //Create a new DiceResults object and save it
         DiceResults diceResults = new DiceResults(mName, descrip, total);
 
-        diceResults.save(context);
+        diceResults.saveToSharedPreferences(context);
 
         return diceResults;
     }

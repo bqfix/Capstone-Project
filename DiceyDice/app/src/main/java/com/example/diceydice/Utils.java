@@ -131,14 +131,4 @@ public final class Utils {
 
         return new DiceResults(name, descrip, total, date);
     }
-
-    /**
-     * A helper method for saving to the Firebase Realtime Database's history section
-     * @param databaseReference to be saved to
-     * @param userId to save under
-     * @param diceResults to be saved
-     */
-    public static void saveToFirebaseHistory(DatabaseReference databaseReference, String userId, DiceResults diceResults){
-        databaseReference.child(Constants.FIREBASE_DATABASE_HISTORY_PATH).child(userId).push().setValue(diceResults);
-    }
 }

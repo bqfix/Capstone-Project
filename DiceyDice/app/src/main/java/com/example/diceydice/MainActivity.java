@@ -165,7 +165,7 @@ public class MainActivity extends AppCompatActivity implements FavoriteDiceRollA
     public void onItemClick(DiceRoll favoriteDiceRoll) {
         DiceResults diceResults = favoriteDiceRoll.roll(this);
         setDataToResultsViews(diceResults);
-        Utils.saveToFirebaseHistory(mBaseDatabaseReference, mUserID, diceResults);
+        diceResults.saveToFirebaseHistory(mBaseDatabaseReference, mUserID);
     }
 
     /**
@@ -207,7 +207,7 @@ public class MainActivity extends AppCompatActivity implements FavoriteDiceRollA
                     setDataToResultsViews(diceResults);
 
                     //Firebase
-                    Utils.saveToFirebaseHistory(mBaseDatabaseReference, mUserID, diceResults);
+                    diceResults.saveToFirebaseHistory(mBaseDatabaseReference, mUserID);
 
                     //Hide keyboards
                     hideSystemKeyboard(v);

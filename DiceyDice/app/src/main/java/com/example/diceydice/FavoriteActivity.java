@@ -107,7 +107,7 @@ public class FavoriteActivity extends AppCompatActivity implements FavoriteDiceR
     public void onItemClick(DiceRoll favoriteDiceRoll) {
         DiceResults diceResults = favoriteDiceRoll.roll(this); // Roll the diceRoll once and save results
         setDataToResultsViews(diceResults);
-        Utils.saveToFirebaseHistory(mBaseDatabaseReference, mUserID, diceResults);
+        diceResults.saveToFirebaseHistory(mBaseDatabaseReference, mUserID);
     }
 
     /** Helper method to setup RecyclerView, should only be called once in onCreate */
