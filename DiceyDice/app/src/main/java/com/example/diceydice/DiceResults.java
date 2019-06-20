@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 
 import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.Exclude;
 
 import java.util.Date;
 
@@ -12,6 +13,8 @@ public class DiceResults {
     private String mDescrip;
     private int mTotal;
     private long mDateCreated;
+
+    public DiceResults(){} //No argument constructor for deserializing from Firebase
 
     public DiceResults(String name, String descrip, int total) {
         mName = name;
@@ -55,15 +58,18 @@ public class DiceResults {
         return mDateCreated;
     }
 
+    public void setDateCreated(long dateCreated){mDateCreated = dateCreated;}
+
+    @Exclude
     public Date getFormattedDateCreated(){
-        return new Date(mDateCreated * 1000);
+        return new Date(mDateCreated);
     }
 
     /** A helper method used to save the Results to both SharedPreferences (as the latest roll) and History
      *
      * @param context used to save the results
      */
-    public void saveToSharedPreferences(Context context){ //TODO Additionally add to history
+    public void saveToSharedPreferences(Context context){
         //Logic to add to SharedPrefs
         SharedPreferences sharedPreferences = context.getSharedPreferences(context.getString(R.string.shared_preferences_key), Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();

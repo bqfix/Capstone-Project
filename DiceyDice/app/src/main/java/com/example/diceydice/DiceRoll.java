@@ -12,6 +12,8 @@ public class DiceRoll {
     private String mName;
     private String mFormula;
 
+    public DiceRoll(){} //No argument constructor for deserializing from Firebase
+
     public DiceRoll(String formula) {
         mName = "";
         mFormula = formula;
@@ -43,7 +45,7 @@ public class DiceRoll {
      * @param context used for saving the results
      * @return A pair, with the first value being a string containing each individual roll, and the second being the total.
      */
-    public DiceResults roll(Context context){ //TODO Move this to an AsyncTask to avoid large rolls locking the UI thread
+    public DiceResults roll(Context context){
         StringBuilder compiledRolls = new StringBuilder("");
         int total = 0;
         ArrayList<String[]> splitFormulaByD =  new ArrayList<>();
