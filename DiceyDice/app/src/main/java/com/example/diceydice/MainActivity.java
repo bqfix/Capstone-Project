@@ -69,7 +69,6 @@ public class MainActivity extends AppCompatActivity implements FavoriteDiceRollA
     private FirebaseAuth.AuthStateListener mAuthStateListener;
 
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -102,7 +101,7 @@ public class MainActivity extends AppCompatActivity implements FavoriteDiceRollA
     @Override
     protected void onPause() {
         super.onPause();
-        if (mAuthStateListener != null){
+        if (mAuthStateListener != null) {
             mFirebaseAuth.removeAuthStateListener(mAuthStateListener);
         }
         detachDatabaseFavoritesReadListener();
@@ -186,7 +185,7 @@ public class MainActivity extends AppCompatActivity implements FavoriteDiceRollA
 
         mFavoriteRecyclerView.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
 
-        if (mDiceRolls == null){
+        if (mDiceRolls == null) {
             mDiceRolls = new ArrayList<>();
         }
         mFavoriteDiceRollAdapter.setFavoriteDiceRolls(mDiceRolls);
@@ -330,7 +329,7 @@ public class MainActivity extends AppCompatActivity implements FavoriteDiceRollA
     /**
      * A helper method to handle all of the initial setup for Firebase, to be called in onCreate
      */
-    private void initializeFirebase(){
+    private void initializeFirebase() {
         //Auth setup
         mFirebaseAuth = FirebaseAuth.getInstance();
         mAuthStateListener = new FirebaseAuth.AuthStateListener() {
@@ -342,12 +341,12 @@ public class MainActivity extends AppCompatActivity implements FavoriteDiceRollA
                 } else { //Signed out, so launch sign in activity
                     onSignedOutCleanup();
                     startActivityForResult(AuthUI.getInstance()
-                    .createSignInIntentBuilder()
-                    .setIsSmartLockEnabled(false)
-                    .setAvailableProviders(Arrays.asList(
-                            new AuthUI.IdpConfig.GoogleBuilder().build(),
-                            new AuthUI.IdpConfig.EmailBuilder().build()))
-                    .build(),
+                                    .createSignInIntentBuilder()
+                                    .setIsSmartLockEnabled(false)
+                                    .setAvailableProviders(Arrays.asList(
+                                            new AuthUI.IdpConfig.GoogleBuilder().build(),
+                                            new AuthUI.IdpConfig.EmailBuilder().build()))
+                                    .build(),
                             Constants.REQUEST_CODE_SIGN_IN);
                 }
             }
@@ -360,23 +359,26 @@ public class MainActivity extends AppCompatActivity implements FavoriteDiceRollA
 
     /**
      * A helper method for when signed into FirebaseAuth
+     *
      * @param userID to set the Activity's member variable
      */
     private void onSignedInInitialize(String userID) {
         mUserID = userID;
-attachDatabaseFavoritesReadListener();    }
+        attachDatabaseFavoritesReadListener();
+    }
 
     /**
      * A helper method for when signed out of FirebaseAuth
      */
     private void onSignedOutCleanup() {
         mUserID = null;
-detachDatabaseFavoritesReadListener();    }
+        detachDatabaseFavoritesReadListener();
+    }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == Constants.REQUEST_CODE_SIGN_IN){ //Special logic for results coming from FirebaseUI sign-in
+        if (requestCode == Constants.REQUEST_CODE_SIGN_IN) { //Special logic for results coming from FirebaseUI sign-in
             if (resultCode == RESULT_OK) {
                 Toast.makeText(this, R.string.sign_in_success, Toast.LENGTH_SHORT).show();
             } else if (resultCode == RESULT_CANCELED) { //User canceled, finish(); to close app
@@ -389,7 +391,8 @@ detachDatabaseFavoritesReadListener();    }
      * A helper method for creating the database listener that checks Firebase for DiceRoll objects
      */
     private void attachDatabaseFavoritesReadListener() {
-        if (mFavoriteChildEventListener == null) { //TODO Edit for removed, changed?
+        mDiceRolls = new ArrayList<>(); //Reset mDiceRolls, or edits to the Database cause repeat data
+        if (mFavoriteChildEventListener == null) { //TODO Edit for removed?
             mFavoriteChildEventListener = new ChildEventListener() {
                 @Override
                 public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {

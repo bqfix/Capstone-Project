@@ -222,6 +222,7 @@ public class FavoriteActivity extends AppCompatActivity implements FavoriteDiceR
      * A helper method for creating the database listener that checks Firebase for DiceRoll objects
      */
     private void attachDatabaseFavoritesReadListener() {
+        mDiceRolls = new ArrayList<>(); //Reset mDiceRolls, or edits to the Database cause repeat data
         if (mFavoriteChildEventListener == null) { //TODO Edit for removed, changed?
             mFavoriteChildEventListener = new ChildEventListener() {
                 @Override
