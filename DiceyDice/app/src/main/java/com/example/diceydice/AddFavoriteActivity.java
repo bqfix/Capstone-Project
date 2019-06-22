@@ -106,7 +106,11 @@ public class AddFavoriteActivity extends AppCompatActivity {
         if (validAndErrorPair.first) {
             String name = mNameEditText.getText().toString(); //Additionally get name
             DiceRoll diceRoll = new DiceRoll(name, formula);
-            diceRoll.saveToFirebaseFavorites(mBaseDatabaseReference, mUserId); //TODO Check if edited needs to be saved
+            if (editingFavorite) {
+                diceRoll.editSavedFirebaseFavorite(mBaseDatabaseReference, mUserId, mPreviousName, mPreviousFormula);
+            } else {
+                diceRoll.saveNewToFirebaseFavorites(mBaseDatabaseReference, mUserId); //Simply save
+            }
             Toast.makeText(this, R.string.saved_to_firebase, Toast.LENGTH_SHORT).show();
             finish();
         } else {
