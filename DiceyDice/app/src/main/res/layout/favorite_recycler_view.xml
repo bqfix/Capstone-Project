@@ -7,7 +7,9 @@
         android:id="@+id/favorite_rv"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_margin="8dp" />
+        android:layout_margin="8dp"
+        android:clipToPadding="false"
+        android:paddingBottom="80dp"/>
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/add_favorite_fab"
