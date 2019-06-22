@@ -1,6 +1,7 @@
 package com.example.diceydice;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Build;
 import android.os.Bundle;
@@ -40,14 +41,19 @@ public class AddFavoriteActivity extends AppCompatActivity {
     private FirebaseDatabase mFirebaseDatabase;
     private DatabaseReference mBaseDatabaseReference;
 
+    //Included DiceRoll variables
+    private boolean editingFavorite;
+    private String mPreviousName;
+    private String mPreviousFormula;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_favorite);
 
-        setTitle(R.string.add_favorite_activity_title);
-
         assignViews();
+
+        checkForIncludedDiceRoll();
 
         initializeFirebase();
 
@@ -100,7 +106,7 @@ public class AddFavoriteActivity extends AppCompatActivity {
         if (validAndErrorPair.first) {
             String name = mNameEditText.getText().toString(); //Additionally get name
             DiceRoll diceRoll = new DiceRoll(name, formula);
-            diceRoll.saveToFirebaseFavorites(mBaseDatabaseReference, mUserId);
+            diceRoll.saveToFirebaseFavorites(mBaseDatabaseReference, mUserId); //TODO Check if edited needs to be saved
             Toast.makeText(this, R.string.saved_to_firebase, Toast.LENGTH_SHORT).show();
             finish();
         } else {
@@ -239,5 +245,26 @@ public class AddFavoriteActivity extends AppCompatActivity {
         //Database
         mFirebaseDatabase = FirebaseDatabase.getInstance();
         mBaseDatabaseReference = mFirebaseDatabase.getReference();
+    }
+
+    /**
+     * A helper method that checks if a DiceRoll was sent in the intent, and sets up the activity
+     * for editing or adding a new DiceRoll accordingly
+     */
+    private void checkForIncludedDiceRoll(){
+        Intent intent = getIntent();
+        editingFavorite = intent.hasExtra(getString(R.string.dice_roll_parcelable_key));
+        if (editingFavorite){
+            setTitle(R.string.edit_favorite_activity_title);
+
+            //Get DiceRoll and populate fields
+            DiceRoll diceRoll = intent.getParcelableExtra(getString(R.string.dice_roll_parcelable_key));
+            mPreviousName = diceRoll.getName();
+            mPreviousFormula = diceRoll.getFormula();
+            mNameEditText.setText(mPreviousName);
+            mFormulaEditText.setText(mPreviousFormula);
+        } else {
+            setTitle(R.string.add_favorite_activity_title);
+        }
     }
 }

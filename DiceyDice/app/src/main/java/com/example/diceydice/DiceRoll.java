@@ -1,13 +1,15 @@
 package com.example.diceydice;
 
 import android.content.Context;
+import android.os.Parcel;
+import android.os.Parcelable;
 import android.support.v4.util.Pair;
 
 import com.google.firebase.database.DatabaseReference;
 
 import java.util.ArrayList;
 
-public class DiceRoll {
+public class DiceRoll implements Parcelable {
 
     private String mName;
     private String mFormula;
@@ -122,4 +124,33 @@ public class DiceRoll {
     public void saveToFirebaseFavorites(DatabaseReference databaseReference, String userID){
         databaseReference.child(Constants.FIREBASE_DATABASE_FAVORITES_PATH).child(userID).push().setValue(DiceRoll.this);
     }
+
+    //Parcelable logic
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(this.mName);
+        dest.writeString(this.mFormula);
+    }
+
+    protected DiceRoll(Parcel in) {
+        this.mName = in.readString();
+        this.mFormula = in.readString();
+    }
+
+    public static final Parcelable.Creator<DiceRoll> CREATOR = new Parcelable.Creator<DiceRoll>() {
+        @Override
+        public DiceRoll createFromParcel(Parcel source) {
+            return new DiceRoll(source);
+        }
+
+        @Override
+        public DiceRoll[] newArray(int size) {
+            return new DiceRoll[size];
+        }
+    };
 }

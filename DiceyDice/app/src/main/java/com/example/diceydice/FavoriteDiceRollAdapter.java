@@ -1,12 +1,15 @@
 package com.example.diceydice;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
+import android.widget.PopupMenu;
 import android.widget.TextView;
 
 import java.util.List;
@@ -60,8 +63,8 @@ public class FavoriteDiceRollAdapter extends RecyclerView.Adapter<FavoriteDiceRo
     }
 
     @Override
-    public void onBindViewHolder(@NonNull FavoriteDiceRollViewHolder viewHolder, int position) {
-        DiceRoll currentDiceRoll = mFavoriteDiceRolls.get(position);
+    public void onBindViewHolder(@NonNull final FavoriteDiceRollViewHolder viewHolder, int position) {
+        final DiceRoll currentDiceRoll = mFavoriteDiceRolls.get(position);
 
         String name = currentDiceRoll.getName();
         String descrip = currentDiceRoll.getFormula();
@@ -69,7 +72,33 @@ public class FavoriteDiceRollAdapter extends RecyclerView.Adapter<FavoriteDiceRo
         viewHolder.mNameTextView.setText(name);
         viewHolder.mDescripTextView.setText(descrip);
 
-        //TODO Setup More-Button logic
+        viewHolder.mMoreButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                final Context context = v.getContext();
+                PopupMenu popup = new PopupMenu(context, v);
+                popup.getMenuInflater().inflate(R.menu.favorite_item_more_menu, popup.getMenu());
+
+                popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                    @Override
+                    public boolean onMenuItemClick(MenuItem item) {
+                        switch (item.getItemId()) {
+                            case (R.id.action_edit_favorite): //Launch AddFavoriteActivity with included diceRoll
+                                Intent intent = new Intent(context, AddFavoriteActivity.class);
+                                intent.putExtra(context.getString(R.string.dice_roll_parcelable_key), currentDiceRoll);
+                                context.startActivity(intent);
+                                return true;
+                            case (R.id.action_delete_favorite):
+                                //TODO Add delete functionality
+                                return true;
+                            default:
+                                return true;
+                        }
+                    }
+                });
+                popup.show();
+            }
+        });
     }
 
     @Override

@@ -11,6 +11,9 @@
     <string name="help_formula_advice">Formula must include only numbers, spaces, + and &#8211; symbols, and the letter \'d\'.  First section must NOT be negative.  Numbers over 10000 cannot be rolled.  Examples include:\n\n6\n1d6\n2d8 &#8211; 1\n1d4&#8211;1d4+1d4&#8211;1d4</string> <!-- &#8211; is for en dash -->
     <string name="help_header">Advice</string>
     <string name="sign_out_menu">Sign out</string>
+    <string name="edit">Edit</string>
+    <string name="delete">Delete</string>
+    <string name="dice_roll_parcelable_key" translatable="false">dice_roll_parcelable</string>
     <!-- SharedPref Keys -->
     <string name="shared_preferences_key" translatable="false">shared_preferences</string>
     <string name="dice_results_name_key" translatable="false">dice_results_name</string>
