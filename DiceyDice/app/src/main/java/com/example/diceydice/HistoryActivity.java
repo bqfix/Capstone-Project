@@ -158,6 +158,7 @@ public class HistoryActivity extends AppCompatActivity implements HistoryResults
      * A helper method to handle all of the initial setup for Firebase, to be called in onCreate
      */
     private void initializeFirebase() {
+        mUserID = Constants.FIREBASE_ANONYMOUS;
         //Auth setup
         mFirebaseAuth = FirebaseAuth.getInstance();
 
@@ -193,7 +194,7 @@ public class HistoryActivity extends AppCompatActivity implements HistoryResults
      * A helper method for when signed out of FirebaseAuth
      */
     private void onSignedOutCleanup() {
-        mUserID = null;
+        mUserID = Constants.FIREBASE_ANONYMOUS;
         detachDatabaseHistoryReadListener();
     }
 
@@ -238,8 +239,10 @@ public class HistoryActivity extends AppCompatActivity implements HistoryResults
      * A helper method to clear the database listener
      */
     private void detachDatabaseHistoryReadListener() {
-        mBaseDatabaseReference.child(Constants.FIREBASE_DATABASE_HISTORY_PATH).child(mUserID).removeEventListener(mHistoryChildEventListener);
-        mHistoryChildEventListener = null;
+        if (mHistoryChildEventListener != null) {
+            mBaseDatabaseReference.child(Constants.FIREBASE_DATABASE_HISTORY_PATH).child(mUserID).removeEventListener(mHistoryChildEventListener);
+            mHistoryChildEventListener = null;
+        }
     }
 
     /**

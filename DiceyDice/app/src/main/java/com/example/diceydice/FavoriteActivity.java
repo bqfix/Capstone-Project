@@ -202,6 +202,7 @@ public class FavoriteActivity extends AppCompatActivity implements FavoriteDiceR
      * A helper method to handle all of the initial setup for Firebase, to be called in onCreate
      */
     private void initializeFirebase() {
+        mUserID = Constants.FIREBASE_ANONYMOUS;
         //Auth setup
         mFirebaseAuth = FirebaseAuth.getInstance();
 
@@ -237,7 +238,7 @@ public class FavoriteActivity extends AppCompatActivity implements FavoriteDiceR
      * A helper method for when signed out of FirebaseAuth
      */
     private void onSignedOutCleanup() {
-        mUserID = null;
+        mUserID = Constants.FIREBASE_ANONYMOUS;
         detachDatabaseFavoritesReadListener();
     }
 
@@ -290,7 +291,9 @@ public class FavoriteActivity extends AppCompatActivity implements FavoriteDiceR
      * A helper method to clear the database listener
      */
     private void detachDatabaseFavoritesReadListener() {
-        mBaseDatabaseReference.child(Constants.FIREBASE_DATABASE_FAVORITES_PATH).child(mUserID).removeEventListener(mFavoriteChildEventListener);
-        mFavoriteChildEventListener = null;
+        if (mFavoriteChildEventListener != null) {
+            mBaseDatabaseReference.child(Constants.FIREBASE_DATABASE_FAVORITES_PATH).child(mUserID).removeEventListener(mFavoriteChildEventListener);
+            mFavoriteChildEventListener = null;
+        }
     }
 }

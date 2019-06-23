@@ -361,6 +361,7 @@ public class MainActivity extends AppCompatActivity implements FavoriteDiceRollA
      */
     private void initializeFirebase() {
         //Auth setup
+        mUserID = Constants.FIREBASE_ANONYMOUS;
         mFirebaseAuth = FirebaseAuth.getInstance();
         mAuthStateListener = new FirebaseAuth.AuthStateListener() {
             @Override
@@ -401,7 +402,7 @@ public class MainActivity extends AppCompatActivity implements FavoriteDiceRollA
      * A helper method for when signed out of FirebaseAuth
      */
     private void onSignedOutCleanup() {
-        mUserID = null;
+        mUserID = Constants.FIREBASE_ANONYMOUS;
         detachDatabaseFavoritesReadListener();
     }
 
@@ -466,8 +467,10 @@ public class MainActivity extends AppCompatActivity implements FavoriteDiceRollA
      * A helper method to clear the database listener
      */
     private void detachDatabaseFavoritesReadListener() {
-        mBaseDatabaseReference.child(Constants.FIREBASE_DATABASE_FAVORITES_PATH).child(mUserID).removeEventListener(mFavoriteChildEventListener);
-        mFavoriteChildEventListener = null;
+        if (mFavoriteChildEventListener != null) {
+            mBaseDatabaseReference.child(Constants.FIREBASE_DATABASE_FAVORITES_PATH).child(mUserID).removeEventListener(mFavoriteChildEventListener);
+            mFavoriteChildEventListener = null;
+        }
     }
 
 }
