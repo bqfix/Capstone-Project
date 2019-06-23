@@ -39,7 +39,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity implements FavoriteDiceRollAdapter.FavoriteDiceRollClickHandler {
+public class MainActivity extends AppCompatActivity implements FavoriteDiceRollAdapter.FavoriteDiceRollClickHandler, FavoriteDiceRollAdapter.DeleteDiceRollClickHandler {
 
     //View variables
     private EditText mCommandInputEditText;
@@ -173,6 +173,26 @@ public class MainActivity extends AppCompatActivity implements FavoriteDiceRollA
         diceResults.saveToFirebaseHistory(mBaseDatabaseReference, mUserID);
     }
 
+    @Override
+    public void onDeleteClick(final DiceRoll favoriteDiceRoll) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle(R.string.delete_dialog_title)
+                .setMessage(R.string.delete_dialog_message)
+                .setPositiveButton(R.string.delete_dialog_positive, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        favoriteDiceRoll.deleteDiceRoll(mBaseDatabaseReference, mUserID);
+                    }
+                })
+                .setNegativeButton(R.string.delete_dialog_negative, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.cancel();
+                    }
+                })
+                .show();
+    }
+
     /**
      * Helper method to setup FavoriteRecyclerView, should only be called once in onCreate
      */
@@ -180,7 +200,7 @@ public class MainActivity extends AppCompatActivity implements FavoriteDiceRollA
         LinearLayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
         mFavoriteRecyclerView.setLayoutManager(layoutManager);
 
-        mFavoriteDiceRollAdapter = new FavoriteDiceRollAdapter(this);
+        mFavoriteDiceRollAdapter = new FavoriteDiceRollAdapter(this, this);
         mFavoriteRecyclerView.setAdapter(mFavoriteDiceRollAdapter);
 
         mFavoriteRecyclerView.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
@@ -392,7 +412,7 @@ public class MainActivity extends AppCompatActivity implements FavoriteDiceRollA
      */
     private void attachDatabaseFavoritesReadListener() {
         mDiceRolls = new ArrayList<>(); //Reset mDiceRolls, or edits to the Database cause repeat data
-        if (mFavoriteChildEventListener == null) { //TODO Edit for removed?
+        if (mFavoriteChildEventListener == null) {
             mFavoriteChildEventListener = new ChildEventListener() {
                 @Override
                 public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
@@ -408,7 +428,14 @@ public class MainActivity extends AppCompatActivity implements FavoriteDiceRollA
 
                 @Override
                 public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
-
+                    DiceRoll deletedDiceRoll = dataSnapshot.getValue(DiceRoll.class);
+                    for (DiceRoll diceRoll : mDiceRolls) {
+                        if (deletedDiceRoll.getName().equals(diceRoll.getName()) && deletedDiceRoll.getFormula().equals(diceRoll.getFormula())) { //If the name and formula match, delete it
+                            mDiceRolls.remove(diceRoll);
+                            mFavoriteDiceRollAdapter.setFavoriteDiceRolls(mDiceRolls);
+                            break; //Prevent removing more than one diceRoll
+                        }
+                    }
                 }
 
                 @Override

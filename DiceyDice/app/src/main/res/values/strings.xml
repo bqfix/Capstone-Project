@@ -14,6 +14,11 @@
     <string name="edit">Edit</string>
     <string name="delete">Delete</string>
     <string name="dice_roll_parcelable_key" translatable="false">dice_roll_parcelable</string>
+    <!-- Delete Favorite Dialog Strings -->
+    <string name="delete_dialog_title">Delete?</string>
+    <string name="delete_dialog_message">Delete this favorite?\n\nThis action cannot be undone.</string>
+    <string name="delete_dialog_positive">Delete</string>
+    <string name="delete_dialog_negative">Cancel</string>
     <!-- SharedPref Keys -->
     <string name="shared_preferences_key" translatable="false">shared_preferences</string>
     <string name="dice_results_name_key" translatable="false">dice_results_name</string>

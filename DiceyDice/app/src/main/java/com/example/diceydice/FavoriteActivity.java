@@ -1,14 +1,17 @@
 package com.example.diceydice;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -27,7 +30,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import java.util.ArrayList;
 import java.util.List;
 
-public class FavoriteActivity extends AppCompatActivity implements FavoriteDiceRollAdapter.FavoriteDiceRollClickHandler {
+public class FavoriteActivity extends AppCompatActivity implements FavoriteDiceRollAdapter.FavoriteDiceRollClickHandler, FavoriteDiceRollAdapter.DeleteDiceRollClickHandler {
 
     private TextView mResultsNameTextView;
     private TextView mResultsTotalTextView;
@@ -125,6 +128,26 @@ public class FavoriteActivity extends AppCompatActivity implements FavoriteDiceR
         diceResults.saveToFirebaseHistory(mBaseDatabaseReference, mUserID);
     }
 
+    @Override
+    public void onDeleteClick(final DiceRoll favoriteDiceRoll) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle(R.string.delete_dialog_title)
+                .setMessage(R.string.delete_dialog_message)
+                .setPositiveButton(R.string.delete_dialog_positive, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        favoriteDiceRoll.deleteDiceRoll(mBaseDatabaseReference, mUserID);
+                    }
+                })
+                .setNegativeButton(R.string.delete_dialog_negative, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.cancel();
+                    }
+                })
+                .show();
+    }
+
     /**
      * Helper method to setup RecyclerView, should only be called once in onCreate
      */
@@ -132,12 +155,12 @@ public class FavoriteActivity extends AppCompatActivity implements FavoriteDiceR
         LinearLayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
         mRecyclerView.setLayoutManager(layoutManager);
 
-        mFavoriteDiceRollAdapter = new FavoriteDiceRollAdapter(this);
+        mFavoriteDiceRollAdapter = new FavoriteDiceRollAdapter(this, this);
         mRecyclerView.setAdapter(mFavoriteDiceRollAdapter);
 
         mRecyclerView.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
 
-        if (mDiceRolls == null){
+        if (mDiceRolls == null) {
             mDiceRolls = new ArrayList<>();
         }
         mFavoriteDiceRollAdapter.setFavoriteDiceRolls(mDiceRolls);
@@ -223,7 +246,7 @@ public class FavoriteActivity extends AppCompatActivity implements FavoriteDiceR
      */
     private void attachDatabaseFavoritesReadListener() {
         mDiceRolls = new ArrayList<>(); //Reset mDiceRolls, or edits to the Database cause repeat data
-        if (mFavoriteChildEventListener == null) { //TODO Edit for removed, changed?
+        if (mFavoriteChildEventListener == null) {
             mFavoriteChildEventListener = new ChildEventListener() {
                 @Override
                 public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
@@ -239,7 +262,14 @@ public class FavoriteActivity extends AppCompatActivity implements FavoriteDiceR
 
                 @Override
                 public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
-
+                    DiceRoll deletedDiceRoll = dataSnapshot.getValue(DiceRoll.class);
+                    for (DiceRoll diceRoll : mDiceRolls) {
+                        if (deletedDiceRoll.getName().equals(diceRoll.getName()) && deletedDiceRoll.getFormula().equals(diceRoll.getFormula())) { //If the name and formula match, delete it
+                            mDiceRolls.remove(diceRoll);
+                            mFavoriteDiceRollAdapter.setFavoriteDiceRolls(mDiceRolls);
+                            break; //Prevent removing more than one diceRoll
+                        }
+                    }
                 }
 
                 @Override

@@ -137,7 +137,7 @@ public class DiceRoll implements Parcelable {
      */
     public void editSavedFirebaseFavorite(DatabaseReference databaseReference, String userID, final String previousName, final String previousFormula){
         DatabaseReference userFavorites = databaseReference.child(Constants.FIREBASE_DATABASE_FAVORITES_PATH).child(userID);
-        Query queryRef = userFavorites.orderByChild(Constants.FIREBASE_DATABASE_FAVORITES_FORMULA_PATH).equalTo(previousFormula).limitToFirst(1); //Query the database for first entry that has matching formula
+        Query queryRef = userFavorites.orderByChild(Constants.FIREBASE_DATABASE_FAVORITES_FORMULA_PATH).equalTo(previousFormula); //Query the database for first entry that has matching formula
         queryRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -145,8 +145,8 @@ public class DiceRoll implements Parcelable {
                     String name = diceRollSnapshot.child(Constants.FIREBASE_DATABASE_FAVORITES_NAME_PATH).getValue().toString(); //Check the name of each
                     if (name.equals(previousName)) {//For the first result where name and formula match, edit
                         DatabaseReference diceRollRef = diceRollSnapshot.getRef();
-                        diceRollRef.child(Constants.FIREBASE_DATABASE_FAVORITES_NAME_PATH).setValue(DiceRoll.this.mName);
-                        diceRollRef.child(Constants.FIREBASE_DATABASE_FAVORITES_FORMULA_PATH).setValue(DiceRoll.this.mFormula);
+                        diceRollRef.child(Constants.FIREBASE_DATABASE_FAVORITES_NAME_PATH).setValue(mName);
+                        diceRollRef.child(Constants.FIREBASE_DATABASE_FAVORITES_FORMULA_PATH).setValue(mFormula);
                         break; //To prevent further edits in the event of multiple matching entries
                     }
                 }
@@ -162,8 +162,27 @@ public class DiceRoll implements Parcelable {
     /**
      * A helper method to delete this DiceRoll from Firebase Realtime Database's Favorites section
      */
-    public void deleteDiceRoll(){
-        //TODO Add
+    public void deleteDiceRoll(DatabaseReference databaseReference, String userID){
+        DatabaseReference userFavorites = databaseReference.child(Constants.FIREBASE_DATABASE_FAVORITES_PATH).child(userID);
+        Query queryRef = userFavorites.orderByChild(Constants.FIREBASE_DATABASE_FAVORITES_FORMULA_PATH).equalTo(mFormula); //Query the database for first entry that has matching formula
+        queryRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                for (DataSnapshot diceRollSnapshot : dataSnapshot.getChildren()) { //Iterate through all returned values
+                    String name = diceRollSnapshot.child(Constants.FIREBASE_DATABASE_FAVORITES_NAME_PATH).getValue().toString(); //Check the name of each
+                    if (name.equals(mName)) {//For the first result where name and formula match, edit
+                        DatabaseReference diceRollRef = diceRollSnapshot.getRef();
+                        diceRollRef.removeValue();
+                        break; //To prevent further edits in the event of multiple matching entries
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
     }
 
     //Parcelable logic

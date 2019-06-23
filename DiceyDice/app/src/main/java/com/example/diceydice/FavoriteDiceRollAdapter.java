@@ -20,9 +20,11 @@ public class FavoriteDiceRollAdapter extends RecyclerView.Adapter<FavoriteDiceRo
     private List<DiceRoll> mFavoriteDiceRolls;
 
     private final FavoriteDiceRollClickHandler mFavoriteDiceRollClickHandler;
+    private final DeleteDiceRollClickHandler mDeleteDiceRollClickHandler;
 
-    FavoriteDiceRollAdapter(FavoriteDiceRollClickHandler favoriteDiceRollClickHandler) {
+    FavoriteDiceRollAdapter(FavoriteDiceRollClickHandler favoriteDiceRollClickHandler, DeleteDiceRollClickHandler deleteDiceRollClickHandler) {
         mFavoriteDiceRollClickHandler = favoriteDiceRollClickHandler;
+        mDeleteDiceRollClickHandler = deleteDiceRollClickHandler;
     }
 
 
@@ -89,7 +91,7 @@ public class FavoriteDiceRollAdapter extends RecyclerView.Adapter<FavoriteDiceRo
                                 context.startActivity(intent);
                                 return true;
                             case (R.id.action_delete_favorite):
-                                //TODO Add delete functionality
+                                mDeleteDiceRollClickHandler.onDeleteClick(currentDiceRoll);
                                 return true;
                             default:
                                 return true;
@@ -118,8 +120,13 @@ public class FavoriteDiceRollAdapter extends RecyclerView.Adapter<FavoriteDiceRo
         notifyDataSetChanged();
     }
 
-    //Interface to handle clicks, defined in MainActivity
+    //Interface to handle clicks, defined in MainActivity/FavoriteActivity
     public interface FavoriteDiceRollClickHandler {
         void onItemClick(DiceRoll favoriteDiceRoll);
+    }
+
+    //Interface to handle delete clicks, defined in MainActivity/FavoriteActivity
+    public interface  DeleteDiceRollClickHandler{
+        void onDeleteClick(DiceRoll favoriteDiceRoll);
     }
 }
