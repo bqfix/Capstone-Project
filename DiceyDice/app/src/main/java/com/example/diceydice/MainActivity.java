@@ -7,6 +7,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.button.MaterialButton;
 import android.support.v4.util.Pair;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -43,15 +44,16 @@ public class MainActivity extends AppCompatActivity implements FavoriteDiceRollA
 
     //View variables
     private EditText mCommandInputEditText;
-    private Button mRollButton;
+    private MaterialButton mRollButton;
     private TextView mResultsNameTextView;
     private TextView mResultsTotalTextView;
     private TextView mResultsDescripTextView;
     private RecyclerView mFavoriteRecyclerView;
     private FavoriteDiceRollAdapter mFavoriteDiceRollAdapter;
-    private Button mAllFavoritesButton;
-    private ImageButton mHelpButton;
+    private MaterialButton mAllFavoritesButton;
+    private MaterialButton mHelpButton;
     private DKeyboard mDKeyboard;
+    private MaterialButton mClearButton;
 
     private List<DiceRoll> mDiceRolls;
 
@@ -120,6 +122,7 @@ public class MainActivity extends AppCompatActivity implements FavoriteDiceRollA
         mAllFavoritesButton = findViewById(R.id.favorites_button);
         mHelpButton = findViewById(R.id.main_help_button);
         mDKeyboard = (DKeyboard) findViewById(R.id.d_keyboard);
+        mClearButton = findViewById(R.id.clear_button);
     }
 
     /**
@@ -259,6 +262,13 @@ public class MainActivity extends AppCompatActivity implements FavoriteDiceRollA
                         .setMessage(R.string.help_formula_advice)
                         .setTitle(R.string.help_header);
                 builder.show();
+            }
+        });
+
+        mClearButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mCommandInputEditText.setText("");
             }
         });
     }
