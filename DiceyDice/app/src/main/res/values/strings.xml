@@ -49,7 +49,7 @@
     <!-- HistoryActivity -->
     <string name="history_activity_title">Roll History</string>
     <string name="delete_all_history_action">Delete All History</string>
-    <string name="delete_all_dialog_title">Confirm Deletion</string>
+    <string name="delete_all_dialog_title">Delete?</string>
     <string name="delete_all_dialog_message">Delete all history?\n\nThis action cannot be undone.</string>
     <string name="delete_all_dialog_positive">Delete</string>
     <string name="delete_all_dialog_negative">Cancel</string>
@@ -72,7 +72,7 @@
     <string name="nine_button" translatable="false">9</string>
     <string name="zero_button" translatable="false">0</string>
     <string name="delete_button">Delete</string>
-    <string name="enter_button">Enter</string>
+    <string name="enter_button" translatable="false">Enter</string>
     <string name="d_button" translatable="false">d</string>
     <string name="plus_button" translatable="false">+</string>
     <string name="minus_button" translatable="false">-</string>
