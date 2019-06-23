@@ -62,7 +62,7 @@ public class HistoryResultsAdapter extends RecyclerView.Adapter<HistoryResultsAd
         DiceResults currentDiceResults = mHistoryResults.get(position);
 
         String name = currentDiceResults.getName();
-        String date = currentDiceResults.getFormattedDateCreated().toString();
+        String date = currentDiceResults.getFormattedDateCreated();
         String total = String.valueOf(currentDiceResults.getTotal());
 
         viewHolder.mNameTextView.setText(name);

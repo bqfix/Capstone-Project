@@ -6,7 +6,9 @@ import android.content.SharedPreferences;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.Exclude;
 
+import java.text.DateFormat;
 import java.util.Date;
+import java.util.Locale;
 
 public class DiceResults {
     private String mName;
@@ -61,8 +63,10 @@ public class DiceResults {
     public void setDateCreated(long dateCreated){mDateCreated = dateCreated;}
 
     @Exclude
-    public Date getFormattedDateCreated(){
-        return new Date(mDateCreated);
+    public String getFormattedDateCreated(){
+        DateFormat dateFormat = DateFormat.getDateTimeInstance(DateFormat.SHORT, DateFormat.SHORT, Locale.getDefault());
+        Date date = new Date(mDateCreated);
+        return dateFormat.format(date);
     }
 
     /** A helper method used to save the Results to both SharedPreferences (as the latest roll) and History
