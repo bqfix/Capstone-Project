@@ -7,6 +7,6 @@
     android:previewImage="@drawable/example_appwidget_preview"
     android:resizeMode="horizontal|vertical"
     android:updatePeriodMillis="0"
-    android:widgetCategory="home_screen"></appwidget-provider>
+    android:widgetCategory="home_screen"/>
 
-    <!-- updatePeriodMillis is set to 0 to prevent timed updating of the widget.  Should only be updated when in-app changes call it. -->
+    <!-- updatePeriodMillis is set to 0 to prevent timed updating of the widget.  Should only be updated when in-app changes call it.  TODO replace preview -->
