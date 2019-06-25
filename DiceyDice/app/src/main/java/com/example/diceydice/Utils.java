@@ -1,5 +1,7 @@
 package com.example.diceydice;
 
+import android.appwidget.AppWidgetManager;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.support.v4.util.Pair;
@@ -7,6 +9,7 @@ import android.support.v4.util.Pair;
 import com.google.firebase.database.DatabaseReference;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 public final class Utils {
@@ -130,5 +133,17 @@ public final class Utils {
         long date = sharedPreferences.getLong(context.getString(R.string.dice_results_date_key), 0);
 
         return new DiceResults(name, descrip, total, date);
+    }
+
+    /** A helper method to update all widgets when favorited DiceRoll data changes.  Generally called when updates to Favorites-based recycler views are called.
+     *
+     * @param context used for accessing the resources needed to call the update widgets method
+     * @param diceRolls to update the widgets with
+     */
+    public static void updateAllWidgets(Context context, List<DiceRoll> diceRolls){
+        AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context);
+        int[] appWidgetIds = appWidgetManager.getAppWidgetIds(new ComponentName(context, FavoritesWidget.class));
+//        appWidgetManager.notifyAppWidgetViewDataChanged(appWidgetIds, ); TODO Will be necessary later for updating listview
+        FavoritesWidget.updateAppWidget(context, appWidgetManager, appWidgetIds, diceRolls);
     }
 }

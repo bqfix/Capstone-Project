@@ -430,6 +430,7 @@ public class MainActivity extends AppCompatActivity implements FavoriteDiceRollA
                     DiceRoll diceRoll = dataSnapshot.getValue(DiceRoll.class);
                     mDiceRolls.add(diceRoll);
                     mFavoriteDiceRollAdapter.setFavoriteDiceRolls(mDiceRolls);
+                    Utils.updateAllWidgets(MainActivity.this, mDiceRolls);
                 }
 
                 @Override
@@ -444,6 +445,7 @@ public class MainActivity extends AppCompatActivity implements FavoriteDiceRollA
                         if (deletedDiceRoll.getName().equals(diceRoll.getName()) && deletedDiceRoll.getFormula().equals(diceRoll.getFormula())) { //If the name and formula match, delete it
                             mDiceRolls.remove(diceRoll);
                             mFavoriteDiceRollAdapter.setFavoriteDiceRolls(mDiceRolls);
+                            Utils.updateAllWidgets(MainActivity.this, mDiceRolls);
                             break; //Prevent removing more than one diceRoll
                         }
                     }
