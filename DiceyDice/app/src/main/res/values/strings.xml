@@ -76,5 +76,7 @@
     <string name="d_button" translatable="false">d</string>
     <string name="plus_button" translatable="false">+</string>
     <string name="minus_button" translatable="false">-</string>
+    <string name="appwidget_text">EXAMPLE</string>
+    <string name="add_widget">Add widget</string>
 
 </resources>

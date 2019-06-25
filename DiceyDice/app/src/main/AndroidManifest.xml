@@ -2,6 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.diceydice">
 
+    <uses-permission android:name="android.permission.INTERNET" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -9,14 +11,28 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".AddFavoriteActivity"
+        <receiver android:name=".FavoritesWidget">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/favorites_widget_info" />
+        </receiver>
+
+        <activity
+            android:name=".AddFavoriteActivity"
             android:parentActivityName=".FavoriteActivity"
             android:windowSoftInputMode="stateAlwaysHidden|adjustNothing" />
-        <activity android:name=".FavoriteActivity"
+        <activity
+            android:name=".FavoriteActivity"
             android:parentActivityName=".MainActivity" />
-        <activity android:name=".HistoryActivity"
-            android:parentActivityName=".MainActivity"/>
-        <activity android:name=".MainActivity"
+        <activity
+            android:name=".HistoryActivity"
+            android:parentActivityName=".MainActivity" />
+        <activity
+            android:name=".MainActivity"
             android:windowSoftInputMode="stateAlwaysHidden|adjustNothing">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -25,6 +41,5 @@
             </intent-filter>
         </activity>
     </application>
-    <uses-permission android:name="android.permission.INTERNET"/>
 
 </manifest>
