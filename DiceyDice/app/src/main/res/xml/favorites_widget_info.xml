@@ -4,9 +4,9 @@
     android:initialLayout="@layout/favorites_widget"
     android:minWidth="110dp"
     android:minHeight="110dp"
-    android:previewImage="@drawable/example_appwidget_preview"
+    android:previewImage="@drawable/widget_preview"
     android:resizeMode="horizontal|vertical"
     android:updatePeriodMillis="0"
     android:widgetCategory="home_screen"/>
 
-    <!-- updatePeriodMillis is set to 0 to prevent timed updating of the widget.  Should only be updated when in-app changes call it.  TODO replace preview -->
+    <!-- updatePeriodMillis is set to 0 to prevent timed updating of the widget.  Should only be updated when in-app changes call it. -->
