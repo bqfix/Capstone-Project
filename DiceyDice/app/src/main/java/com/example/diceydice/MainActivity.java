@@ -3,6 +3,7 @@ package com.example.diceydice;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -404,6 +405,20 @@ public class MainActivity extends AppCompatActivity implements FavoriteDiceRollA
     private void onSignedOutCleanup() {
         mUserID = Constants.FIREBASE_ANONYMOUS;
         detachDatabaseFavoritesReadListener();
+
+        //Blank Favorites
+        mDiceRolls = new ArrayList<>();
+        mFavoriteDiceRollAdapter.setFavoriteDiceRolls(mDiceRolls);
+
+        //Blank Results(by blanking SharedPreferences)
+        SharedPreferences sharedPreferences = getSharedPreferences(getString(R.string.shared_preferences_key), Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+
+        editor.putString(getString(R.string.dice_results_name_key), "");
+        editor.putString(getString(R.string.dice_results_descrip_key), "");
+        editor.putInt(getString(R.string.dice_results_total_key), 0);
+        editor.putLong(getString(R.string.dice_results_date_key), 0);
+        editor.apply();
     }
 
     @Override
