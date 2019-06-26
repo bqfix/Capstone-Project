@@ -2,6 +2,7 @@ package com.example.diceydice;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.Bundle;
 import android.util.Log;
 import android.widget.RemoteViews;
 import android.widget.RemoteViewsService;
@@ -56,9 +57,19 @@ class ListRemoteViewsFactory implements RemoteViewsService.RemoteViewsFactory {
     @Override
     public RemoteViews getViewAt(int position) {
         RemoteViews views = new RemoteViews(mContext.getPackageName(), R.layout.widget_favorite_list_item);
+
+        //Set the data to the favorites item
         DiceRoll diceRoll = mDiceRolls.get(position);
         views.setTextViewText(R.id.widget_item_name_tv, diceRoll.getName());
         views.setTextViewText(R.id.widget_item_formula_tv, diceRoll.getFormula());
+
+        //Add the DiceRoll to a FillInIntent to be sent to FavoritesActivity when clicked.  Set to LinearLayout.
+        Bundle extras = new Bundle();
+        extras.putParcelable(mContext.getString(R.string.widget_favorites_intent_parcelable_key), diceRoll);
+        Intent fillInIntent = new Intent();
+        fillInIntent.putExtras(extras);
+        views.setOnClickFillInIntent(R.id.widget_list_item_ll, fillInIntent);
+
         return views;
     }
 

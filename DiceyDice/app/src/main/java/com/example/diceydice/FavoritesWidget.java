@@ -1,5 +1,6 @@
 package com.example.diceydice;
 
+import android.app.PendingIntent;
 import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
 import android.content.Context;
@@ -22,13 +23,18 @@ public class FavoritesWidget extends AppWidgetProvider {
             // Construct the RemoteViews object
             RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.favorites_widget);
 
+            //Intent to send to ListWidgetService
             Intent intent = new Intent(context, ListWidgetService.class);
             String stringDiceRolls = Utils.diceRollsToString(diceRolls); //Convert diceRolls to String because parcelables don't send correctly
             intent.putExtra(context.getString(R.string.widget_dice_roll_parcelable_key), stringDiceRolls);
             intent.setData(Uri.parse(intent.toUri(Intent.URI_INTENT_SCHEME)));
-
             views.setRemoteAdapter(R.id.widget_favorites_lv, intent);
             views.setEmptyView(R.id.widget_favorites_lv, R.id.widget_empty);
+
+            //PendingIntentTemplate to launch FavoritesActivity when a favorite is clicked
+            Intent favoritesIntent = new Intent(context, FavoriteActivity.class);
+            PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, favoritesIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+            views.setPendingIntentTemplate(R.id.widget_favorites_lv, pendingIntent);
 
             // Instruct the widget manager to update the widget
             appWidgetManager.updateAppWidget(appWidgetId, views);

@@ -61,6 +61,8 @@ public class FavoriteActivity extends AppCompatActivity implements FavoriteDiceR
 
         initializeFirebase();
 
+        handleWidgetIntent();
+
         setupRecyclerView();
 
         mAddFavoriteFAB.setOnClickListener(new View.OnClickListener() {
@@ -296,6 +298,22 @@ public class FavoriteActivity extends AppCompatActivity implements FavoriteDiceR
         if (mFavoriteChildEventListener != null) {
             mBaseDatabaseReference.child(Constants.FIREBASE_DATABASE_FAVORITES_PATH).child(mUserID).removeEventListener(mFavoriteChildEventListener);
             mFavoriteChildEventListener = null;
+        }
+    }
+
+    /**
+     * A helper method to handle Intents coming from the widget that contain a DiceRoll to be rolled
+     * Called in onCreate.
+     */
+    private void handleWidgetIntent(){
+        Intent intent = getIntent();
+        String parcelableKey = getString(R.string.widget_favorites_intent_parcelable_key);
+        if (intent.hasExtra(parcelableKey)){ //If available, retrieve DiceRoll
+            DiceRoll diceRoll = intent.getParcelableExtra(parcelableKey);
+            DiceResults diceResults = diceRoll.roll(this); //This roll will be automatically saved to SharedPreferences, and will be displayed when loadMostRecentDiceResults is called in onStart.  No further handling needed.
+            if (mFirebaseAuth.getCurrentUser() != null) { //Manual check for sign-in
+                diceResults.saveToFirebaseHistory(mBaseDatabaseReference, mFirebaseAuth.getCurrentUser().getUid()); //Manual saving to Firebase required, mUserID not set until onResume
+            }
         }
     }
 }

@@ -82,5 +82,6 @@
     <string name="widget_dice_roll_parcelable_key" translatable="false">widget_dice_roll_parcelable_key</string>
     <string name="widget_title">Favorites</string>
     <string name="no_favorites_found">No Favorites Found.\nPlease run the app to refresh.</string>
+    <string name="widget_favorites_intent_parcelable_key" translatable="false">widget_favorites_intent_parcelable_key</string>
 
 </resources>
