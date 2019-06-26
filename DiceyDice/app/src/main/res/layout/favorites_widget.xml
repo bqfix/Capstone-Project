@@ -12,8 +12,8 @@
         android:layout_height="wrap_content"
         android:layout_margin="8dp"
         android:gravity="center_horizontal"
-        android:contentDescription="@string/favorite_activity_title"
-        android:text="@string/favorite_activity_title"
+        android:contentDescription="@string/widget_title"
+        android:text="@string/widget_title"
         android:textSize="24sp"
         android:textStyle="bold|italic"
         style="@style/header_style"/>
@@ -24,4 +24,11 @@
         android:layout_height="0dp"
         android:layout_weight="1"/>
 
+    <TextView
+        android:id="@+id/widget_empty"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_margin="8dp"
+        android:text="@string/no_favorites_found"
+        style="@style/basic_text_style"/>
 </LinearLayout>

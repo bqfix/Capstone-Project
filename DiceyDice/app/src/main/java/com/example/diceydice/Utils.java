@@ -143,7 +143,7 @@ public final class Utils {
     public static void updateAllWidgets(Context context, List<DiceRoll> diceRolls){
         AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context);
         int[] appWidgetIds = appWidgetManager.getAppWidgetIds(new ComponentName(context, FavoritesWidget.class));
-//        appWidgetManager.notifyAppWidgetViewDataChanged(appWidgetIds, ); TODO Will be necessary later for updating listview
+        appWidgetManager.notifyAppWidgetViewDataChanged(appWidgetIds, R.id.widget_favorites_lv);
         FavoritesWidget.updateAppWidget(context, appWidgetManager, appWidgetIds, diceRolls);
     }
 }

@@ -40,4 +40,6 @@
     <string name="sign_in_success">サインインしました。</string>
     <string name="sign_out_menu">サインアウト</string>
     <string name="too_many_dice">エラー：ダイスは1000上できません。</string>
+    <string name="widget_title">お気に入り</string>
+    <string name="no_favorites_found">お気に入りは見つかりませんでした。\n再読み込みにはアプリを起動してください。</string>
 </resources>

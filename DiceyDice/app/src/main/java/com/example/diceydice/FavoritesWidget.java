@@ -3,6 +3,9 @@ package com.example.diceydice;
 import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
 import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
+import android.os.Parcelable;
 import android.widget.RemoteViews;
 
 import java.util.ArrayList;
@@ -20,7 +23,12 @@ public class FavoritesWidget extends AppWidgetProvider {
             // Construct the RemoteViews object
             RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.favorites_widget);
 
-            //TODO Add update logic
+            Intent intent = new Intent(context, ListWidgetService.class);
+            intent.putParcelableArrayListExtra(context.getString(R.string.widget_dice_roll_parcelable_key), (ArrayList<? extends Parcelable>) diceRolls);
+            intent.setData(Uri.parse(intent.toUri(Intent.URI_INTENT_SCHEME)));
+
+            views.setRemoteAdapter(R.id.widget_favorites_lv, intent);
+            views.setEmptyView(R.id.widget_favorites_lv, R.id.widget_empty);
 
             // Instruct the widget manager to update the widget
             appWidgetManager.updateAppWidget(appWidgetId, views);
