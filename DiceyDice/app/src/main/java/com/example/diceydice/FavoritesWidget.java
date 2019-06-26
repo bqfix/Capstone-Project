@@ -5,7 +5,6 @@ import android.appwidget.AppWidgetProvider;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
-import android.os.Parcelable;
 import android.widget.RemoteViews;
 
 import java.util.ArrayList;
@@ -24,7 +23,8 @@ public class FavoritesWidget extends AppWidgetProvider {
             RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.favorites_widget);
 
             Intent intent = new Intent(context, ListWidgetService.class);
-            intent.putParcelableArrayListExtra(context.getString(R.string.widget_dice_roll_parcelable_key), (ArrayList<? extends Parcelable>) diceRolls);
+            String stringDiceRolls = Utils.diceRollsToString(diceRolls); //Convert diceRolls to String because parcelables don't send correctly
+            intent.putExtra(context.getString(R.string.widget_dice_roll_parcelable_key), stringDiceRolls);
             intent.setData(Uri.parse(intent.toUri(Intent.URI_INTENT_SCHEME)));
 
             views.setRemoteAdapter(R.id.widget_favorites_lv, intent);

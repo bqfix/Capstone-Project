@@ -9,4 +9,6 @@ public final class Constants {
     public final static int MAX_DICE_PER_ROLL = 1000;
     public final static int MAX_DIE_SIZE = 10000;
     public static final String FIREBASE_ANONYMOUS = "anonymous";
+    public static final String NAME_FORMULA_BREAK = "::";
+    public static final String DICEROLL_BREAK = "%%";
 }

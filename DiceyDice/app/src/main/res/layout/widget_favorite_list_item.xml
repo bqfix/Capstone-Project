@@ -29,10 +29,4 @@
         android:paddingLeft="16dp"
         android:paddingRight="16dp"
         />
-
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        style="@style/divider"/>
-
 </LinearLayout>

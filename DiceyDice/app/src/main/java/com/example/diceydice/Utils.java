@@ -6,8 +6,6 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.support.v4.util.Pair;
 
-import com.google.firebase.database.DatabaseReference;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -143,7 +141,33 @@ public final class Utils {
     public static void updateAllWidgets(Context context, List<DiceRoll> diceRolls){
         AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context);
         int[] appWidgetIds = appWidgetManager.getAppWidgetIds(new ComponentName(context, FavoritesWidget.class));
-        appWidgetManager.notifyAppWidgetViewDataChanged(appWidgetIds, R.id.widget_favorites_lv);
+//        appWidgetManager.notifyAppWidgetViewDataChanged(appWidgetIds, R.id.widget_favorites_lv);
         FavoritesWidget.updateAppWidget(context, appWidgetManager, appWidgetIds, diceRolls);
+    }
+
+    public static String diceRollsToString(List<DiceRoll> diceRolls){
+        StringBuilder builder = new StringBuilder();
+        for (int position = 0; position < diceRolls.size(); position++){
+            DiceRoll diceRoll = diceRolls.get(position);
+            builder.append(diceRoll.getName())
+                    .append(Constants.NAME_FORMULA_BREAK)
+                    .append(diceRoll.getFormula()); //Append name, break, and formula for each DiceRoll
+            if (position != (diceRolls.size()-1)){ //If not last in list, additionally append diceRoll break
+                builder.append(Constants.DICEROLL_BREAK);
+            }
+        }
+        return builder.toString();
+    }
+
+    public static List<DiceRoll> stringToDiceRolls(String string){
+        List<DiceRoll> diceRolls = new ArrayList<>();
+        String[] splitByDiceRolls = string.split(Constants.DICEROLL_BREAK); //Split into dicerolls
+        for (String splitString : splitByDiceRolls) {
+            String [] splitByNameAndFormula = splitString.split(Constants.NAME_FORMULA_BREAK); //Split into usable data
+            if (splitByNameAndFormula.length == 2) {
+                diceRolls.add(new DiceRoll(splitByNameAndFormula[0], splitByNameAndFormula[1]));
+            }
+        }
+        return diceRolls;
     }
 }

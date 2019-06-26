@@ -59,6 +59,7 @@
     <string name="incorrectly_formatted_section">Error: A section is incorrectly formatted. </string>
     <string name="too_many_dice">Error: Each dice roll must have less than 1000 dice.</string>
     <string name="no_error">No errors.</string>
+    <string name="name_contains_invalid_characters">Name cannot contain : or %</string>
 
     <!-- Custom Keyboard -->
     <string name="one_button" translatable="false">1</string>

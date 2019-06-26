@@ -100,11 +100,15 @@ public class AddFavoriteActivity extends AppCompatActivity {
      * A helper method for saving a new favorite
      */
     private void saveNewFavorite() {
+        String name = mNameEditText.getText().toString(); //Get name and ensure it doesn't have invalid characters
+        if (name.contains(Constants.NAME_FORMULA_BREAK) || name.contains(Constants.DICEROLL_BREAK)){
+            Toast.makeText(this, R.string.name_contains_invalid_characters, Toast.LENGTH_SHORT).show();
+            return;
+        }
         //Check that formula is valid
         String formula = mFormulaEditText.getText().toString();
         Pair<Boolean, String> validAndErrorPair = Utils.isValidDiceRoll(this, formula);
         if (validAndErrorPair.first) {
-            String name = mNameEditText.getText().toString(); //Additionally get name
             DiceRoll diceRoll = new DiceRoll(name, formula);
             if (editingFavorite) {
                 diceRoll.editSavedFirebaseFavorite(mBaseDatabaseReference, mUserId, mPreviousName, mPreviousFormula);
