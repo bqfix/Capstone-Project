@@ -11,6 +11,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <activity android:name=".ui.AboutActivity"
+            android:parentActivityName=".ui.MainActivity"></activity>
+
         <receiver android:name=".widget.FavoritesWidget">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
@@ -23,7 +26,7 @@
 
         <service
             android:name=".widget.ListWidgetService"
-            android:permission="android.permission.BIND_REMOTEVIEWS"/>
+            android:permission="android.permission.BIND_REMOTEVIEWS" />
 
         <activity
             android:name=".ui.AddFavoriteActivity"

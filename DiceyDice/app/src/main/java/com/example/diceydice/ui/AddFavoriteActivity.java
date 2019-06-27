@@ -7,6 +7,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.util.Pair;
+import android.support.v4.view.MenuCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -83,6 +84,7 @@ public class AddFavoriteActivity extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = this.getMenuInflater();
         inflater.inflate(R.menu.add_favorite_activity_menu, menu);
+        MenuCompat.setGroupDividerEnabled(menu, true);
         return true;
     }
 

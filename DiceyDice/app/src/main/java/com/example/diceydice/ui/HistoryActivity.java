@@ -1,9 +1,11 @@
 package com.example.diceydice.ui;
 
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.view.MenuCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DividerItemDecoration;
@@ -81,6 +83,7 @@ public class HistoryActivity extends AppCompatActivity implements HistoryResults
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.history_activity_menu, menu);
+        MenuCompat.setGroupDividerEnabled(menu, true);
         return true;
     }
 

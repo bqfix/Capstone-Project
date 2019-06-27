@@ -43,4 +43,6 @@
     <string name="widget_title">お気に入り</string>
     <string name="no_favorites_found">お気に入りは見つかりませんでした。\n再読み込みにはアプリを起動してください。</string>
     <string name="name_contains_invalid_characters">名前には:または%入力できません。</string>
+    <string name="about">アプリについて</string>
+    <string name="about_license_header">ライセンス</string>
 </resources>
