@@ -91,11 +91,26 @@ public class HistoryActivity extends AppCompatActivity implements HistoryResults
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case (R.id.action_sign_out):
-                AuthUI.getInstance().signOut(this);
+                AlertDialog.Builder signoutBuilder = new AlertDialog.Builder(HistoryActivity.this);
+                signoutBuilder.setTitle(R.string.sign_out_dialog_title)
+                        .setMessage(R.string.sign_out_dialog_message)
+                        .setPositiveButton(R.string.sign_out_dialog_positive, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                AuthUI.getInstance().signOut(HistoryActivity.this);
+                            }
+                        })
+                        .setNegativeButton(R.string.sign_out_dialog_negative, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.cancel();
+                            }
+                        });
+                signoutBuilder.show();
                 return true;
             case (R.id.action_delete_all_history):
-                AlertDialog.Builder builder = new AlertDialog.Builder(HistoryActivity.this);
-                builder.setTitle(R.string.delete_all_dialog_title)
+                AlertDialog.Builder deleteHistoryBuilder = new AlertDialog.Builder(HistoryActivity.this);
+                deleteHistoryBuilder.setTitle(R.string.delete_all_dialog_title)
                         .setMessage(R.string.delete_all_dialog_message)
                         .setPositiveButton(R.string.delete_all_dialog_positive, new DialogInterface.OnClickListener() {
                             @Override
@@ -109,7 +124,7 @@ public class HistoryActivity extends AppCompatActivity implements HistoryResults
                                 dialog.cancel();
                             }
                         });
-                builder.show();
+                deleteHistoryBuilder.show();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);

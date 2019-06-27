@@ -308,7 +308,22 @@ public class MainActivity extends AppCompatActivity implements FavoriteDiceRollA
                 startActivity(intent);
                 return true;
             case (R.id.action_sign_out):
-                AuthUI.getInstance().signOut(this);
+                AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+                builder.setTitle(R.string.sign_out_dialog_title)
+                        .setMessage(R.string.sign_out_dialog_message)
+                        .setPositiveButton(R.string.sign_out_dialog_positive, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                AuthUI.getInstance().signOut(MainActivity.this);
+                            }
+                        })
+                        .setNegativeButton(R.string.sign_out_dialog_negative, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.cancel();
+                            }
+                        });
+                builder.show();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);

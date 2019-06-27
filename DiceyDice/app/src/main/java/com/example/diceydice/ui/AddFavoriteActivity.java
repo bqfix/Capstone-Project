@@ -1,6 +1,8 @@
 package com.example.diceydice.ui;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Build;
@@ -8,6 +10,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.util.Pair;
 import android.support.v4.view.MenuCompat;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -95,7 +98,22 @@ public class AddFavoriteActivity extends AppCompatActivity {
                 saveNewFavorite();
                 return true;
             case (R.id.action_sign_out):
-                AuthUI.getInstance().signOut(this);
+                AlertDialog.Builder builder = new AlertDialog.Builder(AddFavoriteActivity.this);
+                builder.setTitle(R.string.sign_out_dialog_title)
+                        .setMessage(R.string.sign_out_dialog_message)
+                        .setPositiveButton(R.string.sign_out_dialog_positive, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                AuthUI.getInstance().signOut(AddFavoriteActivity.this);
+                            }
+                        })
+                        .setNegativeButton(R.string.sign_out_dialog_negative, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.cancel();
+                            }
+                        });
+                builder.show();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);

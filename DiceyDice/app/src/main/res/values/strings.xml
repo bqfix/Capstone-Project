@@ -25,6 +25,12 @@
     <string name="dice_results_descrip_key" translatable="false">dice_results_descrip</string>
     <string name="dice_results_total_key" translatable="false">dice_results_total</string>
     <string name="dice_results_date_key" translatable="false">dice_results_date</string>
+    <!-- Sign Out Confirm Dialog Strings -->
+    <string name="sign_out_dialog_title">Confirm Sign Out</string>
+    <string name="sign_out_dialog_message">Sign out?</string>
+    <string name="sign_out_dialog_positive">Sign out</string>
+    <string name="sign_out_dialog_negative">Cancel</string>
+
 
     <!-- MainActivity -->
     <string name="roll_button">Roll</string>
