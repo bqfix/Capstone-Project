@@ -1,4 +1,4 @@
-package com.example.diceydice;
+package com.example.diceydice.ui;
 
 import android.content.Context;
 import android.content.Intent;
@@ -19,6 +19,10 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.diceydice.utils.Constants;
+import com.example.diceydice.utils.DiceRoll;
+import com.example.diceydice.R;
+import com.example.diceydice.utils.Utils;
 import com.firebase.ui.auth.AuthUI;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;

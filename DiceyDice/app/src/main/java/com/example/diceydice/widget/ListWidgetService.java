@@ -1,11 +1,14 @@
-package com.example.diceydice;
+package com.example.diceydice.widget;
 
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.widget.RemoteViews;
 import android.widget.RemoteViewsService;
+
+import com.example.diceydice.R;
+import com.example.diceydice.utils.DiceRoll;
+import com.example.diceydice.utils.Utils;
 
 import java.util.List;
 

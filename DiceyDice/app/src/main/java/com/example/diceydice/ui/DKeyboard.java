@@ -1,4 +1,4 @@
-package com.example.diceydice;
+package com.example.diceydice.ui;
 
 import android.content.Context;
 import android.os.Handler;
@@ -13,6 +13,8 @@ import android.view.animation.AnimationUtils;
 import android.view.inputmethod.InputConnection;
 import android.widget.Button;
 import android.widget.ImageButton;
+
+import com.example.diceydice.R;
 
 public class DKeyboard extends ConstraintLayout implements View.OnClickListener, View.OnLongClickListener{
 

@@ -1,4 +1,4 @@
-package com.example.diceydice;
+package com.example.diceydice.ui;
 
 import android.content.DialogInterface;
 import android.os.Bundle;
@@ -14,6 +14,9 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.TextView;
 
+import com.example.diceydice.utils.Constants;
+import com.example.diceydice.utils.DiceResults;
+import com.example.diceydice.R;
 import com.firebase.ui.auth.AuthUI;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;

@@ -1,4 +1,4 @@
-package com.example.diceydice;
+package com.example.diceydice.ui;
 
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -11,13 +11,17 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
+import com.example.diceydice.utils.Constants;
+import com.example.diceydice.utils.DiceResults;
+import com.example.diceydice.utils.DiceRoll;
+import com.example.diceydice.R;
+import com.example.diceydice.utils.Utils;
 import com.firebase.ui.auth.AuthUI;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;

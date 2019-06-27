@@ -1,8 +1,9 @@
-package com.example.diceydice;
+package com.example.diceydice.utils;
 
 import android.content.Context;
 import android.content.SharedPreferences;
 
+import com.example.diceydice.R;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.Exclude;
 

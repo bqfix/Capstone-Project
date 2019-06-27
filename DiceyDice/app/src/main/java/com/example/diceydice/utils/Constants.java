@@ -1,4 +1,4 @@
-package com.example.diceydice;
+package com.example.diceydice.utils;
 
 public final class Constants {
     public static final String FIREBASE_DATABASE_HISTORY_PATH = "history";

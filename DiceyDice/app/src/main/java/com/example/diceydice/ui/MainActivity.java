@@ -1,4 +1,4 @@
-package com.example.diceydice;
+package com.example.diceydice.ui;
 
 import android.content.Context;
 import android.content.DialogInterface;
@@ -22,12 +22,15 @@ import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputConnection;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.diceydice.utils.Constants;
+import com.example.diceydice.utils.DiceResults;
+import com.example.diceydice.utils.DiceRoll;
+import com.example.diceydice.R;
+import com.example.diceydice.utils.Utils;
 import com.firebase.ui.auth.AuthUI;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;

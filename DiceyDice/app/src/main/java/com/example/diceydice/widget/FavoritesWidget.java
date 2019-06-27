@@ -1,4 +1,4 @@
-package com.example.diceydice;
+package com.example.diceydice.widget;
 
 import android.app.PendingIntent;
 import android.appwidget.AppWidgetManager;
@@ -8,6 +8,11 @@ import android.content.Intent;
 import android.net.Uri;
 import android.widget.RemoteViews;
 
+import com.example.diceydice.R;
+import com.example.diceydice.ui.FavoriteActivity;
+import com.example.diceydice.utils.DiceRoll;
+import com.example.diceydice.utils.Utils;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,7 +21,7 @@ import java.util.List;
  */
 public class FavoritesWidget extends AppWidgetProvider {
 
-    static void updateAppWidget(Context context, AppWidgetManager appWidgetManager,
+    public static void updateAppWidget(Context context, AppWidgetManager appWidgetManager,
                                 int[] appWidgetIds, List<DiceRoll> diceRolls) {
         //Iterate through all widgets and update each
         for (int appWidgetId : appWidgetIds) {

@@ -1,10 +1,13 @@
-package com.example.diceydice;
+package com.example.diceydice.utils;
 
 import android.appwidget.AppWidgetManager;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.support.v4.util.Pair;
+
+import com.example.diceydice.widget.FavoritesWidget;
+import com.example.diceydice.R;
 
 import java.util.ArrayList;
 import java.util.List;
