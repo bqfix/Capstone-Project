@@ -41,8 +41,12 @@
     <string name="sign_out_menu">サインアウト</string>
     <string name="too_many_dice">エラー：ダイスは1000上できません。</string>
     <string name="widget_title">お気に入り</string>
-    <string name="no_favorites_found">お気に入りは見つかりませんでした。\n再読み込みにはアプリを起動してください。</string>
+    <string name="no_favorites_found">クリックしてアプリを開けて再読み込みしてください。</string>
     <string name="name_contains_invalid_characters">名前には:または%入力できません。</string>
     <string name="about">アプリについて</string>
     <string name="about_license_header">ライセンス</string>
+    <string name="sign_out_dialog_message">サインアウトしますか？</string>
+    <string name="sign_out_dialog_title">サインアウト</string>
+    <string name="sign_out_dialog_positive">サインアウト</string>
+    <string name="sign_out_dialog_negative">キャンセル</string>
 </resources>

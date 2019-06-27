@@ -40,6 +40,7 @@ public class FavoritesWidget extends AppWidgetProvider {
             Intent favoritesIntent = new Intent(context, FavoriteActivity.class);
             PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, favoritesIntent, PendingIntent.FLAG_UPDATE_CURRENT);
             views.setPendingIntentTemplate(R.id.widget_favorites_lv, pendingIntent);
+            views.setOnClickPendingIntent(R.id.widget_empty, pendingIntent);
 
             // Instruct the widget manager to update the widget
             appWidgetManager.updateAppWidget(appWidgetId, views);
