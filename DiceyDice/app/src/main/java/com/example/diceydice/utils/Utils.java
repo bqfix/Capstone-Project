@@ -52,9 +52,9 @@ public final class Utils {
      * @param formula to be checked
      * @return a Pair containing a Boolean of whether the formula is valid or not, and an error message to be used if it is not.
      */
-    public static Pair<Boolean, String> isValidDiceRoll(Context context, String formula){
+    public static DiceValidity isValidDiceRoll(Context context, String formula){
         if (!formula.matches("[0123456789dD +-]+")){ //Check that the formula contains exclusively numbers, d, D, or +/-
-            return new Pair<>(false, context.getString(R.string.invalid_characters));
+            return new DiceValidity(false, context.getString(R.string.invalid_characters), false);
         }
 
         int totalDice = 0;
@@ -67,10 +67,10 @@ public final class Utils {
                         try {
                             int number = Integer.parseInt(potentialNumber.trim());
                             if (number > Constants.MAX_DIE_SIZE) {
-                                return new Pair<>(false, context.getString(R.string.incorrectly_formatted_section));
+                                return new DiceValidity(false, context.getString(R.string.incorrectly_formatted_section), false);
                             }
                         } catch (NumberFormatException e) {
-                            return new Pair<>(false, context.getString(R.string.incorrectly_formatted_section));
+                            return new DiceValidity(false, context.getString(R.string.incorrectly_formatted_section), false);
                         }
                     }
                     totalDice += Integer.parseInt(splitFormulaByD[0].trim());  //If both numbers were valid, add the first number (which will be the number of dice) to totalDice
@@ -80,20 +80,21 @@ public final class Utils {
                     try { //Confirm that the number is valid
                         int number = Integer.parseInt(splitFormulaByD[0].trim());
                         if (number > Constants.MAX_DIE_SIZE) {
-                            return new Pair<>(false, context.getString(R.string.incorrectly_formatted_section));
+                            return new DiceValidity(false, context.getString(R.string.incorrectly_formatted_section),false);
                         }
                     } catch (NumberFormatException e) {
-                        return new Pair<>(false, context.getString(R.string.incorrectly_formatted_section));
+                        return new DiceValidity(false, context.getString(R.string.incorrectly_formatted_section),false);
                     }
                     break;
                 }
-                default : return new Pair<>(false, context.getString(R.string.incorrectly_formatted_section));
+                default : return new DiceValidity(false, context.getString(R.string.incorrectly_formatted_section), false);
             }
         }
         if (totalDice > Constants.MAX_DICE_PER_ROLL) { //This is to prevent exceptionally large rolls that may lock down the app
-            return new Pair<>(false, context.getString(R.string.too_many_dice));
+            return new DiceValidity(false, context.getString(R.string.too_many_dice),false);
         }
-        return new Pair<>(true, context.getString(R.string.no_error));
+        boolean overHundred = (totalDice > 100);
+        return new DiceValidity(true, context.getString(R.string.no_error), overHundred);
     }
 
     /** Temporary helper method to provide a list of fake data to test RecyclerViews, etc.
@@ -103,7 +104,7 @@ public final class Utils {
     public static ArrayList<DiceRoll> getDiceRollFakeData(){
         ArrayList<DiceRoll> diceRolls = new ArrayList<>();
         for (int i = 0; i < 50; i++){
-            diceRolls.add(new DiceRoll("Standard Die Plus One", "1d6 + 1"));
+            diceRolls.add(new DiceRoll("Standard Die Plus One", "1d6 + 1", false));
         }
         return diceRolls;
     }
@@ -153,8 +154,10 @@ public final class Utils {
         for (int position = 0; position < diceRolls.size(); position++){
             DiceRoll diceRoll = diceRolls.get(position);
             builder.append(diceRoll.getName())
-                    .append(Constants.NAME_FORMULA_BREAK)
-                    .append(diceRoll.getFormula()); //Append name, break, and formula for each DiceRoll
+                    .append(Constants.NAME_FORMULA_HUNDRED_BREAK)
+                    .append(diceRoll.getFormula())
+                    .append(Constants.NAME_FORMULA_HUNDRED_BREAK)
+                    .append(diceRoll.getHasOverHundredDice()); //Append name, break, and formula for each DiceRoll
             if (position != (diceRolls.size()-1)){ //If not last in list, additionally append diceRoll break
                 builder.append(Constants.DICEROLL_BREAK);
             }
@@ -166,9 +169,9 @@ public final class Utils {
         List<DiceRoll> diceRolls = new ArrayList<>();
         String[] splitByDiceRolls = string.split(Constants.DICEROLL_BREAK); //Split into dicerolls
         for (String splitString : splitByDiceRolls) {
-            String [] splitByNameAndFormula = splitString.split(Constants.NAME_FORMULA_BREAK); //Split into usable data
-            if (splitByNameAndFormula.length == 2) {
-                diceRolls.add(new DiceRoll(splitByNameAndFormula[0], splitByNameAndFormula[1]));
+            String [] splitByNameAndFormula = splitString.split(Constants.NAME_FORMULA_HUNDRED_BREAK); //Split into usable data
+            if (splitByNameAndFormula.length == 3) {
+                diceRolls.add(new DiceRoll(splitByNameAndFormula[0], splitByNameAndFormula[1], Boolean.valueOf(splitByNameAndFormula[2])));
             }
         }
         return diceRolls;

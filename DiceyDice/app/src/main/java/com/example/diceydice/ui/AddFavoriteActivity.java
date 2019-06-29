@@ -1,6 +1,5 @@
 package com.example.diceydice.ui;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -8,7 +7,6 @@ import android.content.res.Configuration;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.v4.util.Pair;
 import android.support.v4.view.MenuCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -26,6 +24,7 @@ import android.widget.Toast;
 import com.example.diceydice.utils.Constants;
 import com.example.diceydice.utils.DiceRoll;
 import com.example.diceydice.R;
+import com.example.diceydice.utils.DiceValidity;
 import com.example.diceydice.utils.Utils;
 import com.firebase.ui.auth.AuthUI;
 import com.google.firebase.auth.FirebaseAuth;
@@ -125,15 +124,15 @@ public class AddFavoriteActivity extends AppCompatActivity {
      */
     private void saveNewFavorite() {
         String name = mNameEditText.getText().toString(); //Get name and ensure it doesn't have invalid characters
-        if (name.contains(Constants.NAME_FORMULA_BREAK) || name.contains(Constants.DICEROLL_BREAK)){
+        if (name.contains(Constants.NAME_FORMULA_HUNDRED_BREAK) || name.contains(Constants.DICEROLL_BREAK)){
             Toast.makeText(this, R.string.name_contains_invalid_characters, Toast.LENGTH_SHORT).show();
             return;
         }
         //Check that formula is valid
         String formula = mFormulaEditText.getText().toString();
-        Pair<Boolean, String> validAndErrorPair = Utils.isValidDiceRoll(this, formula);
-        if (validAndErrorPair.first) {
-            DiceRoll diceRoll = new DiceRoll(name, formula);
+        DiceValidity diceValidity = Utils.isValidDiceRoll(this, formula);
+        if (diceValidity.isValid()) {
+            DiceRoll diceRoll = new DiceRoll(name, formula, diceValidity.hasOverHundredDice());
             if (editingFavorite) {
                 diceRoll.editSavedFirebaseFavorite(mBaseDatabaseReference, mUserId, mPreviousName, mPreviousFormula);
             } else {
@@ -142,7 +141,7 @@ public class AddFavoriteActivity extends AppCompatActivity {
             Toast.makeText(this, R.string.saved_to_firebase, Toast.LENGTH_SHORT).show();
             finish();
         } else {
-            Toast.makeText(this, validAndErrorPair.second, Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, diceValidity.getErrorMessage(), Toast.LENGTH_SHORT).show();
         }
 
     }

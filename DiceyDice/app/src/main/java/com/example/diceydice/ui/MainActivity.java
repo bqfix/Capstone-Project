@@ -9,7 +9,6 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.button.MaterialButton;
-import android.support.v4.util.Pair;
 import android.support.v4.view.MenuCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -31,6 +30,7 @@ import com.example.diceydice.utils.Constants;
 import com.example.diceydice.utils.DiceResults;
 import com.example.diceydice.utils.DiceRoll;
 import com.example.diceydice.R;
+import com.example.diceydice.utils.DiceValidity;
 import com.example.diceydice.utils.RollAsyncTask;
 import com.example.diceydice.utils.Utils;
 import com.firebase.ui.auth.AuthUI;
@@ -234,10 +234,10 @@ public class MainActivity extends AppCompatActivity implements FavoriteDiceRollA
             @Override
             public void onClick(View v) {
                 String formula = mCommandInputEditText.getText().toString();
-                Pair<Boolean, String> validAndErrorPair = Utils.isValidDiceRoll(MainActivity.this, formula); //Get a boolean of whether the
-                if (validAndErrorPair.first) {
+                DiceValidity diceValidity = Utils.isValidDiceRoll(MainActivity.this, formula); //Get a boolean of whether the
+                if (diceValidity.isValid()) {
                     //If formula is okay, make a new nameless DiceRoll for display in the results text
-                    DiceRoll diceRoll = new DiceRoll(formula);
+                    DiceRoll diceRoll = new DiceRoll(formula, diceValidity.hasOverHundredDice());
 
                     new RollAsyncTask(MainActivity.this).execute(diceRoll);
 
@@ -245,7 +245,7 @@ public class MainActivity extends AppCompatActivity implements FavoriteDiceRollA
                     hideSystemKeyboard(v);
                     hideCustomKeyboard();
                 } else {
-                    Toast.makeText(MainActivity.this, validAndErrorPair.second, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(MainActivity.this, diceValidity.getErrorMessage(), Toast.LENGTH_SHORT).show();
                 }
             }
         });

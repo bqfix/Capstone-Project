@@ -18,17 +18,20 @@ public class DiceRoll implements Parcelable {
 
     private String mName;
     private String mFormula;
+    private boolean hasOverHundredDice;
 
     public DiceRoll(){} //No argument constructor for deserializing from Firebase
 
-    public DiceRoll(String formula) {
+    public DiceRoll(String formula, boolean hasOverHundredDice) {
         mName = "";
         mFormula = formula;
+        this.hasOverHundredDice = hasOverHundredDice;
     }
 
-    public DiceRoll(String name, String formula) {
+    public DiceRoll(String name, String formula, boolean hasOverHundredDice) {
         mName = name;
         mFormula = formula;
+        this.hasOverHundredDice = hasOverHundredDice;
     }
 
     public String getName() {
@@ -45,6 +48,14 @@ public class DiceRoll implements Parcelable {
 
     public void setFormula(String formula) {
         mFormula = formula;
+    }
+
+    public boolean getHasOverHundredDice() { //Must be named (get) for Firebase
+        return hasOverHundredDice;
+    }
+
+    public void setHasOverHundredDice(boolean hasOverHundredDice) {
+        this.hasOverHundredDice = hasOverHundredDice;
     }
 
     /**
@@ -71,6 +82,7 @@ public class DiceRoll implements Parcelable {
                         DatabaseReference diceRollRef = diceRollSnapshot.getRef();
                         diceRollRef.child(Constants.FIREBASE_DATABASE_FAVORITES_NAME_PATH).setValue(mName);
                         diceRollRef.child(Constants.FIREBASE_DATABASE_FAVORITES_FORMULA_PATH).setValue(mFormula);
+                        diceRollRef.child(Constants.FIREBASE_DATABASE_FAVORITES_OVER_HUNDRED_PATH).setValue(hasOverHundredDice);
                         break; //To prevent further edits in the event of multiple matching entries
                     }
                 }
@@ -109,7 +121,6 @@ public class DiceRoll implements Parcelable {
         });
     }
 
-    //Parcelable logic
     @Override
     public int describeContents() {
         return 0;
@@ -119,14 +130,16 @@ public class DiceRoll implements Parcelable {
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeString(this.mName);
         dest.writeString(this.mFormula);
+        dest.writeByte(this.hasOverHundredDice ? (byte) 1 : (byte) 0);
     }
 
     protected DiceRoll(Parcel in) {
         this.mName = in.readString();
         this.mFormula = in.readString();
+        this.hasOverHundredDice = in.readByte() != 0;
     }
 
-    public static final Parcelable.Creator<DiceRoll> CREATOR = new Parcelable.Creator<DiceRoll>() {
+    public static final Creator<DiceRoll> CREATOR = new Creator<DiceRoll>() {
         @Override
         public DiceRoll createFromParcel(Parcel source) {
             return new DiceRoll(source);
