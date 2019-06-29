@@ -220,7 +220,7 @@ public class HistoryActivity extends AppCompatActivity implements HistoryResults
     }
 
     /**
-     * A helper method for creating the database listener that checks Firebase for DiceResults objects
+     * A helper method for creating the database listener that checks Firebase for DiceResults objects //TODO change to single value event listener, add onSavedInstance?
      */
     private void attachDatabaseHistoryReadListener() {
         if (mHistoryChildEventListener == null) {

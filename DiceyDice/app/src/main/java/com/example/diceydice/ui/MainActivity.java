@@ -435,7 +435,7 @@ public class MainActivity extends AppCompatActivity implements FavoriteDiceRollA
 
         editor.putString(getString(R.string.dice_results_name_key), "");
         editor.putString(getString(R.string.dice_results_descrip_key), "");
-        editor.putInt(getString(R.string.dice_results_total_key), 0);
+        editor.putLong(getString(R.string.dice_results_total_key), 0);
         editor.putLong(getString(R.string.dice_results_date_key), 0);
         editor.apply();
     }
@@ -509,7 +509,7 @@ public class MainActivity extends AppCompatActivity implements FavoriteDiceRollA
         }
     }
 
-    /** Override, for any given diceResults that occur from rolling a DiceRoll, up
+    /** Override, for any given diceResults that occur from rolling a DiceRoll
      *
      * @param diceResults to use
      */

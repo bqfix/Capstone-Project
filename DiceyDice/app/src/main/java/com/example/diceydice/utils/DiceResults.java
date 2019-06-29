@@ -14,19 +14,19 @@ import java.util.Locale;
 public class DiceResults {
     private String mName;
     private String mDescrip;
-    private int mTotal;
+    private long mTotal;
     private long mDateCreated;
 
     public DiceResults(){} //No argument constructor for deserializing from Firebase
 
-    public DiceResults(String name, String descrip, int total) {
+    public DiceResults(String name, String descrip, long total) {
         mName = name;
         mDescrip = descrip;
         mTotal = total;
         mDateCreated = System.currentTimeMillis();
     }
 
-    public DiceResults(String name, String descrip, int total, long date){
+    public DiceResults(String name, String descrip, long total, long date){
         mName = name;
         mDescrip = descrip;
         mTotal = total;
@@ -49,11 +49,11 @@ public class DiceResults {
         mDescrip = descrip;
     }
 
-    public int getTotal() {
+    public long getTotal() {
         return mTotal;
     }
 
-    public void setTotal(int total) {
+    public void setTotal(long total) {
         mTotal = total;
     }
 
@@ -81,7 +81,7 @@ public class DiceResults {
 
         editor.putString(context.getString(R.string.dice_results_name_key), mName);
         editor.putString(context.getString(R.string.dice_results_descrip_key), mDescrip);
-        editor.putInt(context.getString(R.string.dice_results_total_key), mTotal);
+        editor.putLong(context.getString(R.string.dice_results_total_key), mTotal);
         editor.putLong(context.getString(R.string.dice_results_date_key), mDateCreated);
         editor.apply();
     }

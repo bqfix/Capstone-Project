@@ -90,7 +90,7 @@ public final class Utils {
                 default : return new Pair<>(false, context.getString(R.string.incorrectly_formatted_section));
             }
         }
-        if (totalDice >= Constants.MAX_DICE_PER_ROLL) { //This is to prevent exceptionally large rolls that may lock down the app
+        if (totalDice > Constants.MAX_DICE_PER_ROLL) { //This is to prevent exceptionally large rolls that may lock down the app
             return new Pair<>(false, context.getString(R.string.too_many_dice));
         }
         return new Pair<>(true, context.getString(R.string.no_error));
@@ -130,7 +130,7 @@ public final class Utils {
 
         String name = sharedPreferences.getString(context.getString(R.string.dice_results_name_key), "");
         String descrip = sharedPreferences.getString(context.getString(R.string.dice_results_descrip_key), "");
-        int total = sharedPreferences.getInt(context.getString(R.string.dice_results_total_key), 0);
+        long total = sharedPreferences.getLong(context.getString(R.string.dice_results_total_key), 0);
         long date = sharedPreferences.getLong(context.getString(R.string.dice_results_date_key), 0);
 
         return new DiceResults(name, descrip, total, date);

@@ -24,7 +24,16 @@ public class RollAsyncTask extends AsyncTask<DiceRoll, Void, DiceResults> {
         StringBuilder compiledRolls = new StringBuilder("");
         int total = 0;
         ArrayList<String[]> splitFormulaByD =  new ArrayList<>();
-        ArrayList<String> plussesAndMinuses = extractPlussesAndMinuses(formula);
+
+        //Create an ArrayList containing all the plusses and minuses in the formula, for later cross-referencing
+        ArrayList<String> plussesAndMinuses = new ArrayList<>();
+        plussesAndMinuses.add("+"); //First value in formula must always be positive
+        for (int index = 0; index < formula.length(); index++) {
+            String currentCharacter = String.valueOf(formula.charAt(index));
+            if (currentCharacter.equals("+") || currentCharacter.equals("-")) { //If a character in the formula is + or -, append it to the list
+                plussesAndMinuses.add(currentCharacter);
+            }
+        }
 
         String[] splitFormulaByPlusMinus = formula.trim().split("[+-]"); //Split formula based on + and -
         for (String section : splitFormulaByPlusMinus) {
@@ -78,21 +87,5 @@ public class RollAsyncTask extends AsyncTask<DiceRoll, Void, DiceResults> {
 
     public interface RollAsyncPostExecute {
         void handleRollResult(DiceResults diceResults);
-    }
-
-    /** A helper method to create an ArrayList containing all the plusses and minuses in the formula, for later cross-referencing
-     *
-     * @return an ArrayList of all the plusses and minuses in the formula
-     */
-    private ArrayList<String> extractPlussesAndMinuses(String formula){
-        ArrayList<String> extractedPlussesAndMinuses = new ArrayList<>();
-        extractedPlussesAndMinuses.add("+"); //First value in formula must always be positive
-        for (int index = 0; index < formula.length(); index++) {
-            String currentCharacter = String.valueOf(formula.charAt(index));
-            if (currentCharacter.equals("+") || currentCharacter.equals("-")) { //If a character in the formula is + or -, append it to the list
-                extractedPlussesAndMinuses.add(currentCharacter);
-            }
-        }
-        return extractedPlussesAndMinuses;
     }
 }
