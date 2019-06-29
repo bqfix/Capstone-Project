@@ -22,8 +22,8 @@ public class RollAsyncTask extends AsyncTask<DiceRoll, Void, DiceResults> {
         DiceRoll diceRoll = params[0];
         String formula = diceRoll.getFormula();
         StringBuilder compiledRolls = new StringBuilder("");
-        int total = 0;
-        ArrayList<String[]> splitFormulaByD =  new ArrayList<>();
+        long total = 0;
+        ArrayList<String[]> splitFormulaByD = new ArrayList<>();
 
         //Create an ArrayList containing all the plusses and minuses in the formula, for later cross-referencing
         ArrayList<String> plussesAndMinuses = new ArrayList<>();
@@ -34,6 +34,7 @@ public class RollAsyncTask extends AsyncTask<DiceRoll, Void, DiceResults> {
                 plussesAndMinuses.add(currentCharacter);
             }
         }
+
 
         String[] splitFormulaByPlusMinus = formula.trim().split("[+-]"); //Split formula based on + and -
         for (String section : splitFormulaByPlusMinus) {
@@ -48,7 +49,7 @@ public class RollAsyncTask extends AsyncTask<DiceRoll, Void, DiceResults> {
             if (splitRoll.length == 2) { //If the size is 2, it was delineated by d or D, and thus we know that the first value is the numberOfDice, and the second value is the dieSize
                 int numberOfDice = Integer.parseInt(splitRoll[0].trim());
                 int dieSize = Integer.parseInt(splitRoll[1].trim());
-                Pair<String, Integer> rolledValues = Utils.calculateDice(numberOfDice, dieSize); //Use the utils method to calculate a Pair with the individual values, and the total, and append/total these
+                Pair<String, Long> rolledValues = Utils.calculateDice(numberOfDice, dieSize); //Use the utils method to calculate a Pair with the individual values, and the total, and append/total these
 
                 if (positive) { //Add or subtract accordingly
                     compiledRolls.append(" +").append(rolledValues.first);
@@ -59,7 +60,7 @@ public class RollAsyncTask extends AsyncTask<DiceRoll, Void, DiceResults> {
                 }
             }
 
-            if (splitRoll.length == 1){ //If the length is one, simply append the number and add or subtract accordingly
+            if (splitRoll.length == 1) { //If the length is one, simply append the number and add or subtract accordingly
                 String number = splitRoll[0].trim();
                 if (positive) {
                     compiledRolls.append("+(").append(number).append(")");
@@ -72,7 +73,12 @@ public class RollAsyncTask extends AsyncTask<DiceRoll, Void, DiceResults> {
         }
 
         //Create a description of the formula, along with the compiled rolls
-        String descrip = formula + "=\n\n" + compiledRolls.toString();
+        String descrip;
+        if (diceRoll.getHasOverHundredDice()){
+            descrip = Constants.OVER_HUNDRED_DICE_DESCRIP;
+        } else {
+            descrip = formula + "=\n\n" + compiledRolls.toString();
+        }
         String name = diceRoll.getName();
 
         //Create a new DiceResults object and return

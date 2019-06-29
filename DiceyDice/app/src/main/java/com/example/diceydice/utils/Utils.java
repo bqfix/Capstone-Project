@@ -24,10 +24,10 @@ public final class Utils {
      * @param dieSize
      * @return a Pair including a String that details each roll, and an Integer that holds the total
      */
-    public static Pair<String, Integer> calculateDice(int numberOfDice, int dieSize) {
+    public static Pair<String, Long> calculateDice(int numberOfDice, int dieSize) {
         Random randomizer = new Random();
         StringBuilder compiledRolls = new StringBuilder("");
-        int total = 0;
+        long total = 0;
 
         if (numberOfDice == 0 || dieSize == 0)
             return new Pair<>(compiledRolls.toString(), total); //Return early if answer will be 0
