@@ -22,6 +22,7 @@ import com.example.diceydice.utils.Constants;
 import com.example.diceydice.utils.DiceResults;
 import com.example.diceydice.utils.DiceRoll;
 import com.example.diceydice.R;
+import com.example.diceydice.utils.RollAsyncTask;
 import com.example.diceydice.utils.Utils;
 import com.firebase.ui.auth.AuthUI;
 import com.google.firebase.auth.FirebaseAuth;
@@ -35,7 +36,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import java.util.ArrayList;
 import java.util.List;
 
-public class FavoriteActivity extends AppCompatActivity implements FavoriteDiceRollAdapter.FavoriteDiceRollClickHandler, FavoriteDiceRollAdapter.DeleteDiceRollClickHandler {
+public class FavoriteActivity extends AppCompatActivity implements FavoriteDiceRollAdapter.FavoriteDiceRollClickHandler, FavoriteDiceRollAdapter.DeleteDiceRollClickHandler, RollAsyncTask.RollAsyncPostExecute {
 
     private TextView mResultsNameTextView;
     private TextView mResultsTotalTextView;
@@ -43,6 +44,7 @@ public class FavoriteActivity extends AppCompatActivity implements FavoriteDiceR
     private RecyclerView mRecyclerView;
     private FavoriteDiceRollAdapter mFavoriteDiceRollAdapter;
     private FloatingActionButton mAddFavoriteFAB;
+    private boolean widgetIntentHandled = false;
 
     private List<DiceRoll> mDiceRolls;
 
@@ -64,9 +66,9 @@ public class FavoriteActivity extends AppCompatActivity implements FavoriteDiceR
 
         assignViews();
 
-        initializeFirebase();
+        restoreSavedInstanceState(savedInstanceState);
 
-        handleWidgetIntent();
+        initializeFirebase();
 
         setupRecyclerView();
 
@@ -90,6 +92,7 @@ public class FavoriteActivity extends AppCompatActivity implements FavoriteDiceR
     protected void onResume() {
         super.onResume();
         mFirebaseAuth.addAuthStateListener(mAuthStateListener);
+        handleWidgetIntent();
     }
 
     @Override
@@ -99,6 +102,12 @@ public class FavoriteActivity extends AppCompatActivity implements FavoriteDiceR
             mFirebaseAuth.removeAuthStateListener(mAuthStateListener);
         }
         detachDatabaseFavoritesReadListener();
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putBoolean(getString(R.string.widget_intent_handled_boolean_key), widgetIntentHandled);
     }
 
     /**
@@ -130,9 +139,7 @@ public class FavoriteActivity extends AppCompatActivity implements FavoriteDiceR
      */
     @Override
     public void onItemClick(DiceRoll favoriteDiceRoll) {
-        DiceResults diceResults = favoriteDiceRoll.roll(this); // Roll the diceRoll once and save results
-        setDataToResultsViews(diceResults);
-        diceResults.saveToFirebaseHistory(mBaseDatabaseReference, mUserID);
+        new RollAsyncTask(this).execute(favoriteDiceRoll);
     }
 
     @Override
@@ -327,14 +334,35 @@ public class FavoriteActivity extends AppCompatActivity implements FavoriteDiceR
      * Called in onCreate.
      */
     private void handleWidgetIntent(){
-        Intent intent = getIntent();
-        String parcelableKey = getString(R.string.widget_favorites_intent_parcelable_key);
-        if (intent.hasExtra(parcelableKey)){ //If available, retrieve DiceRoll
-            DiceRoll diceRoll = intent.getParcelableExtra(parcelableKey);
-            DiceResults diceResults = diceRoll.roll(this); //This roll will be automatically saved to SharedPreferences, and will be displayed when loadMostRecentDiceResults is called in onStart.  No further handling needed.
-            if (mFirebaseAuth.getCurrentUser() != null) { //Manual check for sign-in
-                diceResults.saveToFirebaseHistory(mBaseDatabaseReference, mFirebaseAuth.getCurrentUser().getUid()); //Manual saving to Firebase required, mUserID not set until onResume
+        if (!widgetIntentHandled) {
+            Intent intent = getIntent();
+            String parcelableKey = getString(R.string.widget_favorites_intent_parcelable_key);
+            if (intent.hasExtra(parcelableKey)) { //If available, retrieve DiceRoll
+                DiceRoll diceRoll = intent.getParcelableExtra(parcelableKey);
+                new RollAsyncTask(this).execute(diceRoll);
             }
+            widgetIntentHandled = true;
+        }
+    }
+
+    /** Override, for any given diceResults that occur from rolling a DiceRoll, up
+     *
+     * @param diceResults to use
+     */
+    @Override
+    public void handleRollResult(DiceResults diceResults) {
+        diceResults.saveToSharedPreferences(this);
+        setDataToResultsViews(diceResults);
+        diceResults.saveToFirebaseHistory(mBaseDatabaseReference, mUserID);
+    }
+
+    /** A helper method for handling saved instance states in onCreate
+     *
+     * @param savedInstanceState to handle
+     */
+    private void restoreSavedInstanceState(Bundle savedInstanceState){
+        if (savedInstanceState != null && !savedInstanceState.isEmpty()){
+            widgetIntentHandled = savedInstanceState.getBoolean(getString(R.string.widget_intent_handled_boolean_key), false);
         }
     }
 }

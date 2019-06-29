@@ -31,6 +31,7 @@ import com.example.diceydice.utils.Constants;
 import com.example.diceydice.utils.DiceResults;
 import com.example.diceydice.utils.DiceRoll;
 import com.example.diceydice.R;
+import com.example.diceydice.utils.RollAsyncTask;
 import com.example.diceydice.utils.Utils;
 import com.firebase.ui.auth.AuthUI;
 import com.google.firebase.auth.FirebaseAuth;
@@ -45,7 +46,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity implements FavoriteDiceRollAdapter.FavoriteDiceRollClickHandler, FavoriteDiceRollAdapter.DeleteDiceRollClickHandler {
+public class MainActivity extends AppCompatActivity implements FavoriteDiceRollAdapter.FavoriteDiceRollClickHandler, FavoriteDiceRollAdapter.DeleteDiceRollClickHandler, RollAsyncTask.RollAsyncPostExecute {
 
     //View variables
     private EditText mCommandInputEditText;
@@ -176,9 +177,7 @@ public class MainActivity extends AppCompatActivity implements FavoriteDiceRollA
      */
     @Override
     public void onItemClick(DiceRoll favoriteDiceRoll) {
-        DiceResults diceResults = favoriteDiceRoll.roll(this);
-        setDataToResultsViews(diceResults);
-        diceResults.saveToFirebaseHistory(mBaseDatabaseReference, mUserID);
+        new RollAsyncTask(this).execute(favoriteDiceRoll);
     }
 
     @Override
@@ -239,11 +238,8 @@ public class MainActivity extends AppCompatActivity implements FavoriteDiceRollA
                 if (validAndErrorPair.first) {
                     //If formula is okay, make a new nameless DiceRoll for display in the results text
                     DiceRoll diceRoll = new DiceRoll(formula);
-                    DiceResults diceResults = diceRoll.roll(MainActivity.this);
-                    setDataToResultsViews(diceResults);
 
-                    //Firebase
-                    diceResults.saveToFirebaseHistory(mBaseDatabaseReference, mUserID);
+                    new RollAsyncTask(MainActivity.this).execute(diceRoll);
 
                     //Hide keyboards
                     hideSystemKeyboard(v);
@@ -284,7 +280,6 @@ public class MainActivity extends AppCompatActivity implements FavoriteDiceRollA
      */
     private void loadMostRecentDiceResults() {
         DiceResults diceResults = Utils.retrieveLatestDiceResults(this);
-
         setDataToResultsViews(diceResults);
     }
 
@@ -514,4 +509,14 @@ public class MainActivity extends AppCompatActivity implements FavoriteDiceRollA
         }
     }
 
+    /** Override, for any given diceResults that occur from rolling a DiceRoll, up
+     *
+     * @param diceResults to use
+     */
+    @Override
+    public void handleRollResult(DiceResults diceResults) {
+        diceResults.saveToSharedPreferences(this);
+        setDataToResultsViews(diceResults);
+        diceResults.saveToFirebaseHistory(mBaseDatabaseReference, mUserID);
+    }
 }

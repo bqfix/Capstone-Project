@@ -42,6 +42,7 @@
 
     <!-- FavoriteActivity -->
     <string name="favorite_activity_title">Favorites</string>
+    <string name="widget_intent_handled_boolean_key" translatable="false">widget_intent_handled_boolean_key</string>
 
     <!-- AddFavoriteActivity -->
     <string name="add_favorite_activity_title">Add Favorite</string>
