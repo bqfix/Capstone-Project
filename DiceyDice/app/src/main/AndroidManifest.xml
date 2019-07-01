@@ -11,7 +11,12 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".ui.AboutActivity"
+
+        <meta-data
+            android:name="com.google.android.gms.ads.APPLICATION_ID"
+            android:value="ca-app-pub-3686302874318115~3664776718" />
+        <activity
+            android:name=".ui.AboutActivity"
             android:parentActivityName=".ui.MainActivity"></activity>
 
         <receiver android:name=".widget.FavoritesWidget">
