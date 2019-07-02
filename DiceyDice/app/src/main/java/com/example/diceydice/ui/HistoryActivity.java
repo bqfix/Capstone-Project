@@ -20,6 +20,8 @@ import com.example.diceydice.utils.Constants;
 import com.example.diceydice.utils.DiceResults;
 import com.example.diceydice.R;
 import com.firebase.ui.auth.AuthUI;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.ChildEventListener;
@@ -38,6 +40,7 @@ public class HistoryActivity extends AppCompatActivity implements HistoryResults
     private TextView mResultsDescripTextView;
     private RecyclerView mHistoryRecyclerView;
     private HistoryResultsAdapter mHistoryAdapter;
+    private AdView mAdView;
 
     private List<DiceResults> mDiceResults;
 
@@ -59,6 +62,8 @@ public class HistoryActivity extends AppCompatActivity implements HistoryResults
         initializeFirebase();
 
         assignViews();
+
+        setupAds();
 
         setupHistoryRecyclerView();
 
@@ -144,6 +149,7 @@ public class HistoryActivity extends AppCompatActivity implements HistoryResults
         mResultsTotalTextView = findViewById(R.id.results_total_tv);
         mResultsDescripTextView = findViewById(R.id.results_descrip_tv);
         mHistoryRecyclerView = findViewById(R.id.history_rv);
+        mAdView = findViewById(R.id.banner_ad);
     }
 
     /**
@@ -280,5 +286,13 @@ public class HistoryActivity extends AppCompatActivity implements HistoryResults
         mResultsNameTextView.setText("");
         mResultsDescripTextView.setText("");
         mResultsTotalTextView.setText("");
+    }
+
+    /**
+     * A helper method to setup an ad into the activity's AdView
+     */
+    private void setupAds() {
+        AdRequest adRequest = new AdRequest.Builder().build();
+        mAdView.loadAd(adRequest);
     }
 }

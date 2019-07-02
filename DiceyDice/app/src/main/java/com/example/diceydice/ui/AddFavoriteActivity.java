@@ -27,6 +27,8 @@ import com.example.diceydice.R;
 import com.example.diceydice.utils.DiceValidity;
 import com.example.diceydice.utils.Utils;
 import com.firebase.ui.auth.AuthUI;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
@@ -39,6 +41,7 @@ public class AddFavoriteActivity extends AppCompatActivity {
     private EditText mFormulaEditText;
     private InputConnection mInputConnection;
     private DKeyboard mDKeyboard;
+    private AdView mAdView;
 
     //Firebase
     private String mUserId;
@@ -59,6 +62,8 @@ public class AddFavoriteActivity extends AppCompatActivity {
         setContentView(R.layout.activity_add_favorite);
 
         assignViews();
+
+        setupAds();
 
         checkForIncludedDiceRoll();
 
@@ -154,6 +159,7 @@ public class AddFavoriteActivity extends AppCompatActivity {
         mNameEditText = findViewById(R.id.name_input_et);
         mFormulaEditText = findViewById(R.id.formula_input_et);
         mDKeyboard = (DKeyboard) findViewById(R.id.d_keyboard);
+        mAdView = findViewById(R.id.banner_ad);
     }
 
     /**
@@ -297,5 +303,13 @@ public class AddFavoriteActivity extends AppCompatActivity {
         } else {
             setTitle(R.string.add_favorite_activity_title);
         }
+    }
+
+    /**
+     * A helper method to setup an ad into the activity's AdView
+     */
+    private void setupAds() {
+        AdRequest adRequest = new AdRequest.Builder().build();
+        mAdView.loadAd(adRequest);
     }
 }

@@ -25,6 +25,8 @@ import com.example.diceydice.R;
 import com.example.diceydice.utils.RollAsyncTask;
 import com.example.diceydice.utils.Utils;
 import com.firebase.ui.auth.AuthUI;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.ChildEventListener;
@@ -44,6 +46,8 @@ public class FavoriteActivity extends AppCompatActivity implements FavoriteDiceR
     private RecyclerView mRecyclerView;
     private FavoriteDiceRollAdapter mFavoriteDiceRollAdapter;
     private FloatingActionButton mAddFavoriteFAB;
+    private AdView mAdView;
+
     private boolean widgetIntentHandled = false;
 
     private List<DiceRoll> mDiceRolls;
@@ -65,6 +69,8 @@ public class FavoriteActivity extends AppCompatActivity implements FavoriteDiceR
         setTitle(R.string.favorites_title);
 
         assignViews();
+
+        setupAds();
 
         restoreSavedInstanceState(savedInstanceState);
 
@@ -119,6 +125,7 @@ public class FavoriteActivity extends AppCompatActivity implements FavoriteDiceR
         mResultsDescripTextView = findViewById(R.id.results_descrip_tv);
         mRecyclerView = findViewById(R.id.favorite_rv);
         mAddFavoriteFAB = findViewById(R.id.add_favorite_fab);
+        mAdView = findViewById(R.id.banner_ad);
     }
 
     /**
@@ -364,5 +371,13 @@ public class FavoriteActivity extends AppCompatActivity implements FavoriteDiceR
         if (savedInstanceState != null && !savedInstanceState.isEmpty()){
             widgetIntentHandled = savedInstanceState.getBoolean(getString(R.string.widget_intent_handled_boolean_key), false);
         }
+    }
+
+    /**
+     * A helper method to setup an ad into the activity's AdView
+     */
+    private void setupAds() {
+        AdRequest adRequest = new AdRequest.Builder().build();
+        mAdView.loadAd(adRequest);
     }
 }

@@ -34,6 +34,8 @@ import com.example.diceydice.utils.DiceValidity;
 import com.example.diceydice.utils.RollAsyncTask;
 import com.example.diceydice.utils.Utils;
 import com.firebase.ui.auth.AuthUI;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.ChildEventListener;
@@ -60,6 +62,7 @@ public class MainActivity extends AppCompatActivity implements FavoriteDiceRollA
     private MaterialButton mHelpButton;
     private DKeyboard mDKeyboard;
     private MaterialButton mClearButton;
+    private AdView mAdView;
 
     private List<DiceRoll> mDiceRolls;
 
@@ -85,6 +88,8 @@ public class MainActivity extends AppCompatActivity implements FavoriteDiceRollA
         initializeFirebase();
 
         assignViews();
+
+        setupAds();
 
         setOnClickListeners();
 
@@ -129,6 +134,7 @@ public class MainActivity extends AppCompatActivity implements FavoriteDiceRollA
         mHelpButton = findViewById(R.id.main_help_button);
         mDKeyboard = (DKeyboard) findViewById(R.id.d_keyboard);
         mClearButton = findViewById(R.id.clear_button);
+        mAdView = findViewById(R.id.banner_ad);
     }
 
     /**
@@ -294,7 +300,7 @@ public class MainActivity extends AppCompatActivity implements FavoriteDiceRollA
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case(R.id.action_about_menu):
+            case (R.id.action_about_menu):
                 Intent aboutIntent = new Intent(MainActivity.this, AboutActivity.class);
                 startActivity(aboutIntent);
                 return true;
@@ -509,7 +515,8 @@ public class MainActivity extends AppCompatActivity implements FavoriteDiceRollA
         }
     }
 
-    /** Override, for any given diceResults that occur from rolling a DiceRoll
+    /**
+     * Override, for any given diceResults that occur from rolling a DiceRoll
      *
      * @param diceResults to use
      */
@@ -518,5 +525,13 @@ public class MainActivity extends AppCompatActivity implements FavoriteDiceRollA
         diceResults.saveToSharedPreferences(this);
         setDataToResultsViews(diceResults);
         diceResults.saveToFirebaseHistory(mBaseDatabaseReference, mUserID);
+    }
+
+    /**
+     * A helper method to setup an ad into the activity's AdView
+     */
+    private void setupAds() {
+        AdRequest adRequest = new AdRequest.Builder().build();
+        mAdView.loadAd(adRequest);
     }
 }
