@@ -101,7 +101,9 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/favorites_title" />
+        app:layout_constraintTop_toBottomOf="@+id/favorites_title"
+        android:clipToPadding="false"
+        android:paddingBottom="80dp"/>
 
     <android.support.design.button.MaterialButton
         android:id="@+id/favorites_button"
