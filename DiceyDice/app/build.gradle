@@ -1,6 +1,14 @@
 apply plugin: 'com.android.application'
 
 android {
+    signingConfigs {
+        config {
+            storeFile file("$rootDir\\keystore.jks")
+            keyAlias = 'key0'
+            storePassword 'Bacony7'
+            keyPassword 'KeyedBacon7'
+        }
+    }
     compileSdkVersion 28
     defaultConfig {
         applicationId "com.example.diceydice"
@@ -15,6 +23,7 @@ android {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.config
         }
     }
 }
