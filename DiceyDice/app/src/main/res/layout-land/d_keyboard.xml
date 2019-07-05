@@ -106,6 +106,7 @@
         android:layout_width="0dp"
         android:layout_marginStart="8dp"
         android:layout_marginLeft="8dp"
+        android:textAllCaps="false"
         android:text="@string/d_button"
         app:layout_constraintEnd_toStartOf="@+id/enter_button"
         app:layout_constraintStart_toStartOf="parent"
